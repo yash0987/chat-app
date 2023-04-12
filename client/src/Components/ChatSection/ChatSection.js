@@ -1,25 +1,36 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { io } from 'socket.io-client';
 import EmojiPicker from 'emoji-picker-react';
 import emoji from './../../Img/emoji.png';
 import { CurrentUser } from '../../Context/CurrentUserContext';
 import ChatBar from './ChatBar';
 import sendMessageBtn from './../../Img/sendMessageBtn.png';
+import Message from './Message';
 
 export default function ChatSection(props) {
-  const socket = io('http://localhost:5000');
+  const ws = props.ws;
   const users = CurrentUser();
   const [chat, setChat] = useState(null);
   const [deleteToggle, setDeleteToggle] = useState(false);
   const [elementArray, setElementArray] = useState([]);
   const messageBoxRef = useRef(null);
   const emojiPanelRef = useRef(null);
-
-
+  const messageSectionRef = useRef(null);
+  
   let IDarray = [ props.secondPerson.ID, users.googleID ];
   IDarray.sort();
   let room = IDarray[0] + IDarray[1];
-  let keyValue = 0;
+  
+  // const ws = new WebSocket('ws://localhost:5000');
+  // ws.onopen = () => {
+  //   console.log("connection has been established");
+  // }
+
+  ws.onmessage = (event) => {
+    const message = JSON.parse(event.data);
+
+    let arr = [...elementArray, message];
+    setElementArray(arr);
+  }
 
   async function getChat() {
     const response = await fetch(`http://localhost:5000/chat/data?ID=${room}`, {
@@ -57,38 +68,6 @@ export default function ChatSection(props) {
     // eslint-disable-next-line
   }, [room]);
 
-  useEffect(() => {
-    socket.on('connect', () => {
-      console.log("socket is connnect to this ID: " + socket.id);
-    })
-
-    socket.on('receive-message', (message) => {
-      const collectedText = message.collectedText;
-      const currentMsgTime = message.currentMsgTime;
-
-      const receiverMessageElement = (
-        <label className = 'message flex justify-start my-1'>
-          { deleteToggle ? <input type="checkbox" name="" id="" className='ml-3' /> : null }
-          <p className = 'whitespace-pre-line px-2 py-1 rounded-md text-white bg-violet-500'>
-            { collectedText }
-            <span className = 'flex justify-end text-[10px] text-white'> { currentMsgTime } </span>
-          </p>
-        </label>
-      );
-
-      console.log(collectedText);
-    
-      let arr = [...elementArray];
-      arr.push(receiverMessageElement);
-      setElementArray(arr);
-    })
-
-    return () => {
-      socket.removeAllListeners();
-    }
-    // eslint-disable-next-line
-  }, []);
-
   function currentTime() {
     const date = new Date();
     let hours = date.getHours();
@@ -107,32 +86,18 @@ export default function ChatSection(props) {
     if (collectedText.trim() === "") {
       return ;
     }
-
-    const senderMessageElement = (
-      <label className = 'message flex justify-end my-1'>
-        <p className = 'whitespace-pre-line px-2 py-1 max-w-2/3 rounded-md bg-gray-200 text-gray-600'>
-          { collectedText }
-          <span className = 'flex justify-end text-[10px]'> { currentMsgTime } </span>
-        </p>
-        { deleteToggle ? <input type="checkbox" name="" id="" className='ml-3' /> : null }
-      </label>
-    );
-
-    console.log(collectedText);
     
     const sender = users.googleID;
     const receiver = props.secondPerson.ID;
-    socket.emit('chat-message', { collectedText, currentMsgTime, sender, receiver }, room);
-
-    let arr = [...elementArray];
-    arr.push(senderMessageElement);
-    setElementArray(arr);
-    console.log(arr)
+    let arr = [...elementArray, { collectedText, currentMsgTime, sender, receiver, room }];
+    props.setElementArray(arr);
     
     let emojiPanel = emojiPanelRef.current;
     if (emojiPanel.style.display === 'block') {
       emojiPanel.style.display = 'none';
     }
+
+    ws.send(JSON.stringify({ collectedText, currentMsgTime, sender, receiver, action: 'send' }));
   }
 
   function selectEmoji(event) {
@@ -156,47 +121,14 @@ export default function ChatSection(props) {
     }
   }
   
-  props.toggle === 'showChatSection' ? (socket.emit('join-room', room)) : (socket.emit('leave-room', room))
+  // props.toggle === 'showChatSection' ? (ws.send({ action: 'join', room })) : (ws.onclose = () => console.log("connection has been closed"));
 
   return (
     <section className='m-2 w-[45rem] rounded overflow-hidden flex flex-wrap content-between bg-violet-50'>
       <ChatBar deleteToggle={deleteToggle} setDeleteToggle={setDeleteToggle} selectMessage={selectMessage} setToggle={props.setToggle} secondPerson={props.secondPerson} />
-      <div id='messageSection' className='px-10 w-[46.7%] max-h-[75.5%] overflow-y-scroll absolute bottom-[6rem]'>
-        {/* <div> {
-          // eslint-disable-next-line
-          chat ? chat.chatMsg.map((element) => {
-            keyValue++;
-            if (element.sender === users.googleID) {
-              return (
-                <label key={ keyValue } className = 'message flex justify-end my-1'>
-                  <p className = 'whitespace-pre-line px-2 py-1 max-w-2/3 rounded-md bg-gray-200 text-gray-600'>
-                    { element.collectedText }
-                    <span className = 'flex justify-end text-[10px]'> { element.currentMsgTime } </span>
-                  </p>
-                  <input type="checkbox" name="" id="" className='ml-3 hidden' />
-                </label>
-              );
-            }
-
-            return (
-              <label key={ keyValue } className = 'message flex justify-start my-1'>
-                <input type="checkbox" name="" id="" className='mr-3 hidden' />
-                <p className = 'whitespace-pre-line px-2 py-1 rounded-md text-white bg-violet-500'>
-                  { element.collectedText }
-                  <span className = 'flex justify-end text-[10px] text-white'> { element.currentMsgTime } </span>
-                </p>
-              </label>
-            );
-          }) : null
-        } </div> */}
-
-        { 
-          // eslint-disable-next-line
-          elementArray.map((element) => {
-            keyValue++;
-            return <div key={keyValue}>{ element }</div>
-          }) 
-        }
+      <div id='messageSection' ref={messageSectionRef} className='px-10 w-[46.7%] max-h-[75.5%] overflow-y-scroll absolute bottom-[6rem]'>
+        {/* { chat ? <Message elementArray={chat.chatMsg} deleteToggle={deleteToggle} googleID={users.googleID} /> : null } */}
+        <Message elementArray={elementArray} deleteToggle={deleteToggle} googleID={users.googleID} />
       </div>
 
       <div className='m-3 p-2 w-full h-14 flex rounded-full bg-white'>

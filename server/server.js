@@ -1,7 +1,7 @@
 const express = require('express');
 const http = require('http');
 const passport = require('passport');
-const { Server } = require('socket.io');
+const { WebSocketServer } = require('ws');
 const { MongoClient } = require('mongodb');
 const MongoStore = require('connect-mongo');
 const cors = require('cors');
@@ -13,11 +13,7 @@ const app = express();
 const server = http.createServer(app);
 const uri = 'mongodb://127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+1.6.2';
 const client = new MongoClient(uri);
-const io = new Server(server, {
-    cors: {
-        origin: [ 'http://localhost:3000' ],
-    }
-});
+const wss = new WebSocketServer({ server });
 
 // app.user(session(secret: 'anything') app.use(passport.initialize()) app.use(passport.session()) should be one after another 
 app.use(
@@ -56,34 +52,41 @@ const authCheck = (req, res, next) => {
 
 app.use('/', authCheck, indexRouter);
 
-io.on('connection', (socket) => {
-    console.log(socket.id);
+async function main(room, message) {
+    try {
+        await client.connect();
+        await client.db('chat-app').collection('chats').updateOne( { chatID: room }, { $push: { chatMsg: message } }, { $set: { chatID: room }, upsert: true } );
+    } catch (e) {
+        console.error(e);
+    } finally {
+        await client.close();
+    }
+}
 
-    socket.on('chat-message', (message, room) => {
-        if (room !== '') {
-            async function main() {
-                try {
-                    await client.connect();
-                    await client.db('chat-app').collection('chats').updateOne( { chatID: room }, { $push: { chatMsg: message } }, { $set: { chatID: room }, upsert: true } );
-                } catch (e) {
-                    console.error(e);
-                } finally {
-                    await client.close();
-                }
-            }
-        
-            main().catch(console.error);
-            socket.broadcast.to(room).emit('receive-message', message);
+const rooms = {};
+wss.on('connection', (ws) => {
+    ws.onmessage = (event) => {
+        const data = JSON.parse(event.data);
+        const IDarray = [ data.sender, data.receiver ];
+        IDarray.sort();
+        const roomID = IDarray[0] + IDarray[1];
+
+        if (!rooms[roomID]) rooms[roomID] = [ws];
+        else {
+            let flag = true;
+            rooms[roomID].forEach((client) => {
+                if (client === ws) flag = false;
+            })
+
+            if (flag) rooms[roomID].push(ws);
         }
-    })
 
-    socket.on('join-room', (room) => {
-        socket.join(room);
-    })
+        rooms[roomID].forEach((client) => {
+            if (client !== ws) client.send(JSON.stringify(data));
+        })
 
-    socket.on('leave-room', (room) => {
-        socket.leave(room);
-    })
+        main(roomID, data).catch(console.error);
+    }
 })
 
 server.listen(5000, () => {

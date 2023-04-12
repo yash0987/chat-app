@@ -11,6 +11,9 @@ export default function HomePage() {
   const [secondPerson, setSecondPerson] = useState({});
   const [auth, setAuth] = useState( { authenticated: false, user: null, error: null } );
 
+  // const ws = new WebSocket('ws://localhost:5000');
+  // ws.onopen = () => console.log("connection has been established");
+
   useEffect(() => {
     async function checkAuth() {
       const response = await fetch('http://localhost:5000/user', {
@@ -42,18 +45,23 @@ export default function HomePage() {
         error: "Fail to authenticate"
       })
     });
-  }, [])
+  }, []);
   
+  let ws;
+  if (auth.authenticated) {
+    ws = new WebSocket('ws://localhost:5000');
+    ws.onopen = () => console.log("connection has been established");
+  }
 
   return (
     <>
       { 
-        auth.authenticated ? 
+        auth.authenticated ?
         (<CurrentUserContext>
           <div className='p-2 flex justify-center rounded bg-violet-100'>
             {
               toggle === 'showSearch' ? <SearchSection /> : 
-              toggle === 'showChatSection' ? <ChatSection secondPerson={secondPerson} toggle={toggle} setToggle={setToggle} /> :
+              toggle === 'showChatSection' ? <ChatSection secondPerson={secondPerson} toggle={toggle} setToggle={setToggle} ws={ws} /> :
               toggle === 'showProfile' ? <Profile setToggle={setToggle} secondPerson={secondPerson} /> : 
               <CreateGroup setToggle={setToggle} />
             }
