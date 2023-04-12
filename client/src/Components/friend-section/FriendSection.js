@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import LogoutBar from './LogoutBar';
-import FriendRequests from './Friend Requests/FriendRequests';
-import GroupSection from './Groups/GroupSection';
-import AllFriendsSection from './All friends/AllFriendsSection';
+import FriendRequests from './friend-requests/FriendRequests';
+import GroupSection from './groups/GroupSection';
+import AllFriendsSection from './all-friends/AllFriendsSection';
 
 export default function FriendList(props) {  
   const [block, setBlock] = useState(1);

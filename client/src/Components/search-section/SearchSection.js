@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { CurrentUser } from '../../Context/CurrentUserContext';
+import { CurrentUser } from '../../context/CurrentUserContext';
 
 export default function SearchSection() {
   const users = CurrentUser();

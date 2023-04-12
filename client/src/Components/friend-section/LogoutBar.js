@@ -1,5 +1,5 @@
 import React from 'react'
-import { CurrentUser } from '../../Context/CurrentUserContext';
+import { CurrentUser } from '../../context/CurrentUserContext';
 
 export default function LogoutBar() {
   function logoutFromGoogle() {

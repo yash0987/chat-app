@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
-import { CurrentUser } from './../Context/CurrentUserContext';
-import left_arrow from './../Img/left-arrow.png';
-import right_arrow from './../Img/right-arrow.png';
+import { CurrentUser } from './../context/CurrentUserContext';
+import left_arrow from './../img/left-arrow.png';
+import right_arrow from './../img/right-arrow.png';
 
 export default function CreateGroup(props) {
   const chibiPhotos = [

@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import EmojiPicker from 'emoji-picker-react';
-import emoji from './../../Img/emoji.png';
-import { CurrentUser } from '../../Context/CurrentUserContext';
+import emoji from './../../img/emoji.png';
+import { CurrentUser } from '../../context/CurrentUserContext';
 import ChatBar from './ChatBar';
-import sendMessageBtn from './../../Img/sendMessageBtn.png';
+import sendMessageBtn from './../../img/sendMessageBtn.png';
 import Message from './Message';
 
 export default function ChatSection(props) {
@@ -90,7 +90,7 @@ export default function ChatSection(props) {
     const sender = users.googleID;
     const receiver = props.secondPerson.ID;
     let arr = [...elementArray, { collectedText, currentMsgTime, sender, receiver, room }];
-    props.setElementArray(arr);
+    setElementArray(arr);
     
     let emojiPanel = emojiPanelRef.current;
     if (emojiPanel.style.display === 'block') {

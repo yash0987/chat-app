@@ -23,7 +23,7 @@ export default function Receive(props) {
   }
 
   async function declineFriendRequest(event) {
-    let targetedElement = event.target.parentElement.parentElement.previousElementSibling;
+    let targetedElement = event.target.parentElement.previousElementSibling;
     const ID = targetedElement.lastElementChild.lastElementChild.textContent;
     const fullName = targetedElement.lastElementChild.firstElementChild.textContent;
     const photoURL = targetedElement.firstElementChild.firstElementChild.getAttribute('src');

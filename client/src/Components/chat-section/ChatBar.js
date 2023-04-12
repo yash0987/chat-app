@@ -1,9 +1,9 @@
 import React, { useRef } from 'react';
-import backButton from './../../Img/backButton.png';
-import menu from './../../Img/menu.png';
-import trash from './../../Img/trash.png';
-import star from './../../Img/star.png';
-import close from './../../Img/close.png';
+import backButton from './../../img/backButton.png';
+import menu from './../../img/menu.png';
+import trash from './../../img/trash.png';
+import star from './../../img/star.png';
+import close from './../../img/close.png';
 
 export default function ChatBar(props) {
   const dropboxRef = useRef(null);

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import FriendSection from './FriendSection/FriendSection';
-import ChatSection from './ChatSection/ChatSection';
-import SearchSection from './SearchSection/SearchSection';
-import CurrentUserContext from './../Context/CurrentUserContext';
+import FriendSection from './friend-section/FriendSection';
+import ChatSection from './chat-section/ChatSection';
+import SearchSection from './search-section/SearchSection';
+import CurrentUserContext from './../context/CurrentUserContext';
 import CreateGroup from './CreateGroup';
 import Profile from './Profile';
 

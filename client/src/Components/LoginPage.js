@@ -1,5 +1,5 @@
 import React from 'react'
-import googleIcon from './../Img/google-icon.png';
+import googleIcon from './../img/google-icon.png';
 
 export default function LoginPage() {
   function loginWithGoogle() {
