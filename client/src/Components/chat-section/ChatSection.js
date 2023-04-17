@@ -1,17 +1,19 @@
 import React, { useState, useEffect, useRef } from 'react';
 import EmojiPicker from 'emoji-picker-react';
+import { useDispatch, useSelector } from 'react-redux';
 import emoji from './../../img/emoji.png';
 import { CurrentUser } from '../../context/CurrentUserContext';
 import ChatBar from './ChatBar';
 import sendMessageBtn from './../../img/sendMessageBtn.png';
 import Message from './Message';
+import { prependChat, appendChat } from '../../features/chat-slice/chatSlice';
 
 export default function ChatSection(props) {
   const ws = props.ws;
+  const chat = useSelector(state => state.chat);
+  const dispatch = useDispatch();
   const users = CurrentUser();
-  const [chat, setChat] = useState(null);
   const [deleteToggle, setDeleteToggle] = useState(false);
-  const [elementArray, setElementArray] = useState([]);
   const messageBoxRef = useRef(null);
   const emojiPanelRef = useRef(null);
   const messageSectionRef = useRef(null);
@@ -19,17 +21,10 @@ export default function ChatSection(props) {
   let IDarray = [ props.secondPerson.ID, users.googleID ];
   IDarray.sort();
   let room = IDarray[0] + IDarray[1];
-  
-  // const ws = new WebSocket('ws://localhost:5000');
-  // ws.onopen = () => {
-  //   console.log("connection has been established");
-  // }
 
   ws.onmessage = (event) => {
     const message = JSON.parse(event.data);
-
-    let arr = [...elementArray, message];
-    setElementArray(arr);
+    dispatch(appendChat([message]))
   }
 
   async function getChat() {
@@ -50,10 +45,10 @@ export default function ChatSection(props) {
   function reloadchat() {
     getChat().then((data) => {
       if (chat === null) {
-        setChat(data);
+        dispatch(prependChat(data.chatMsg));
       }
       else if (chat.chatID !== data.chatID) {
-        setChat(data);
+        dispatch(prependChat(data.chatMsg));
       }
     })
   }
@@ -63,8 +58,7 @@ export default function ChatSection(props) {
   }
 
   useEffect(() => {
-    // reloadchat();
-    // setElementArray([]);
+    reloadchat();
     // eslint-disable-next-line
   }, [room]);
 
@@ -89,8 +83,7 @@ export default function ChatSection(props) {
     
     const sender = users.googleID;
     const receiver = props.secondPerson.ID;
-    let arr = [...elementArray, { collectedText, currentMsgTime, sender, receiver, room }];
-    setElementArray(arr);
+    dispatch(appendChat([{ collectedText, currentMsgTime, sender, receiver }]));
     
     let emojiPanel = emojiPanelRef.current;
     if (emojiPanel.style.display === 'block') {
@@ -108,7 +101,6 @@ export default function ChatSection(props) {
     let text = messageBoxRef.current.value;
     text += emoji;
     messageBoxRef.current.value = text;
-    console.log(emoji);
   }
 
   function openEmojiPanel() {
@@ -120,6 +112,9 @@ export default function ChatSection(props) {
       emojiPanel.style.display = 'none';
     }
   }
+
+  console.log("this is redux");
+  console.log(chat);
   
   // props.toggle === 'showChatSection' ? (ws.send({ action: 'join', room })) : (ws.onclose = () => console.log("connection has been closed"));
 
@@ -127,8 +122,7 @@ export default function ChatSection(props) {
     <section className='m-2 w-[45rem] rounded overflow-hidden flex flex-wrap content-between bg-violet-50'>
       <ChatBar deleteToggle={deleteToggle} setDeleteToggle={setDeleteToggle} selectMessage={selectMessage} setToggle={props.setToggle} secondPerson={props.secondPerson} />
       <div id='messageSection' ref={messageSectionRef} className='px-10 w-[46.7%] max-h-[75.5%] overflow-y-scroll absolute bottom-[6rem]'>
-        {/* { chat ? <Message elementArray={chat.chatMsg} deleteToggle={deleteToggle} googleID={users.googleID} /> : null } */}
-        <Message elementArray={elementArray} deleteToggle={deleteToggle} googleID={users.googleID} />
+        <Message elementArray={chat.value} deleteToggle={deleteToggle} googleID={users.googleID} />
       </div>
 
       <div className='m-3 p-2 w-full h-14 flex rounded-full bg-white'>

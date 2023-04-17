@@ -1,12 +1,17 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
+import { emptyChat } from './../../../features/chat-slice/chatSlice';
 
 export default function Friend(props) {
+  const dispatch = useDispatch();
+
   function openChat(event) {
     const ID = event.target.parentElement.previousElementSibling.lastElementChild.lastElementChild.textContent;
     const fullName = event.target.parentElement.previousElementSibling.lastElementChild.firstElementChild.textContent;
     const photoURL = event.target.parentElement.previousElementSibling.firstElementChild.getAttribute('src');
-    props.setSecondPerson( { ID, fullName, photoURL } )
+    props.setSecondPerson( { ID, fullName, photoURL } );
     props.setToggle('showChatSection');
+    dispatch(emptyChat());
   }
 
   return (

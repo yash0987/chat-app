@@ -75,7 +75,7 @@ wss.on('connection', (ws) => {
         else {
             let flag = true;
             rooms[roomID].forEach((client) => {
-                if (client === ws) flag = false;
+                if (JSON.stringify(client) === JSON.stringify(ws)) flag = false;
             })
 
             if (flag) rooms[roomID].push(ws);
@@ -86,6 +86,7 @@ wss.on('connection', (ws) => {
         })
 
         main(roomID, data).catch(console.error);
+        console.log(ws);
     }
 })
 
