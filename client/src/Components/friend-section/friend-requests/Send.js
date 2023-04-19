@@ -6,7 +6,6 @@ export default function Send(props) {
     const ID = targetedElement.lastElementChild.lastElementChild.textContent;
     const fullName = targetedElement.lastElementChild.firstElementChild.textContent;
     const photoURL = targetedElement.firstElementChild.firstElementChild.getAttribute('src');
-    console.log(targetedElement.firstElementChild);
     event.target.parentElement.parentElement.remove();
     
     const response = await fetch(`http://localhost:5000/cancelRequest?ID=${ID}&fullName=${fullName}&photoURL=${photoURL}`, {
@@ -23,7 +22,7 @@ export default function Send(props) {
     console.log(data);
   }
 
-  console.log('this is lenght of string' + props.friendInfo.fullName.length);
+  console.log('this is length of string' + props.friendInfo.fullName.length);
 
   return (
     <section className='flex justify-between mx-1 px-6 py-2 rounded-lg hover:bg-violet-100'>

@@ -121,6 +121,35 @@ router.put('/acceptRequest', (req, res) => {
     res.json( { success: 'Friend request is accepted' } );
 })
 
+router.delete('/declineRequest', (req, res) => {
+    const friendData = {
+        googleID: req.query.ID,
+        fullName: req.query.fullName,
+        photoURL: req.query.photoURL
+    };
+
+    const userData = {
+        googleID: req.user.googleID,
+        fullName: `${req.user.firstName} ${req.user.familyName}`,
+        photoURL: req.user.photoURL
+    };
+
+    async function main() {
+        try {
+            await client.connect();
+            await client.db('chat-app').collection('userDetails').updateOne( { googleID: req.user.googleID }, { $pull: { receiveRequestID: friendData } } );
+            await client.db('chat-app').collection('userDetails').updateOne( { googleID: req.query.ID }, { $pull: { sendRequestID: userData } } );
+        } catch (e) {
+            console.error(e);
+        } finally {
+            await client.close();
+        }
+    }
+
+    main().catch(console.error);
+    res.json( { success: 'Friend request is cancel' } );
+});
+
 router.get('/friend/:ID', (req, res) => {
     const ID = req.params.ID;
 

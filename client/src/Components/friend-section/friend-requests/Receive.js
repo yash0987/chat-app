@@ -29,7 +29,7 @@ export default function Receive(props) {
     const photoURL = targetedElement.firstElementChild.firstElementChild.getAttribute('src');
     event.target.parentElement.parentElement.remove();
     
-    const response = await fetch(`http://localhost:5000/cancelRequest?ID=${ID}&fullName=${fullName}&photoURL=${photoURL}`, {
+    const response = await fetch(`http://localhost:5000/declineRequest?ID=${ID}&fullName=${fullName}&photoURL=${photoURL}`, {
       method: 'DELETE',
       credentials: 'include',
       headers: {
