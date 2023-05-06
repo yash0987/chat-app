@@ -38,7 +38,7 @@ export default function FriendList(props) {
       </div>
       <div>
         {
-          block === 1 ? (<AllFriendsSection setSecondPerson={props.setSecondPerson} setToggle={props.setToggle} />) :
+          block === 1 ? (<AllFriendsSection setOldChatPerson={props.setOldChatPerson} secondPerson={props.secondPerson} setSecondPerson={props.setSecondPerson} setToggle={props.setToggle} />) :
           block === 2 ? (<GroupSection setToggle={props.setToggle} />) : (<FriendRequests />)
         }
       </div>

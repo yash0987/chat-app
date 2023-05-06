@@ -9,10 +9,8 @@ import Profile from './Profile';
 export default function HomePage() {
   const [toggle, setToggle] = useState('showSearch');
   const [secondPerson, setSecondPerson] = useState({});
+  const [oldChatPerson, setOldChatPerson] = useState({});
   const [auth, setAuth] = useState( { authenticated: false, user: null, error: null } );
-
-  // const ws = new WebSocket('ws://localhost:5000');
-  // ws.onopen = () => console.log("connection has been established");
 
   useEffect(() => {
     async function checkAuth() {
@@ -31,7 +29,6 @@ export default function HomePage() {
     }
 
     checkAuth().then((data) => {
-      console.log(data);
       setAuth({
         authenticated: true,
         user: data,
@@ -46,12 +43,6 @@ export default function HomePage() {
       })
     });
   }, []);
-  
-  let ws;
-  if (auth.authenticated) {
-    ws = new WebSocket('ws://localhost:5000');
-    ws.onopen = () => console.log("connection has been established");
-  }
 
   return (
     <>
@@ -61,11 +52,11 @@ export default function HomePage() {
           <div className='p-2 flex justify-center rounded bg-violet-100'>
             {
               toggle === 'showSearch' ? <SearchSection /> : 
-              toggle === 'showChatSection' ? <ChatSection secondPerson={secondPerson} toggle={toggle} setToggle={setToggle} ws={ws} /> :
+              toggle === 'showChatSection' ? <ChatSection oldChatPerson={oldChatPerson} secondPerson={secondPerson} toggle={toggle} setToggle={setToggle} /> :
               toggle === 'showProfile' ? <Profile setToggle={setToggle} secondPerson={secondPerson} /> : 
               <CreateGroup setToggle={setToggle} />
             }
-            <FriendSection setSecondPerson={setSecondPerson} setToggle={setToggle} />
+            <FriendSection setOldChatPerson={setOldChatPerson} setSecondPerson={setSecondPerson} secondPerson={secondPerson} setToggle={setToggle} />
           </div>
         </CurrentUserContext>) : null
       }

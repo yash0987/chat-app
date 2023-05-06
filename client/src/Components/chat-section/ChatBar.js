@@ -1,15 +1,22 @@
 import React, { useRef } from 'react';
+import { useDispatch } from 'react-redux';
 import backButton from './../../img/backButton.png';
 import menu from './../../img/menu.png';
 import trash from './../../img/trash.png';
 import star from './../../img/star.png';
 import close from './../../img/close.png';
+import { CurrentUser } from './../../context/CurrentUserContext';
+import { emptyChat } from './../../features/chat-slice/chatSlice';
 
 export default function ChatBar(props) {
+  const users = CurrentUser();
   const dropboxRef = useRef(null);
+  const dispatch = useDispatch();
 
   function closeChat() {
     props.setToggle('showSearch');
+    props.ws.send(JSON.stringify({ action: 'leave', sender: users.googleID, receiver: props.secondPerson.ID }));
+    dispatch(emptyChat());
   }
 
   function openProfile() {

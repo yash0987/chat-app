@@ -64,29 +64,60 @@ async function main(room, message) {
 }
 
 const rooms = {};
+
+function join(data, roomID, ws) {
+    const oldIDarray = [ data.sender, data.oldReceiver ];
+    oldIDarray.sort();
+    const oldRoomID = oldIDarray[0] + oldIDarray[1];
+    leave(data, oldRoomID);
+    
+    console.log("Joining");
+    ws['googleID'] = data.sender;
+    if (!rooms[roomID]) {
+        rooms[roomID] = [ws];
+    }
+
+    let flag = true;
+    rooms[roomID].forEach((client) => {
+        if (client.googleID === data.sender) flag = false;
+    })
+
+    if (flag) {
+        rooms[roomID].push(ws);
+    }
+}
+
+
+function leave(data, roomID) {
+    console.log("i am leaving")
+    if (!rooms[roomID]) {
+        return ;
+    }
+    rooms[roomID] = rooms[roomID].filter((client) => client.googleID !== data.sender);
+}
+
+function send(data, roomID) {
+    console.log("Sending " + roomID);
+    rooms[roomID].forEach((client) => {
+        if (client.googleID !== data.sender) {
+            client.send(JSON.stringify(data));
+        }
+    })
+
+    main(roomID, data).catch(console.error);
+}
+
 wss.on('connection', (ws) => {
     ws.onmessage = (event) => {
         const data = JSON.parse(event.data);
         const IDarray = [ data.sender, data.receiver ];
         IDarray.sort();
         const roomID = IDarray[0] + IDarray[1];
+        console.log(data);
 
-        if (!rooms[roomID]) rooms[roomID] = [ws];
-        else {
-            let flag = true;
-            rooms[roomID].forEach((client) => {
-                if (JSON.stringify(client) === JSON.stringify(ws)) flag = false;
-            })
-
-            if (flag) rooms[roomID].push(ws);
-        }
-
-        rooms[roomID].forEach((client) => {
-            if (client !== ws) client.send(JSON.stringify(data));
-        })
-
-        main(roomID, data).catch(console.error);
-        console.log(ws);
+        if (data.action === 'join') join(data, roomID, ws);
+        else if (data.action === 'leave') leave(data, roomID);
+        else if (data.action === 'send') send(data, roomID);
     }
 })
 

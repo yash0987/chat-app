@@ -48,8 +48,8 @@ export default function CreateGroup(props) {
   }
 
   function createGroup() {
-    const groupID = inputRef.current.firstElementChild.value;
-    const groupName = inputRef.current.lastElementChild.value;
+    const groupName = inputRef.current.firstElementChild.value;
+    const groupID = inputRef.current.lastElementChild.value;
     const groupPhotoURL = imageRef.current.src;
 
     console.log(groupID, groupName, groupPhotoURL);

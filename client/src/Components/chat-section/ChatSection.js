@@ -9,7 +9,6 @@ import Message from './Message';
 import { prependChat, appendChat } from '../../features/chat-slice/chatSlice';
 
 export default function ChatSection(props) {
-  const ws = props.ws;
   const chat = useSelector(state => state.chat);
   const dispatch = useDispatch();
   const users = CurrentUser();
@@ -17,14 +16,28 @@ export default function ChatSection(props) {
   const messageBoxRef = useRef(null);
   const emojiPanelRef = useRef(null);
   const messageSectionRef = useRef(null);
+  const scroll = useRef(null);
   
   let IDarray = [ props.secondPerson.ID, users.googleID ];
   IDarray.sort();
   let room = IDarray[0] + IDarray[1];
+  console.log(room);
 
+  const ws = new WebSocket('ws://localhost:5000');
+
+  useEffect(() => {
+    ws.onopen = () => {
+      console.log("connection has been established");
+      ws.send(JSON.stringify({ action: 'join', sender: users.googleID, receiver: props.secondPerson.ID, oldReceiver: props.oldChatPerson.ID }));
+    }
+    // eslint-disable-next-line
+  }, [room]);
+  
   ws.onmessage = (event) => {
     const message = JSON.parse(event.data);
-    dispatch(appendChat([message]))
+    console.log(message);
+    console.log("I am receiving")
+    dispatch(appendChat([message]));
   }
 
   async function getChat() {
@@ -44,24 +57,23 @@ export default function ChatSection(props) {
 
   function reloadchat() {
     getChat().then((data) => {
-      if (chat === null) {
-        dispatch(prependChat(data.chatMsg));
-      }
-      else if (chat.chatID !== data.chatID) {
-        dispatch(prependChat(data.chatMsg));
-      }
+      dispatch(prependChat(data.chatMsg));
     })
   }
 
   function selectMessage() {
     setDeleteToggle(true);
   }
-
+  
   useEffect(() => {
     reloadchat();
     // eslint-disable-next-line
   }, [room]);
 
+  useEffect(() => {
+    scroll.current.scrollIntoView( { behavior: 'smooth' } );
+  }, [chat.value.length])
+  
   function currentTime() {
     const date = new Date();
     let hours = date.getHours();
@@ -113,28 +125,24 @@ export default function ChatSection(props) {
     }
   }
 
-  console.log("this is redux");
-  console.log(chat);
-  
-  // props.toggle === 'showChatSection' ? (ws.send({ action: 'join', room })) : (ws.onclose = () => console.log("connection has been closed"));
-
   return (
     <section className='m-2 w-[45rem] rounded overflow-hidden flex flex-wrap content-between bg-violet-50'>
-      <ChatBar deleteToggle={deleteToggle} setDeleteToggle={setDeleteToggle} selectMessage={selectMessage} setToggle={props.setToggle} secondPerson={props.secondPerson} />
+      <ChatBar deleteToggle={deleteToggle} setDeleteToggle={setDeleteToggle} selectMessage={selectMessage} setToggle={props.setToggle} secondPerson={props.secondPerson} ws={props.ws} />
       <div id='messageSection' ref={messageSectionRef} className='px-10 w-[46.7%] max-h-[75.5%] overflow-y-scroll absolute bottom-[6rem]'>
         <Message elementArray={chat.value} deleteToggle={deleteToggle} googleID={users.googleID} />
+        <div ref={ scroll }></div>
       </div>
 
       <div className='m-3 p-2 w-full h-14 flex rounded-full bg-white'>
-        <img onClick={ openEmojiPanel } src={emoji} alt="" className='w-11 p-2 rounded-full hover:bg-violet-200' />
+        <img onClick={openEmojiPanel} src={emoji} alt="" className='w-11 p-2 rounded-full hover:bg-violet-200' />
         <textarea cols="0" rows="0" ref={messageBoxRef} placeholder='Type a message...' className='p-[6px] w-full resize-none focus:outline-none placeholder:text-violet-400'></textarea>
-        <button onClick={ displayMessage }>
+        <button onClick={displayMessage}>
           <img src={ sendMessageBtn } alt="" className='w-12 rounded-full bg-violet-400 hover:bg-violet-500' />
         </button>
       </div>
 
       <div ref={emojiPanelRef} className='absolute bottom-24' style={{display: 'none'}}>
-        <EmojiPicker width={720} height={350} previewConfig={ { showPreview: false } } skinTonePickerLocation="SEARCH" onEmojiClick={ selectEmoji } />
+        <EmojiPicker width={720} height={350} previewConfig={{showPreview: false}} skinTonePickerLocation="SEARCH" onEmojiClick={selectEmoji} />
       </div>
     </section>
   )

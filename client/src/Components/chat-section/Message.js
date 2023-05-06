@@ -18,7 +18,7 @@ export default function Message(props) {
           }
           
           return (
-            <label className = 'message flex justify-start my-1'>
+            <label key={props.keyValue} className = 'message flex justify-start my-1'>
               { props.deleteToggle ? <input type="checkbox" name="" id="" className='ml-3' /> : null }
               <p className = 'whitespace-pre-line px-2 py-1 rounded-md text-white bg-violet-500'>
                 { element.collectedText }
