@@ -17,6 +17,11 @@ export default function SearchSection() {
       return ;
     }
 
+    if (users.googleID === ID) {
+      console.log(`You cannot send request to yourself`);
+      return ;
+    }
+
     const response = await fetch(`http://localhost:5000/add/friend?ID=${ID}&fullName=${name}&photoURL=${ImgURL}`, {
         method: 'POST',
         credentials: 'include',
