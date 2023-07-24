@@ -5,8 +5,8 @@ import emoji from './../../img/emoji.png';
 import { CurrentUser } from '../../context/CurrentUserContext';
 import ChatBar from './ChatBar';
 import sendMessageBtn from './../../img/sendMessageBtn.png';
-import Message from './Message';
-import { prependChat, appendChat } from '../../features/chat-slice/chatSlice';
+import Messages from './Messages';
+import { prependChat, appendChat, updateChat } from '../../features/chat-slice/chatSlice';
 
 export default function ChatSection(props) {
   const chat = useSelector(state => state.chat);
@@ -60,10 +60,6 @@ export default function ChatSection(props) {
       dispatch(prependChat(data.chatMsg));
     })
   }
-
-  function selectMessage() {
-    setDeleteToggle(true);
-  }
   
   useEffect(() => {
     reloadchat();
@@ -73,16 +69,21 @@ export default function ChatSection(props) {
   useEffect(() => {
     scroll.current.scrollIntoView( { behavior: 'smooth' } );
   }, [chat.value.length])
+
+  const weekDays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
   
   function currentTime() {
     const date = new Date();
-    let hours = date.getHours();
-    let minutes = date.getMinutes();
+    let day = date.getDay();
+    let dd = date.getDate(), mm = date.getMonth(), yy = date.getFullYear();
+    let hours = date.getHours(), minutes = date.getMinutes();
+    
     let ampm = hours >= 12 ? 'pm' : 'am';
     hours = hours % 12;
     hours = hours ? hours : 12;
     minutes = minutes < 10 ? '0'+ minutes : minutes;
-    let strTime = hours + ':' + minutes + ' ' + ampm;
+    let strTime = `${weekDays[day]}, ${dd} ${months[mm]} ${yy} ${hours}:${minutes} ${ampm}`;
     return strTime;
   }
 
@@ -95,14 +96,15 @@ export default function ChatSection(props) {
     
     const sender = users.googleID;
     const receiver = props.secondPerson.ID;
-    dispatch(appendChat([{ collectedText, currentMsgTime, sender, receiver }]));
+    const messageID = sender + Date.now();
+    dispatch(appendChat([{ messageID, collectedText, currentMsgTime, sender, receiver }]));
     
     let emojiPanel = emojiPanelRef.current;
     if (emojiPanel.style.display === 'block') {
       emojiPanel.style.display = 'none';
     }
 
-    ws.send(JSON.stringify({ collectedText, currentMsgTime, sender, receiver, action: 'send' }));
+    ws.send(JSON.stringify({ messageID, collectedText, currentMsgTime, sender, receiver, deleteMsg: [], action: 'send' }));
   }
 
   function selectEmoji(event) {
@@ -125,11 +127,37 @@ export default function ChatSection(props) {
     }
   }
 
+  const selectedMessageArray = [];
+  async function deleteMessages() {
+    let remainingMessages = chat.value;
+    selectedMessageArray.forEach((elementToRemove) => {
+      remainingMessages = remainingMessages.filter((element) => element.messageID !== elementToRemove);
+    })
+    dispatch(updateChat(remainingMessages))
+    setDeleteToggle(false);
+    
+    selectedMessageArray.sort();
+    const response = await fetch(`http://localhost:5000/delete/messages?selectedMessages=${JSON.stringify(selectedMessageArray)}&ID=${room}`, {
+      method: 'DELETE',
+      credentials: "include",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Credentials": true
+      }
+    });
+
+    const data = await response.json();
+    console.log(data);
+    console.log(remainingMessages);
+    console.log(selectedMessageArray)
+  }
+
   return (
     <section className='m-2 w-[45rem] rounded overflow-hidden flex flex-wrap content-between bg-violet-50'>
-      <ChatBar deleteToggle={deleteToggle} setDeleteToggle={setDeleteToggle} selectMessage={selectMessage} setToggle={props.setToggle} secondPerson={props.secondPerson} ws={props.ws} />
+      <ChatBar deleteToggle={deleteToggle} setDeleteToggle={setDeleteToggle} deleteMessages={deleteMessages} setToggle={props.setToggle} secondPerson={props.secondPerson} ws={props.ws} />
       <div id='messageSection' ref={messageSectionRef} className='px-10 w-[46.7%] max-h-[75.5%] overflow-y-scroll absolute bottom-[6rem]'>
-        <Message elementArray={chat.value} deleteToggle={deleteToggle} googleID={users.googleID} />
+        <Messages elementArray={chat.value} deleteToggle={deleteToggle} googleID={users.googleID} selectedMessageArray={selectedMessageArray} />
         <div ref={ scroll }></div>
       </div>
 

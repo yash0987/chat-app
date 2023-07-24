@@ -13,11 +13,14 @@ export const chatSlice = createSlice({
         appendChat: (state, action) => {
             state.value = [...state.value, ...action.payload];
         },
+        updateChat: (state, action) => {
+            state.value = [...action.payload];
+        },
         emptyChat: (state) => {
             state.value = [];
         }
     }
 })
 
-export const { prependChat, appendChat, emptyChat } = chatSlice.actions;
+export const { prependChat, appendChat, updateChat, emptyChat } = chatSlice.actions;
 export default chatSlice.reducer;

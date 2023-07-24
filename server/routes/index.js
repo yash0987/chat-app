@@ -1,5 +1,5 @@
 const express = require('express');
-const { MongoClient, MongoInvalidArgumentError } = require('mongodb');
+const { MongoClient } = require('mongodb');
 
 const router = express.Router();
 const uri = 'mongodb://127.0.0.1:27017/';
@@ -284,7 +284,40 @@ router.get('/chat/data', (req, res) => {
         try {
             await client.connect();
             const cursor = await client.db('chat-app').collection('chats').findOne( { chatID: req.query.ID } );
+            const chatMsg = cursor.chatMsg.filter((element) => {
+                if (element.deleteMsg.indexOf(req.user.googleID) === -1) {
+                    return element;
+                }
+            })
+
+            cursor.chatMsg = chatMsg;
             res.json(cursor);
+        } catch (e) {
+            console.error(e);
+        } finally {
+            await client.close();
+        }
+    }
+
+    main().catch(console.error);
+})
+
+router.delete('/delete/messages', (req, res) => {
+    const selectedMessages = JSON.parse(req.query.selectedMessages);
+    async function main() {
+        try {
+            await client.connect();
+            const cursor = await client.db('chat-app').collection('chats').findOne( { chatID: req.query.ID } );
+            let i = 0;
+            const updatedMessagesArray = cursor.chatMsg.map((element) => {
+                if (element.messageID === selectedMessages[i]) {
+                    element.deleteMsg.push(req.user.googleID);
+                    i++;
+                }
+                return element;
+            })
+            await client.db('chat-app').collection('chats').updateOne( { chatID: req.query.ID }, { $set: { chatMsg: updatedMessagesArray } } );
+            res.json({ success: 'messages has been deleted' });
         } catch (e) {
             console.error(e);
         } finally {
