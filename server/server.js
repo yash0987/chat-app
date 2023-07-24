@@ -1,3 +1,4 @@
+'use strict'
 const express = require('express');
 const http = require('http');
 const passport = require('passport');
@@ -66,20 +67,18 @@ async function main(room, message) {
 const rooms = {};
 
 function join(data, roomID, ws) {
-    const oldIDarray = [ data.sender, data.oldReceiver ];
-    oldIDarray.sort();
-    const oldRoomID = oldIDarray[0] + oldIDarray[1];
-    leave(data, oldRoomID);
-    
+    leave(ws);
     console.log("Joining");
-    ws['googleID'] = data.sender;
+    ws.senderGoogleID = data.sender;
+    ws.receiverGoogleID = data.receiver;
     if (!rooms[roomID]) {
         rooms[roomID] = [ws];
+        return ;
     }
 
     let flag = true;
     rooms[roomID].forEach((client) => {
-        if (client.googleID === data.sender) flag = false;
+        if (client.senderGoogleID === ws.senderGoogleID) flag = false;
     })
 
     if (flag) {
@@ -88,18 +87,20 @@ function join(data, roomID, ws) {
 }
 
 
-function leave(data, roomID) {
+function leave(ws) {
+    const IDarray = [ ws.senderGoogleID, ws.receiverGoogleID ];
+    IDarray.sort();
+    const roomID = IDarray[0] + IDarray[1];
     console.log("i am leaving")
-    if (!rooms[roomID]) {
-        return ;
-    }
-    rooms[roomID] = rooms[roomID].filter((client) => client.googleID !== data.sender);
+    if (!rooms[roomID]) return ;
+
+    rooms[roomID] = rooms[roomID].filter((client) => client.senderGoogleID !== ws.senderGoogleID);
 }
 
 function send(data, roomID) {
     console.log("Sending " + roomID);
     rooms[roomID].forEach((client) => {
-        if (client.googleID !== data.sender) {
+        if (client.senderGoogleID !== data.sender) {
             client.send(JSON.stringify(data));
         }
     })
@@ -116,7 +117,7 @@ wss.on('connection', (ws) => {
         console.log(data);
 
         if (data.action === 'join') join(data, roomID, ws);
-        else if (data.action === 'leave') leave(data, roomID);
+        else if (data.action === 'leave') leave(ws);
         else if (data.action === 'send') send(data, roomID);
     }
 })
