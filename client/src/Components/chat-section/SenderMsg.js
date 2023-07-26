@@ -19,7 +19,7 @@ export default function SenderMsg(props) {
   
   return (
     <section onClick={() => props.deleteToggle ? setSelectMessage(selectMessage ^ 1) : null } className = {`message ${selectAndUnselectMessage()} select-none rounded-md flex justify-end my-1 p-1`} data-person='sender'>
-      <p className = 'whitespace-pre-line px-2 py-1 max-w-2/3 rounded-md bg-gray-200 text-gray-600'>
+      <p className = 'whitespace-pre-wrap break-words px-2 py-1 max-w-xs rounded-md bg-gray-200 text-gray-600'>
         { props.element.collectedText }
         <span className = 'flex justify-end text-[10px]'> { props.element.currentMsgTime } </span>
       </p>

@@ -60,7 +60,7 @@ export default function ChatBar(props) {
 
       <ul ref={ dropboxRef } className='absolute top-[5rem] right-[42.7%] z-10 shadow-lg bg-white text-black' style={{ display: 'none' }}>
         <li onClick={ openProfile } className='px-4 py-2 hover:bg-violet-100'>Profile</li>
-        <li onClick={() => props.setDeleteToggle(true)} className='px-4 py-2 hover:bg-violet-100'>Delete message</li>
+        <li onClick={() => props.setDeleteToggle(true)} className='px-4 py-2 hover:bg-violet-100'>Select messages</li>
       </ul>
     </div>
   )
