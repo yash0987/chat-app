@@ -105,6 +105,8 @@ function send(data, roomID) {
         }
     })
 
+    data['deleteMsg'] = [];
+    data['star'] = [];
     main(roomID, data).catch(console.error);
 }
 

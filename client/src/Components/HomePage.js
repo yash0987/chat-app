@@ -10,6 +10,7 @@ export default function HomePage() {
   const [toggle, setToggle] = useState('showSearch');
   const [secondPerson, setSecondPerson] = useState({});
   const [oldChatPerson, setOldChatPerson] = useState({});
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [auth, setAuth] = useState( { authenticated: false, user: null, error: null } );
 
   useEffect(() => {
@@ -49,10 +50,10 @@ export default function HomePage() {
       { 
         auth.authenticated ?
         (<CurrentUserContext>
-          <div className='p-2 flex justify-center rounded bg-violet-100'>
+          <div className={`p-2 flex justify-center rounded bg-violet-100 ${showDeleteModal ? '' : ''}`}>
             {
               toggle === 'showSearch' ? <SearchSection /> : 
-              toggle === 'showChatSection' ? <ChatSection oldChatPerson={oldChatPerson} secondPerson={secondPerson} toggle={toggle} setToggle={setToggle} /> :
+              toggle === 'showChatSection' ? <ChatSection oldChatPerson={oldChatPerson} secondPerson={secondPerson} toggle={toggle} setToggle={setToggle} setShowDeleteModal={setShowDeleteModal} showDeleteModal={showDeleteModal} /> :
               toggle === 'showProfile' ? <Profile setToggle={setToggle} secondPerson={secondPerson} /> : 
               <CreateGroup setToggle={setToggle} />
             }

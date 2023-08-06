@@ -1,3 +1,4 @@
+'use strict';
 const express = require('express');
 const { MongoClient } = require('mongodb');
 
@@ -284,14 +285,20 @@ router.get('/chat/data', (req, res) => {
         try {
             await client.connect();
             const cursor = await client.db('chat-app').collection('chats').findOne( { chatID: req.query.ID } );
-            const chatMsg = cursor.chatMsg.filter((element) => {
-                if (element.deleteMsg.indexOf(req.user.googleID) === -1) {
-                    return element;
-                }
-            })
 
-            cursor.chatMsg = chatMsg;
-            res.json(cursor);
+            let chatMsg = cursor.chatMsg.filter((element) => element.deleteMsg.indexOf(req.user.googleID) === -1);
+            chatMsg = chatMsg.map((element) => {
+                const star = element.star.indexOf(req.user.googleID) !== -1;
+                return { 
+                    messageID: element.messageID,
+                    collectedText: element.collectedText,
+                    currentMsgTime: element.currentMsgTime,
+                    sender: element.sender,
+                    receiver: element.receiver,
+                    star
+                };
+            })
+            res.json(chatMsg);
         } catch (e) {
             console.error(e);
         } finally {
@@ -308,16 +315,47 @@ router.delete('/delete/messages', (req, res) => {
         try {
             await client.connect();
             const cursor = await client.db('chat-app').collection('chats').findOne( { chatID: req.query.ID } );
-            let i = 0;
-            const updatedMessagesArray = cursor.chatMsg.map((element) => {
-                if (element.messageID === selectedMessages[i]) {
-                    element.deleteMsg.push(req.user.googleID);
-                    i++;
-                }
-                return element;
-            })
+
+            let updatedMessagesArray = cursor.chatMsg;
+            selectedMessages.forEach((elementToRemove) => {
+                updatedMessagesArray = updatedMessagesArray.map((element) => {
+                    if (element.messageID === elementToRemove) element.deleteMsg.push(req.user.googleID);
+                    return element;
+                })
+            });
             await client.db('chat-app').collection('chats').updateOne( { chatID: req.query.ID }, { $set: { chatMsg: updatedMessagesArray } } );
             res.json({ success: 'messages has been deleted' });
+        } catch (e) {
+            console.error(e);
+        } finally {
+            await client.close();
+        }
+    }
+
+    main().catch(console.error);
+})
+
+router.put('/starAndunstar/messages', (req, res) => {
+    const selectedMessages = JSON.parse(req.query.selectedMessages);
+    async function main() {
+        try {
+            await client.connect();
+            const cursor = await client.db('chat-app').collection('chats').findOne( { chatID: req.query.ID } );
+
+            let updatedMessagesArray = cursor.chatMsg;
+            selectedMessages.forEach((elementToUpdate) => {
+                updatedMessagesArray.map((element) => {
+                    if (element.messageID === elementToUpdate && req.query.starStatus === 'true') {
+                        if (element.star.indexOf(req.user.googleID) === -1) element.star.push(req.user.googleID);
+                    }
+                    else if (element.messageID === elementToUpdate && req.query.starStatus !== 'true') {
+                        element.star  = element.star.filter((ID) => ID !== req.user.googleID);
+                    }
+                    return element;
+                })
+            })
+            await client.db('chat-app').collection('chats').updateOne( { chatID: req.query.ID }, { $set: { chatMsg: updatedMessagesArray } } );
+            res.json({ success: 'messages has been starred' });
         } catch (e) {
             console.error(e);
         } finally {
