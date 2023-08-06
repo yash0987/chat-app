@@ -6,6 +6,7 @@ import { CurrentUser } from '../../context/CurrentUserContext';
 import ChatBar from './ChatBar';
 import sendMessageBtn from './../../img/sendMessageBtn.png';
 import Messages from './Messages';
+import DeleteMessage from './../modal/DeleteMessage';
 import { prependChat, appendChat, updateChat } from '../../features/chat-slice/chatSlice';
 
 export default function ChatSection(props) {
@@ -13,6 +14,8 @@ export default function ChatSection(props) {
   const dispatch = useDispatch();
   const users = CurrentUser();
   const [deleteToggle, setDeleteToggle] = useState(false);
+  const [selectedMessageArray, setSelectedMessageArray] = useState([]);
+  const [star, setStar] = useState(0);
   const messageBoxRef = useRef(null);
   const emojiPanelRef = useRef(null);
   const messageSectionRef = useRef(null);
@@ -57,7 +60,7 @@ export default function ChatSection(props) {
 
   function reloadchat() {
     getChat().then((data) => {
-      dispatch(prependChat(data.chatMsg));
+      dispatch(prependChat(data));
     })
   }
   
@@ -97,14 +100,14 @@ export default function ChatSection(props) {
     const sender = users.googleID;
     const receiver = props.secondPerson.ID;
     const messageID = sender + Date.now();
-    dispatch(appendChat([{ messageID, collectedText, currentMsgTime, sender, receiver }]));
+    dispatch(appendChat([{ messageID, collectedText, currentMsgTime, sender, receiver, star: false }]));
     
     let emojiPanel = emojiPanelRef.current;
     if (emojiPanel.style.display === 'block') {
       emojiPanel.style.display = 'none';
     }
 
-    ws.send(JSON.stringify({ messageID, collectedText, currentMsgTime, sender, receiver, deleteMsg: [], action: 'send' }));
+    ws.send(JSON.stringify({ messageID, collectedText, currentMsgTime, sender, receiver, star: false, action: 'send' }));
   }
 
   function selectEmoji(event) {
@@ -127,13 +130,13 @@ export default function ChatSection(props) {
     }
   }
 
-  const selectedMessageArray = [];
   async function deleteMessages() {
     let remainingMessages = chat.value;
     selectedMessageArray.forEach((elementToRemove) => {
       remainingMessages = remainingMessages.filter((element) => element.messageID !== elementToRemove);
     })
     dispatch(updateChat(remainingMessages))
+    setSelectedMessageArray([]);
     setDeleteToggle(false);
     
     selectedMessageArray.sort();
@@ -149,15 +152,44 @@ export default function ChatSection(props) {
 
     const data = await response.json();
     console.log(data);
-    console.log(remainingMessages);
-    console.log(selectedMessageArray)
+  }
+
+  async function starAndUnstarMessage() {
+    let updatedMessageArray = JSON.parse(JSON.stringify(chat.value));
+    selectedMessageArray.forEach(elementToUpdate => {
+      updatedMessageArray = updatedMessageArray.map(element => {
+        if (elementToUpdate === element.messageID) {
+          element.star = star > 0;
+        }
+        return element;
+      })
+    })
+    dispatch(updateChat(updatedMessageArray));
+    selectedMessageArray.sort();
+
+    const response = await fetch(`http://localhost:5000/starAndUnstar/messages?selectedMessages=${JSON.stringify(selectedMessageArray)}&starStatus=${star > 0}&ID=${room}`, {
+      method: 'PUT',
+      credentials: "include",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Credentials": true
+      }
+    });
+
+    const data = await response.json();
+    console.log(data);
+
+    setSelectedMessageArray([]);
+    setDeleteToggle(false);
+    setStar(0);
   }
 
   return (
     <section className='m-2 w-[45rem] rounded overflow-hidden flex flex-wrap content-between bg-violet-50'>
-      <ChatBar deleteToggle={deleteToggle} setDeleteToggle={setDeleteToggle} deleteMessages={deleteMessages} setToggle={props.setToggle} secondPerson={props.secondPerson} ws={props.ws} />
+      <ChatBar star={star} starAndUnstarMessage={starAndUnstarMessage} setShowDeleteModal={props.setShowDeleteModal} deleteToggle={deleteToggle} setDeleteToggle={setDeleteToggle} setToggle={props.setToggle} secondPerson={props.secondPerson} ws={props.ws} />
       <div id='messageSection' ref={messageSectionRef} className='px-10 w-[46.7%] max-h-[75.5%] overflow-y-scroll absolute bottom-[6rem]'>
-        <Messages elementArray={chat.value} deleteToggle={deleteToggle} googleID={users.googleID} selectedMessageArray={selectedMessageArray} />
+        <Messages star={star} setStar={setStar} elementArray={chat.value} deleteToggle={deleteToggle} googleID={users.googleID} selectedMessageArray={selectedMessageArray} setSelectedMessageArray={setSelectedMessageArray} />
         <div ref={ scroll }></div>
       </div>
 
@@ -172,6 +204,8 @@ export default function ChatSection(props) {
       <div ref={emojiPanelRef} className='absolute bottom-24' style={{display: 'none'}}>
         <EmojiPicker width={720} height={350} previewConfig={{showPreview: false}} skinTonePickerLocation="SEARCH" onEmojiClick={selectEmoji} />
       </div>
+
+      { props.showDeleteModal ? <DeleteMessage setDeleteToggle={setDeleteToggle} deleteMessages={deleteMessages} showDeleteModal={props.showDeleteModal} setShowDeleteModal={props.setShowDeleteModal} selectedMessageArray={selectedMessageArray} /> : null }
     </section>
   )
 }

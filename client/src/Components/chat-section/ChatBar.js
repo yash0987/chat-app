@@ -3,8 +3,7 @@ import { useDispatch } from 'react-redux';
 import backButton from './../../img/backButton.png';
 import menu from './../../img/menu.png';
 import trash from './../../img/trash.png';
-import star from './../../img/star.png';
-import close from './../../img/close.png';
+import unstar from './../../img/unstar.png';
 import { CurrentUser } from './../../context/CurrentUserContext';
 import { emptyChat } from './../../features/chat-slice/chatSlice';
 
@@ -40,28 +39,33 @@ export default function ChatBar(props) {
   }
 
   return (
-    <div className='flex justify-between px-3 w-full bg-violet-300 text-white'>
+    <section className={`flex justify-between px-3 w-full ${props.deleteToggle ? 'bg-violet-500 saturate-[.80]' : 'bg-violet-400'} text-white`}>
       <div className='flex'>
-        <button onClick={ closeChat }>
-          <img src={ backButton } alt="" className='m-2 p-2 w-9 rounded-full hover:bg-violet-400' />
+        <button onClick={ () => props.deleteToggle ? props.setDeleteToggle(false) : closeChat() }>
+          <img src={ backButton } alt="" className='m-2 p-2 w-9 rounded-full' />
         </button>
-        <img src={ props.secondPerson.photoURL } alt="" className='mx-4 my-2 w-12 rounded-full' />
-        <p className='my-4 font-semibold text-lg'>{ props.secondPerson.fullName }</p>
+        { !props.deleteToggle ?  <div className='flex'>
+            <img src={ props.secondPerson.photoURL } alt="" className='mx-4 my-2 w-12 rounded-full' />
+            <p className='my-4 font-semibold text-lg'>{ props.secondPerson.fullName }</p>
+          </div> : null }
       </div>
 
       <div className='mx-2 my-3 flex'>
         { props.deleteToggle ? (<div className='flex'>
-          <img src={ star } alt="" className='w-10 rounded-full hover:bg-violet-400' />
-          <img onClick={ () => props.deleteMessages() } src={ trash } alt="" className='mx-2 w-10 rounded-full hover:bg-violet-400' />
-          <img onClick={ () => props.setDeleteToggle(false)}  src={ close } alt="" className='w-10 rounded-full hover:bg-violet-400' />
+          {
+            props.star ? <span onClick={ () => props.starAndUnstarMessage() } className='mx-1 px-2 text-3xl rounded-full hover:bg-violet-400'>&#9733;</span> : 
+            <img onClick={ () => props.starAndUnstarMessage() } src={unstar} alt="" className='mx-1 w-10 rounded-full hover:bg-violet-400' />
+          }
+          <img onClick={ () => props.setShowDeleteModal(true) } src={ trash } alt="" className='mx-1 w-10 rounded-full hover:bg-violet-400' />
+          <span onClick={ () => props.setDeleteToggle(false) } className='px-[10px] text-3xl rounded-full hover:bg-violet-400'>&times;</span>
         </div>) :
         <img onClick={ openDropBox } src={ menu } id='dropboxBtn' alt="" className='w-10 rounded-full hover:bg-violet-400' /> }
       </div>
 
       <ul ref={ dropboxRef } className='absolute top-[5rem] right-[42.7%] z-10 shadow-lg bg-white text-black' style={{ display: 'none' }}>
         <li onClick={ openProfile } className='px-4 py-2 hover:bg-violet-100'>Profile</li>
-        <li onClick={() => props.setDeleteToggle(true)} className='px-4 py-2 hover:bg-violet-100'>Select messages</li>
+        <li onClick={ () => props.setDeleteToggle(true) } className='px-4 py-2 hover:bg-violet-100'>Select messages</li>
       </ul>
-    </div>
+    </section>
   )
 }

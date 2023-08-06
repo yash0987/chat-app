@@ -11,9 +11,9 @@ export default function Message(props) {
         props.elementArray.map((element) => {
           keyValue++;
           if (element.sender === props.googleID) {
-            return <SenderMsg key={keyValue} element={element} deleteToggle={props.deleteToggle} selectedMessageArray={props.selectedMessageArray} />;
+            return <SenderMsg key={keyValue} star={props.star} setStar={props.setStar} element={element} deleteToggle={props.deleteToggle} selectedMessageArray={props.selectedMessageArray} setSelectedMessageArray={props.setSelectedMessageArray} />;
           }
-          return <ReceiverMsg key={keyValue} element={element} deleteToggle={props.deleteToggle} selectedMessageArray={props.selectedMessageArray} />;
+          return <ReceiverMsg key={keyValue} star={props.star} setStar={props.setStar} element={element} deleteToggle={props.deleteToggle} selectedMessageArray={props.selectedMessageArray} setSelectedMessageArray={props.setSelectedMessageArray} />;
         })
       }
     </div>
