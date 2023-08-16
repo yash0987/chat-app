@@ -1,12 +1,12 @@
 import React from 'react'
-import { CurrentUser } from '../../context/CurrentUserContext';
+import { useSelector } from 'react-redux';
 
 export default function LogoutBar() {
   function logoutFromGoogle() {
     window.open('http://localhost:5000/auth/logout', '_self');
   }
 
-  const user = CurrentUser();
+  const user = useSelector(state => state.auth.value.user);
   console.log(user);
   return (
     <section className='flex justify-between font-semibold mx-7'>

@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { setAuth } from '../features/auth-slice/authSlice';
 import FriendSection from './friend-section/FriendSection';
 import ChatSection from './chat-section/ChatSection';
 import SearchSection from './search-section/SearchSection';
-import CurrentUserContext from './../context/CurrentUserContext';
 import CreateGroup from './CreateGroup';
 import Profile from './Profile';
 
@@ -10,8 +11,8 @@ export default function HomePage() {
   const [toggle, setToggle] = useState('showSearch');
   const [secondPerson, setSecondPerson] = useState({});
   const [oldChatPerson, setOldChatPerson] = useState({});
-  const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [auth, setAuth] = useState( { authenticated: false, user: null, error: null } );
+  const auth = useSelector((state) => state.auth.value);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     async function checkAuth() {
@@ -30,36 +31,35 @@ export default function HomePage() {
     }
 
     checkAuth().then((data) => {
-      setAuth({
+      dispatch(setAuth({
         authenticated: true,
         user: data,
         error: null
-      })
+      }))
     })
     .catch(() => {
-      setAuth({
+      dispatch(setAuth({
         authenticated: false,
         user: null,
         error: "Fail to authenticate"
-      })
+      }))
     });
+    // eslint-disable-next-line
   }, []);
 
   return (
     <>
       { 
         auth.authenticated ?
-        (<CurrentUserContext>
-          <div className={`p-2 flex justify-center rounded bg-violet-100 ${showDeleteModal ? '' : ''}`}>
+        (<div className={`p-2 flex justify-center rounded bg-violet-100`}>
             {
               toggle === 'showSearch' ? <SearchSection /> : 
-              toggle === 'showChatSection' ? <ChatSection oldChatPerson={oldChatPerson} secondPerson={secondPerson} toggle={toggle} setToggle={setToggle} setShowDeleteModal={setShowDeleteModal} showDeleteModal={showDeleteModal} /> :
-              toggle === 'showProfile' ? <Profile setToggle={setToggle} secondPerson={secondPerson} /> : 
+              toggle === 'showChatSection' ? <ChatSection oldChatPerson={oldChatPerson} secondPerson={secondPerson} toggle={toggle} setToggle={setToggle} /> :
+              toggle === 'showProfile' ? <Profile setToggle={setToggle} secondPerson={secondPerson} /> :
               <CreateGroup setToggle={setToggle} />
             }
             <FriendSection setOldChatPerson={setOldChatPerson} setSecondPerson={setSecondPerson} secondPerson={secondPerson} setToggle={setToggle} />
-          </div>
-        </CurrentUserContext>) : null
+          </div>) : null
       }
     </>
   )

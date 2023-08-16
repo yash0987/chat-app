@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
-import { CurrentUser } from './../context/CurrentUserContext';
 import left_arrow from './../img/left-arrow.png';
 import right_arrow from './../img/right-arrow.png';
+import { useSelector } from 'react-redux';
 
 export default function CreateGroup(props) {
   const chibiPhotos = [
@@ -72,7 +72,7 @@ export default function CreateGroup(props) {
     props.setToggle('showSearch');
   }
 
-  let users = CurrentUser();
+  let user = useSelector(state => state.auth.value.user);
   let keyValue = 0;
 
   return (
@@ -102,7 +102,7 @@ export default function CreateGroup(props) {
 
       <div ref={friendListRef} className='h-1/4 overflow-y-scroll'>
         {
-          users.friendsID.map((element) => {
+          user.friendsID.map((element) => {
             return <section className='mx-4 flex'>
               <label className='flex p-2 w-full rounded-lg font-semibold hover:bg-violet-100'>
                 <input type="checkbox" name="" id="" className='mx-5 accent-violet-500' />

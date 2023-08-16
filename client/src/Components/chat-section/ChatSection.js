@@ -1,27 +1,27 @@
 import React, { useState, useEffect, useRef } from 'react';
 import EmojiPicker from 'emoji-picker-react';
 import { useDispatch, useSelector } from 'react-redux';
+import { prependChat, appendChat } from '../../features/chat-slice/chatSlice';
 import emoji from './../../img/emoji.png';
-import { CurrentUser } from '../../context/CurrentUserContext';
 import ChatBar from './ChatBar';
 import sendMessageBtn from './../../img/sendMessageBtn.png';
 import Messages from './Messages';
 import DeleteMessage from './../modal/DeleteMessage';
-import { prependChat, appendChat, updateChat } from '../../features/chat-slice/chatSlice';
 
 export default function ChatSection(props) {
   const chat = useSelector(state => state.chat);
+  const user = useSelector(state => state.auth.value.user);
+  const showDeleteModal = useSelector(state => state.modal.value[0]);
+  const selectedMessagesList = useSelector(state => state.selectmessage.value);
   const dispatch = useDispatch();
-  const users = CurrentUser();
   const [deleteToggle, setDeleteToggle] = useState(false);
-  const [selectedMessageArray, setSelectedMessageArray] = useState([]);
   const [star, setStar] = useState(0);
   const messageBoxRef = useRef(null);
   const emojiPanelRef = useRef(null);
   const messageSectionRef = useRef(null);
   const scroll = useRef(null);
   
-  let IDarray = [ props.secondPerson.ID, users.googleID ];
+  let IDarray = [ props.secondPerson.ID, user.googleID ];
   IDarray.sort();
   let room = IDarray[0] + IDarray[1];
   console.log(room);
@@ -31,7 +31,7 @@ export default function ChatSection(props) {
   useEffect(() => {
     ws.onopen = () => {
       console.log("connection has been established");
-      ws.send(JSON.stringify({ action: 'join', sender: users.googleID, receiver: props.secondPerson.ID, oldReceiver: props.oldChatPerson.ID }));
+      ws.send(JSON.stringify({ action: 'join', sender: user.googleID, receiver: props.secondPerson.ID, oldReceiver: props.oldChatPerson.ID }));
     }
     // eslint-disable-next-line
   }, [room]);
@@ -97,7 +97,7 @@ export default function ChatSection(props) {
       return ;
     }
     
-    const sender = users.googleID;
+    const sender = user.googleID;
     const receiver = props.secondPerson.ID;
     const messageID = sender + Date.now();
     dispatch(appendChat([{ messageID, collectedText, currentMsgTime, sender, receiver, star: false }]));
@@ -130,66 +130,11 @@ export default function ChatSection(props) {
     }
   }
 
-  async function deleteMessages() {
-    let remainingMessages = chat.value;
-    selectedMessageArray.forEach((elementToRemove) => {
-      remainingMessages = remainingMessages.filter((element) => element.messageID !== elementToRemove);
-    })
-    dispatch(updateChat(remainingMessages))
-    setSelectedMessageArray([]);
-    setDeleteToggle(false);
-    
-    selectedMessageArray.sort();
-    const response = await fetch(`http://localhost:5000/delete/messages?selectedMessages=${JSON.stringify(selectedMessageArray)}&ID=${room}`, {
-      method: 'DELETE',
-      credentials: "include",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Credentials": true
-      }
-    });
-
-    const data = await response.json();
-    console.log(data);
-  }
-
-  async function starAndUnstarMessage() {
-    let updatedMessageArray = JSON.parse(JSON.stringify(chat.value));
-    selectedMessageArray.forEach(elementToUpdate => {
-      updatedMessageArray = updatedMessageArray.map(element => {
-        if (elementToUpdate === element.messageID) {
-          element.star = star > 0;
-        }
-        return element;
-      })
-    })
-    dispatch(updateChat(updatedMessageArray));
-    selectedMessageArray.sort();
-
-    const response = await fetch(`http://localhost:5000/starAndUnstar/messages?selectedMessages=${JSON.stringify(selectedMessageArray)}&starStatus=${star > 0}&ID=${room}`, {
-      method: 'PUT',
-      credentials: "include",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Credentials": true
-      }
-    });
-
-    const data = await response.json();
-    console.log(data);
-
-    setSelectedMessageArray([]);
-    setDeleteToggle(false);
-    setStar(0);
-  }
-
   return (
     <section className='m-2 w-[45rem] rounded overflow-hidden flex flex-wrap content-between bg-violet-50'>
-      <ChatBar star={star} starAndUnstarMessage={starAndUnstarMessage} setShowDeleteModal={props.setShowDeleteModal} deleteToggle={deleteToggle} setDeleteToggle={setDeleteToggle} setToggle={props.setToggle} secondPerson={props.secondPerson} ws={props.ws} />
+      <ChatBar star={star} setStar={setStar} deleteToggle={deleteToggle} setDeleteToggle={setDeleteToggle} setToggle={props.setToggle} secondPerson={props.secondPerson} room={room} ws={props.ws} />
       <div id='messageSection' ref={messageSectionRef} className='px-10 w-[46.7%] max-h-[75.5%] overflow-y-scroll absolute bottom-[6rem]'>
-        <Messages star={star} setStar={setStar} elementArray={chat.value} deleteToggle={deleteToggle} googleID={users.googleID} selectedMessageArray={selectedMessageArray} setSelectedMessageArray={setSelectedMessageArray} />
+        <Messages star={star} setStar={setStar} elementArray={chat.value} deleteToggle={deleteToggle} googleID={user.googleID} />
         <div ref={ scroll }></div>
       </div>
 
@@ -205,7 +150,7 @@ export default function ChatSection(props) {
         <EmojiPicker width={720} height={350} previewConfig={{showPreview: false}} skinTonePickerLocation="SEARCH" onEmojiClick={selectEmoji} />
       </div>
 
-      { props.showDeleteModal && selectedMessageArray.length > 0 ? <DeleteMessage setDeleteToggle={setDeleteToggle} deleteMessages={deleteMessages} showDeleteModal={props.showDeleteModal} setShowDeleteModal={props.setShowDeleteModal} selectedMessageArray={selectedMessageArray} /> : null }
+      { showDeleteModal && selectedMessagesList.length > 0 ? <DeleteMessage setDeleteToggle={setDeleteToggle} room={room} /> : null }
     </section>
   )
 }

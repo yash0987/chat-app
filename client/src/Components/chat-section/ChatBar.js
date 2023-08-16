@@ -1,20 +1,20 @@
 import React, { useRef } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { showDeleteModal } from '../../features/modal-slice/modalSlice';
+import { emptyChat } from './../../features/chat-slice/chatSlice';
 import backButton from './../../img/backButton.png';
 import menu from './../../img/menu.png';
 import trash from './../../img/trash.png';
-import unstar from './../../img/unstar.png';
-import { CurrentUser } from './../../context/CurrentUserContext';
-import { emptyChat } from './../../features/chat-slice/chatSlice';
+import StarMessages from './StarMessages';
 
 export default function ChatBar(props) {
-  const users = CurrentUser();
+  const user = useSelector(state => state.auth.value.user);
   const dropboxRef = useRef(null);
   const dispatch = useDispatch();
 
   function closeChat() {
     props.setToggle('showSearch');
-    props.ws.send(JSON.stringify({ action: 'leave', sender: users.googleID, receiver: props.secondPerson.ID }));
+    props.ws.send(JSON.stringify({ action: 'leave', sender: user.googleID, receiver: props.secondPerson.ID }));
     dispatch(emptyChat());
   }
 
@@ -52,11 +52,8 @@ export default function ChatBar(props) {
 
       <div className='mx-2 my-3 flex'>
         { props.deleteToggle ? (<div className='flex'>
-          {
-            props.star ? <span onClick={ () => props.starAndUnstarMessage() } className='mx-1 px-2 text-3xl rounded-full hover:bg-violet-400'>&#9733;</span> : 
-            <img onClick={ () => props.starAndUnstarMessage() } src={unstar} alt="" className='mx-1 w-10 rounded-full hover:bg-violet-400' />
-          }
-          <img onClick={ () => props.setShowDeleteModal(true) } src={ trash } alt="" className='mx-1 w-10 rounded-full hover:bg-violet-400' />
+          <StarMessages star={props.star} setStar={props.setStar} setDeleteToggle={props.setDeleteToggle} room={props.room} />
+          <img onClick={ () => dispatch(showDeleteModal()) } src={ trash } alt="" className='mx-1 w-10 rounded-full hover:bg-violet-400' />
           <span onClick={ () => props.setDeleteToggle(false) } className='px-[10px] text-3xl rounded-full hover:bg-violet-400'>&times;</span>
         </div>) :
         <img onClick={ openDropBox } src={ menu } id='dropboxBtn' alt="" className='w-10 rounded-full hover:bg-violet-400' /> }

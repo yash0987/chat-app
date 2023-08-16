@@ -5,7 +5,6 @@ export const chatSlice = createSlice({
     initialState: {
         value: []
     },
-
     reducers: {
         prependChat: (state, action) => {
             state.value = [...action.payload, ...state.value];

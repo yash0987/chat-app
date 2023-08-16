@@ -1,8 +1,8 @@
 import React, { useState, useRef } from 'react';
-import { CurrentUser } from '../../context/CurrentUserContext';
+import { useSelector } from 'react-redux';
 
 export default function SearchSection() {
-  const users = CurrentUser();
+  const user = useSelector(state => state.auth.value.user);
   const [record, setRecord] = useState([]);
   const [elementArray, setElementArray] = useState([]);
   const searchRef = useRef(null);
@@ -12,12 +12,12 @@ export default function SearchSection() {
     const name = event.target.parentElement.previousElementSibling.lastElementChild.firstElementChild.textContent;
     const ImgURL = event.target.parentElement.previousElementSibling.firstElementChild.getAttribute('src');
 
-    if (users.friendsID.findIndex(element => element.googleID === ID) > -1 || users.sendRequestID.findIndex(element => element.googleID === ID) > -1) {
+    if (user.friendsID.findIndex(element => element.googleID === ID) > -1 || user.sendRequestID.findIndex(element => element.googleID === ID) > -1) {
       console.log(`${name} is already friend`);
       return ;
     }
 
-    if (users.googleID === ID) {
+    if (user.googleID === ID) {
       console.log(`You cannot send request to yourself`);
       return ;
     }
