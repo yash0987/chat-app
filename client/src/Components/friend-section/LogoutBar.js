@@ -3,7 +3,8 @@ import { useSelector } from 'react-redux';
 
 export default function LogoutBar() {
   function logoutFromGoogle() {
-    window.open('http://localhost:5000/auth/logout', '_self');
+    const logoutRequestURI = 'http://localhost:5000/auth/logout';
+    window.open(logoutRequestURI, '_self');
   }
 
   const user = useSelector(state => state.auth.value.user);

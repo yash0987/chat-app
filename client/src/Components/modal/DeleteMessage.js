@@ -18,7 +18,8 @@ export default function DeleteMessage(props) {
     dispatch(unselectAllMessages());
     props.setDeleteToggle(false);
 
-    const response = await fetch(`http://localhost:5000/delete/messages?selectedMessages=${JSON.stringify(selectedMessagesList)}&ID=${props.room}`, {
+    const deleteMessageRequestURI = `http://localhost:5000/delete/messages?selectedMessages=${JSON.stringify(selectedMessagesList)}&ID=${props.room}`;
+    const response = await fetch(deleteMessageRequestURI, {
       method: 'DELETE',
       credentials: "include",
       headers: {

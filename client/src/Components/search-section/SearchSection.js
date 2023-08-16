@@ -22,7 +22,8 @@ export default function SearchSection() {
       return ;
     }
 
-    const response = await fetch(`http://localhost:5000/add/friend?ID=${ID}&fullName=${name}&photoURL=${ImgURL}`, {
+    const addFriendRequestURI = `http://localhost:5000/add/friend?ID=${ID}&fullName=${name}&photoURL=${ImgURL}`;
+    const response = await fetch(addFriendRequestURI, {
         method: 'POST',
         credentials: 'include',
         headers: {
@@ -37,7 +38,8 @@ export default function SearchSection() {
   }
 
   async function usersRecord() {
-    const response = await fetch('http://localhost:5000/search/user', { 
+    const searchUserRequestURI = 'http://localhost:5000/search/user';
+    const response = await fetch(searchUserRequestURI, { 
       method: 'GET',
       credentials: 'include',
       headers: {

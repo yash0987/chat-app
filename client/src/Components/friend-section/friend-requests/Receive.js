@@ -8,7 +8,8 @@ export default function Receive(props) {
     const photoURL = targetedElement.firstElementChild.firstElementChild.getAttribute('src');
     event.target.parentElement.parentElement.remove();
     
-    const response = await fetch(`http://localhost:5000/acceptRequest?ID=${ID}&fullName=${fullName}&photoURL=${photoURL}`, {
+    const acceptFriendRequestURI = `http://localhost:5000/acceptRequest?ID=${ID}&fullName=${fullName}&photoURL=${photoURL}`;
+    const response = await fetch(acceptFriendRequestURI, {
       method: 'PUT',
       credentials: 'include',
       headers: {
@@ -29,7 +30,8 @@ export default function Receive(props) {
     const photoURL = targetedElement.firstElementChild.firstElementChild.getAttribute('src');
     event.target.parentElement.parentElement.remove();
     
-    const response = await fetch(`http://localhost:5000/declineRequest?ID=${ID}&fullName=${fullName}&photoURL=${photoURL}`, {
+    const declineFriendRequestURI = `http://localhost:5000/declineRequest?ID=${ID}&fullName=${fullName}&photoURL=${photoURL}`;
+    const response = await fetch(declineFriendRequestURI, {
       method: 'DELETE',
       credentials: 'include',
       headers: {

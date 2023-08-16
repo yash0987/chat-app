@@ -6,7 +6,8 @@ export default function Profile(props) {
   function getFriendInfo() {
     console.log(props.secondPerson);
     async function getData() {
-      const response = await fetch(`http://localhost:5000/friend/data/${props.secondPerson.ID}`, {
+      const friendDataRequestURI = `http://localhost:5000/friend/data/${props.secondPerson.ID}`;
+      const response = await fetch(friendDataRequestURI, {
         method: 'GET',
         credentials: 'include',
         headers: {
@@ -24,7 +25,8 @@ export default function Profile(props) {
   }
 
   async function unfriend() {
-    const response = await fetch(`http://localhost:5000/unfriend/${friendInfo.googleID}`, {
+    const unfriendRequestURI = `http://localhost:5000/unfriend/${friendInfo.googleID}`;
+    const response = await fetch(unfriendRequestURI, {
       method: 'PUT',
       credentials: 'include',
       headers: {
@@ -41,7 +43,8 @@ export default function Profile(props) {
 
   async function commonGroups() {
     async function getData() {
-      const response = await fetch(`http://localhost:5000/friend/groups/${friendInfo.googleID}`, {
+      const commonGroupsListRequestURI = `http://localhost:5000/friend/groups/${friendInfo.googleID}`;
+      const response = await fetch(commonGroupsListRequestURI, {
         method: 'GET',
         credentials: 'include',
         headers: {

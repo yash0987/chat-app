@@ -6,7 +6,8 @@ export default function SendSection() {
 
   function getSendRequest() {
     async function getData() {
-      const response = await fetch('http://localhost:5000/friends/request/send', {
+      const getSendRequestListRequestURI = 'http://localhost:5000/friends/request/send';
+      const response = await fetch(getSendRequestListRequestURI, {
         method: 'GET',
         credentials: 'include',
         headers: {

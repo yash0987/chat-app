@@ -7,7 +7,8 @@ export default function GroupSection(props) {
 
   function getGroups() {
     async function getData() {
-      const response = await fetch('http://localhost:5000/groups/list', {
+      const getGroupListRequestURI = 'http://localhost:5000/groups/list'
+      const response = await fetch(getGroupListRequestURI, {
         method: 'GET',
         credentials: 'include',
         headers: {

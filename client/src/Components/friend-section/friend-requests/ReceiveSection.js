@@ -6,7 +6,8 @@ export default function ReceiveSection() {
 
   function getReceiveRequest() {
     async function getData() {
-      const response = await fetch('http://localhost:5000/friends/request/receive', {
+      const getReceiveRequestListRequestURI = 'http://localhost:5000/friends/request/receive';
+      const response = await fetch(getReceiveRequestListRequestURI, {
         method: 'GET',
         credentials: 'include',
         headers: {

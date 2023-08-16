@@ -44,7 +44,8 @@ export default function ChatSection(props) {
   }
 
   async function getChat() {
-    const response = await fetch(`http://localhost:5000/chat/data?ID=${room}`, {
+    const getChatRequestURI = `http://localhost:5000/chat/data?ID=${room}`;
+    const response = await fetch(getChatRequestURI, {
       method: 'GET',
       credentials: 'include',
       headers: {

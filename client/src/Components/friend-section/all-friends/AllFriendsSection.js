@@ -6,7 +6,8 @@ export default function AllFriendsSection(props) {
   
   function getFriends() {
     async function getData() {
-      const response = await fetch('http://localhost:5000/friends/list', {
+      const friendListRequestURI = 'http://localhost:5000/friends/list';
+      const response = await fetch(friendListRequestURI, {
         method: 'GET',
         credentials: 'include',
         headers: {

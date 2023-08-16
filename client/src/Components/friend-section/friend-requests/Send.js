@@ -8,7 +8,8 @@ export default function Send(props) {
     const photoURL = targetedElement.firstElementChild.firstElementChild.getAttribute('src');
     event.target.parentElement.parentElement.remove();
     
-    const response = await fetch(`http://localhost:5000/cancelRequest?ID=${ID}&fullName=${fullName}&photoURL=${photoURL}`, {
+    const cancelFriendRequestURI = `http://localhost:5000/cancelRequest?ID=${ID}&fullName=${fullName}&photoURL=${photoURL}`;
+    const response = await fetch(cancelFriendRequestURI, {
       method: 'DELETE',
       credentials: 'include',
       headers: {

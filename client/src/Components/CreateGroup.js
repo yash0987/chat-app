@@ -33,7 +33,8 @@ export default function CreateGroup(props) {
   }
 
   async function sendData(groupID, groupName, groupPhotoURL, membersID) {
-    const response = await fetch(`http://localhost:5000/group?ID=${groupID}&name=${groupName}&photoURL=${groupPhotoURL}&friends=${JSON.stringify(membersID)}`, {
+    const createGroupRequestURI = `http://localhost:5000/group?ID=${groupID}&name=${groupName}&photoURL=${groupPhotoURL}&friends=${JSON.stringify(membersID)}`;
+    const response = await fetch(createGroupRequestURI, {
       method: 'POST',
       credentials: 'include',
       headers: {
