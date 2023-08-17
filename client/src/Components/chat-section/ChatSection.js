@@ -1,25 +1,17 @@
-import React, { useState, useEffect, useRef } from 'react';
-import EmojiPicker from 'emoji-picker-react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { prependChat, appendChat } from '../../features/chat-slice/chatSlice';
-import emoji from './../../img/emoji.png';
 import ChatBar from './ChatBar';
-import sendMessageBtn from './../../img/sendMessageBtn.png';
 import Messages from './Messages';
+import TextBox from './TextBox';
 import DeleteMessage from './../modal/DeleteMessage';
 
 export default function ChatSection(props) {
   const chat = useSelector(state => state.chat);
   const user = useSelector(state => state.auth.value.user);
-  const showDeleteModal = useSelector(state => state.modal.value[0]);
-  const selectedMessagesList = useSelector(state => state.selectmessage.value);
   const dispatch = useDispatch();
   const [deleteToggle, setDeleteToggle] = useState(false);
   const [star, setStar] = useState(0);
-  const messageBoxRef = useRef(null);
-  const emojiPanelRef = useRef(null);
-  const messageSectionRef = useRef(null);
-  const scroll = useRef(null);
   
   let IDarray = [ props.secondPerson.ID, user.googleID ];
   IDarray.sort();
@@ -31,7 +23,8 @@ export default function ChatSection(props) {
   useEffect(() => {
     ws.onopen = () => {
       console.log("connection has been established");
-      ws.send(JSON.stringify({ action: 'join', sender: user.googleID, receiver: props.secondPerson.ID, oldReceiver: props.oldChatPerson.ID }));
+      const detailsForRoom = { sender: user.googleID, receiver: props.secondPerson.ID, oldReceiver: props.oldChatPerson.ID };
+      ws.send(JSON.stringify({ ...detailsForRoom, action: 'join' }));
     }
     // eslint-disable-next-line
   }, [room]);
@@ -70,88 +63,12 @@ export default function ChatSection(props) {
     // eslint-disable-next-line
   }, [room]);
 
-  useEffect(() => {
-    scroll.current.scrollIntoView( { behavior: 'smooth' } );
-  }, [chat.value.length])
-
-  const weekDays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-  
-  function currentTime() {
-    const date = new Date();
-    let day = date.getDay();
-    let dd = date.getDate(), mm = date.getMonth(), yy = date.getFullYear();
-    let hours = date.getHours(), minutes = date.getMinutes();
-    
-    let ampm = hours >= 12 ? 'pm' : 'am';
-    hours = hours % 12;
-    hours = hours ? hours : 12;
-    minutes = minutes < 10 ? '0'+ minutes : minutes;
-    let strTime = `${weekDays[day]}, ${dd} ${months[mm]} ${yy} ${hours}:${minutes} ${ampm}`;
-    return strTime;
-  }
-
-  function displayMessage() {
-    const collectedText = messageBoxRef.current.value;
-    const currentMsgTime = currentTime();
-    if (collectedText.trim() === "") {
-      return ;
-    }
-    
-    const sender = user.googleID;
-    const receiver = props.secondPerson.ID;
-    const messageID = sender + Date.now();
-    dispatch(appendChat([{ messageID, collectedText, currentMsgTime, sender, receiver, star: false }]));
-    
-    let emojiPanel = emojiPanelRef.current;
-    if (emojiPanel.style.display === 'block') {
-      emojiPanel.style.display = 'none';
-    }
-
-    ws.send(JSON.stringify({ messageID, collectedText, currentMsgTime, sender, receiver, star: false, action: 'send' }));
-  }
-
-  function selectEmoji(event) {
-    let emojiUnified = event.unified.split('-');
-    let codeArray = [];
-    emojiUnified.forEach(element => codeArray.push('0x' + element));
-    let emoji = String.fromCodePoint(...codeArray);
-    let text = messageBoxRef.current.value;
-    text += emoji;
-    messageBoxRef.current.value = text;
-  }
-
-  function openEmojiPanel() {
-    let emojiPanel = emojiPanelRef.current;
-    if (emojiPanel.style.display === 'none') {
-      emojiPanel.style.display = 'block';
-    }
-    else {
-      emojiPanel.style.display = 'none';
-    }
-  }
-
   return (
     <section className='m-2 w-[45rem] rounded overflow-hidden flex flex-wrap content-between bg-violet-50'>
       <ChatBar star={star} setStar={setStar} deleteToggle={deleteToggle} setDeleteToggle={setDeleteToggle} setToggle={props.setToggle} secondPerson={props.secondPerson} room={room} ws={props.ws} />
-      <div id='messageSection' ref={messageSectionRef} className='px-10 w-[46.7%] max-h-[75.5%] overflow-y-scroll absolute bottom-[6rem]'>
-        <Messages star={star} setStar={setStar} elementArray={chat.value} deleteToggle={deleteToggle} googleID={user.googleID} />
-        <div ref={ scroll }></div>
-      </div>
-
-      <div className='m-3 p-2 w-full h-14 flex rounded-full bg-white'>
-        <img onClick={openEmojiPanel} src={emoji} alt="" className='w-11 p-2 rounded-full hover:bg-violet-200' />
-        <textarea cols="0" rows="0" ref={messageBoxRef} placeholder='Type a message...' className='p-[6px] w-full resize-none focus:outline-none placeholder:text-violet-400'></textarea>
-        <button onClick={displayMessage}>
-          <img src={ sendMessageBtn } alt="" className='w-12 rounded-full bg-violet-400 hover:bg-violet-500' />
-        </button>
-      </div>
-
-      <div ref={emojiPanelRef} className='absolute bottom-24' style={{display: 'none'}}>
-        <EmojiPicker width={720} height={350} previewConfig={{showPreview: false}} skinTonePickerLocation="SEARCH" onEmojiClick={selectEmoji} />
-      </div>
-
-      { showDeleteModal && selectedMessagesList.length > 0 ? <DeleteMessage setDeleteToggle={setDeleteToggle} room={room} /> : null }
+      <Messages star={star} setStar={setStar} elementArray={chat.value} deleteToggle={deleteToggle} googleID={user.googleID} />
+      <TextBox secondPerson={props.secondPerson} ws={ws} />
+      <DeleteMessage setDeleteToggle={setDeleteToggle} room={room} />
     </section>
   )
 }
