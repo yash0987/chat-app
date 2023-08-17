@@ -1,7 +1,7 @@
 import React from 'react';
-import ChatBarDropBox from './ChatBarDropBox';
-import PersonDetails from './PersonDetails';
-import Features from './Features';
+import PersonDetails from './chat-bar/PersonDetails';
+import ChatBarDropBox from './chat-bar/ChatBarDropBox';
+import Features from './chat-bar/Features';
 
 export default function ChatBar(props) {
   return (

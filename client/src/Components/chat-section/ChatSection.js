@@ -4,7 +4,7 @@ import { prependChat, appendChat } from '../../features/chat-slice/chatSlice';
 import ChatBar from './ChatBar';
 import Messages from './Messages';
 import TextBox from './TextBox';
-import DeleteMessage from './../modal/DeleteMessage';
+import DeleteForMeModal from './../modal/DeleteForMeModal';
 
 export default function ChatSection(props) {
   const chat = useSelector(state => state.chat);
@@ -68,7 +68,7 @@ export default function ChatSection(props) {
       <ChatBar star={star} setStar={setStar} deleteToggle={deleteToggle} setDeleteToggle={setDeleteToggle} setToggle={props.setToggle} secondPerson={props.secondPerson} room={room} ws={props.ws} />
       <Messages star={star} setStar={setStar} elementArray={chat.value} deleteToggle={deleteToggle} googleID={user.googleID} />
       <TextBox secondPerson={props.secondPerson} ws={ws} />
-      <DeleteMessage setDeleteToggle={setDeleteToggle} room={room} />
+      <DeleteForMeModal setDeleteToggle={setDeleteToggle} room={room} />
     </section>
   )
 }

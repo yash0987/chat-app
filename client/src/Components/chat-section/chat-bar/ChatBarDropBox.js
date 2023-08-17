@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import menu from './../../img/menu.png';
+import menu from './../../../img/menu.png';
 
 export default function ChatBarDropBox(props) {
   const dropboxRef = useRef(null);

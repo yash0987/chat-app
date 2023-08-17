@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { emptyChat } from './../../features/chat-slice/chatSlice';
-import backButton from './../../img/backButton.png';
+import { emptyChat } from './../../../features/chat-slice/chatSlice';
+import backButton from './../../../img/backButton.png';
 
 export default function PersonDetails(props) {
   const user = useSelector(state => state.auth.value.user);
