@@ -86,7 +86,6 @@ function join(data, roomID, ws) {
     }
 }
 
-
 function leave(ws) {
     const IDarray = [ ws.senderGoogleID, ws.receiverGoogleID ];
     IDarray.sort();

@@ -5,6 +5,7 @@ import ChatBar from './ChatBar';
 import Messages from './Messages';
 import TextBox from './TextBox';
 import DeleteForMeModal from './../modal/DeleteForMeModal';
+import { ws } from './websocket';
 
 export default function ChatSection(props) {
   const chat = useSelector(state => state.chat);
@@ -18,14 +19,21 @@ export default function ChatSection(props) {
   let room = IDarray[0] + IDarray[1];
   console.log(room);
 
-  const ws = new WebSocket('ws://localhost:5000');
+  useEffect(() => {
+      ws.onopen = () => {
+        console.log("connection has been established");
+      }
+      return () => ws.onclose = () => console.error("closed connection");
+      // eslint-disable-next-line
+  }, []);
 
   useEffect(() => {
-    ws.onopen = () => {
-      console.log("connection has been established");
+    setTimeout(() => {
       const detailsForRoom = { sender: user.googleID, receiver: props.secondPerson.ID, oldReceiver: props.oldChatPerson.ID };
       ws.send(JSON.stringify({ ...detailsForRoom, action: 'join' }));
-    }
+    }, 500);
+
+    return () => clearTimeout();
     // eslint-disable-next-line
   }, [room]);
   
@@ -65,7 +73,7 @@ export default function ChatSection(props) {
 
   return (
     <section className='m-2 w-[45rem] rounded overflow-hidden flex flex-wrap content-between bg-violet-50'>
-      <ChatBar star={star} setStar={setStar} deleteToggle={deleteToggle} setDeleteToggle={setDeleteToggle} setToggle={props.setToggle} secondPerson={props.secondPerson} room={room} ws={props.ws} />
+      <ChatBar star={star} setStar={setStar} deleteToggle={deleteToggle} setDeleteToggle={setDeleteToggle} setToggle={props.setToggle} secondPerson={props.secondPerson} room={room} ws={ws} />
       <Messages star={star} setStar={setStar} elementArray={chat.value} deleteToggle={deleteToggle} googleID={user.googleID} />
       <TextBox secondPerson={props.secondPerson} ws={ws} />
       <DeleteForMeModal setDeleteToggle={setDeleteToggle} room={room} />
