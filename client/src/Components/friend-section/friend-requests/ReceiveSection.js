@@ -30,7 +30,7 @@ export default function ReceiveSection() {
     <div>
       {
         receiveRequest ? receiveRequest.map((element) => {
-            return <Receive key={keyValue} friendInfo={element} />
+            return <Receive key={keyValue} friendInfo={element} receiveRequest={receiveRequest} setReceiveRequest={setReceiveRequest} />
         }) : (getReceiveRequest())
       }
     </div>

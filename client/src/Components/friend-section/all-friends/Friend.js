@@ -7,9 +7,6 @@ export default function Friend(props) {
   const dispatch = useDispatch();
 
   function openChat(event) {
-    // const ID = event.target.parentElement.previousElementSibling.lastElementChild.lastElementChild.textContent;
-    // const fullName = event.target.parentElement.previousElementSibling.lastElementChild.firstElementChild.textContent;
-    // const photoURL = event.target.parentElement.previousElementSibling.firstElementChild.getAttribute('src');
     const ID = props.friendInfo.googleID;
     const fullName = props.friendInfo.fullName;
     const photoURL = props.friendInfo.photoURL;

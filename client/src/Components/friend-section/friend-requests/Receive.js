@@ -2,11 +2,10 @@ import React from 'react'
 
 export default function Receive(props) {
   async function acceptFriendRequest(event) {
-    let targetedElement = event.target.parentElement.previousElementSibling;
-    const ID = targetedElement.lastElementChild.lastElementChild.textContent;
-    const fullName = targetedElement.lastElementChild.firstElementChild.textContent;
-    const photoURL = targetedElement.firstElementChild.firstElementChild.getAttribute('src');
-    event.target.parentElement.parentElement.remove();
+    const ID = props.friendInfo.googleID;
+    const fullName = props.friendInfo.fullName;
+    const photoURL = props.friendInfo.photoURL;
+    props.setReceiveRequest(props.receiveRequest.filter((element) => element.googleID !== ID));
     
     const acceptFriendRequestURI = `http://localhost:5000/acceptRequest?ID=${ID}&fullName=${fullName}&photoURL=${photoURL}`;
     const response = await fetch(acceptFriendRequestURI, {
@@ -24,11 +23,10 @@ export default function Receive(props) {
   }
 
   async function declineFriendRequest(event) {
-    let targetedElement = event.target.parentElement.previousElementSibling;
-    const ID = targetedElement.lastElementChild.lastElementChild.textContent;
-    const fullName = targetedElement.lastElementChild.firstElementChild.textContent;
-    const photoURL = targetedElement.firstElementChild.firstElementChild.getAttribute('src');
-    event.target.parentElement.parentElement.remove();
+    const ID = props.friendInfo.googleID;
+    const fullName = props.friendInfo.fullName;
+    const photoURL = props.friendInfo.photoURL;
+    props.setReceiveRequest(props.receiveRequest.filter((element) => element.googleID !== ID));
     
     const declineFriendRequestURI = `http://localhost:5000/declineRequest?ID=${ID}&fullName=${fullName}&photoURL=${photoURL}`;
     const response = await fetch(declineFriendRequestURI, {
@@ -49,7 +47,7 @@ export default function Receive(props) {
     <section className='flex justify-between mx-1 px-6 py-2 rounded-lg hover:bg-violet-100'>
         <div className='flex'>
             <div>
-              <img src={props.friendInfo.photoURL} alt="" className='w-10 rounded-full' />
+              <img src={ props.friendInfo.photoURL } alt="" className='w-10 rounded-full' />
             </div>
             <div className='mx-4'>
               <p>{ props.friendInfo.fullName }</p>

@@ -30,8 +30,8 @@ export default function SendSection() {
     <div>
       {
         sendRequest ? sendRequest.map((element) => {
-            keyValue++;
-            return <Send key={keyValue} friendInfo={element} />
+          keyValue++;
+          return <Send key={keyValue} friendInfo={element} sendRequest={sendRequest} setSendRequest={setSendRequest} />
         }) : (getSendRequest())
       }
     </div>

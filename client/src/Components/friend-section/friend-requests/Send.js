@@ -2,11 +2,10 @@ import React from 'react';
 
 export default function Send(props) {
   async function cancelFriendRequest(event) {
-    let targetedElement = event.target.parentElement.previousElementSibling;
-    const ID = targetedElement.lastElementChild.lastElementChild.textContent;
-    const fullName = targetedElement.lastElementChild.firstElementChild.textContent;
-    const photoURL = targetedElement.firstElementChild.firstElementChild.getAttribute('src');
-    event.target.parentElement.parentElement.remove();
+    const ID = props.friendInfo.googleID;
+    const fullName = props.friendInfo.fullName;
+    const photoURL = props.friendInfo.photoURL;
+    props.setSendRequest(props.sendRequest.filter((element) => element.googleID !== ID));
     
     const cancelFriendRequestURI = `http://localhost:5000/cancelRequest?ID=${ID}&fullName=${fullName}&photoURL=${photoURL}`;
     const response = await fetch(cancelFriendRequestURI, {
@@ -33,7 +32,7 @@ export default function Send(props) {
           </div>
           <div className='mx-4'>
             <p>{ props.friendInfo.fullName }</p>
-            <p className='text-[10px] text-gray-400'>{props.friendInfo.googleID}</p>
+            <p className='text-[10px] text-gray-400'>{ props.friendInfo.googleID }</p>
           </div>
         </div>
         <div>
