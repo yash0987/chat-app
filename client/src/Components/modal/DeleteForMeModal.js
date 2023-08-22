@@ -3,12 +3,15 @@ import { useDispatch, useSelector } from 'react-redux';
 import { updateChat } from '../../features/chat-slice/chatSlice';
 import { showDeleteModal } from './../../features/modal-slice/modalSlice';
 import { unselectAllMessages } from '../../features/select-message-slice/selectMessageSlice';
+import { toggleFeatures } from '../../features/toggle-slice/toggleSlice';
 
 export default function DeleteForMeModal(props) {
   const chat = useSelector(state => state.chat.value);
   const deleteModalState = useSelector(state => state.modal.value[0]);
   const selectedMessagesList = useSelector(state => state.selectmessage.value);
   const dispatch = useDispatch();
+
+  console.log(selectedMessagesList);
 
   async function deleteForMe() {
     let remainingMessages = chat;
@@ -18,7 +21,7 @@ export default function DeleteForMeModal(props) {
     dispatch(updateChat(remainingMessages))
     dispatch(unselectAllMessages());
     dispatch(showDeleteModal());
-    props.setDeleteToggle(false);
+    dispatch(toggleFeatures());
 
     const deleteMessageRequestURI = `http://localhost:5000/delete/messages?selectedMessages=${JSON.stringify(selectedMessagesList)}&ID=${props.room}`;
     const response = await fetch(deleteMessageRequestURI, {

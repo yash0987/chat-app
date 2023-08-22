@@ -1,6 +1,7 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { emptyChat } from './../../../features/chat-slice/chatSlice';
+import { setTogglesToDefault } from '../../../features/toggle-slice/toggleSlice';
 
 export default function Friend(props) {
   const dispatch = useDispatch();
@@ -16,6 +17,7 @@ export default function Friend(props) {
     props.setOldChatPerson(props.secondPerson);
     props.setSecondPerson( { ID, fullName, photoURL } );
     props.setToggle('showChatSection');
+    dispatch(setTogglesToDefault());
     dispatch(emptyChat());
   }
 

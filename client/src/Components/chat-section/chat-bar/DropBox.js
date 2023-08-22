@@ -1,10 +1,13 @@
 import React, { useRef } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import menu from './../../../img/menu.png';
-import { useDispatch } from 'react-redux';
 import { updateChat } from '../../../features/chat-slice/chatSlice';
+import { showStarredMessages, toggleFeatures } from '../../../features/toggle-slice/toggleSlice';
 
 export default function DropBox(props) {
   const dropboxRef = useRef(null);
+  const toggleFeaturesState = useSelector(state => state.toggle.value.toggleFeatures);
+  const displayStarredMessages = useSelector(state => state.toggle.value.showStarredMessages);
   const dispatch = useDispatch();
 
   async function getStarredMessages() {
@@ -21,6 +24,7 @@ export default function DropBox(props) {
 
     const data = await response.json();
     dispatch(updateChat(data));
+    dispatch(showStarredMessages());
     console.log(data);
   }
 
@@ -39,19 +43,25 @@ export default function DropBox(props) {
   return (
     <>
       {
-        !props.deleteToggle ?
+        !toggleFeaturesState ?
         <img onClick={ openDropBox } src={ menu } id='dropboxBtn' alt="" className='my-2 h-12 rounded-full hover:bg-violet-400' /> 
         : null
       }
 
-      <ul ref={ dropboxRef } className='absolute top-[5rem] right-[42.7%] z-10 shadow-lg bg-white text-black' style={{ display: 'none' }}>
-        <li onClick={ () => props.setToggle('showProfile') } className='px-4 py-2 hover:bg-violet-100'>Profile</li>
-        <li onClick={ () => props.setDeleteToggle(true) } className='px-4 py-2 hover:bg-violet-100'>Select messages</li>
-        <li onclick={ () => getStarredMessages() } className='px-4 py-2 hover:bg-violet-100'>Starred Messages</li>
-        <li className='px-4 py-2 hover:bg-violet-100'>Disappearing messages</li>
-        <li className='px-4 py-2 hover:bg-violet-100'>Wallpaper</li>
-        <li className='px-4 py-2 hover:bg-violet-100'>More</li>
-      </ul>
+      {
+        !displayStarredMessages ? 
+        <ul ref={ dropboxRef } className='absolute top-[5rem] right-[42.7%] z-10 shadow-lg bg-white text-black' style={{ display: 'none' }}>
+          <li onClick={ () => props.setToggle('showProfile') } className='px-4 py-2 hover:bg-violet-100'>Profile</li>
+          <li onClick={ () => dispatch(toggleFeatures()) } className='px-4 py-2 hover:bg-violet-100'>Select messages</li>
+          <li onClick={ () => getStarredMessages() } className='px-4 py-2 hover:bg-violet-100'>Starred Messages</li>
+          <li className='px-4 py-2 hover:bg-violet-100'>Disappearing messages</li>
+          <li className='px-4 py-2 hover:bg-violet-100'>Wallpaper</li>
+          <li className='px-4 py-2 hover:bg-violet-100'>More</li>
+        </ul>
+        : <ul ref={ dropboxRef } className='absolute top-[5rem] right-[42.7%] z-10 shadow-lg bg-white text-black' style={{ display: 'none' }}>
+            <li onClick={ () => dispatch(toggleFeatures()) } className='px-4 py-2 hover:bg-violet-100'>Select messages</li>
+          </ul>
+      }
     </>
   )
 }

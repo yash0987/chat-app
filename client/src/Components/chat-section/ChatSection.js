@@ -11,7 +11,6 @@ export default function ChatSection(props) {
   const chat = useSelector(state => state.chat);
   const user = useSelector(state => state.auth.value.user);
   const dispatch = useDispatch();
-  const [deleteToggle, setDeleteToggle] = useState(false);
   const [star, setStar] = useState(0);
   
   let IDarray = [ props.secondPerson.ID, user.googleID ];
@@ -73,10 +72,10 @@ export default function ChatSection(props) {
 
   return (
     <section className='m-2 w-[45rem] rounded overflow-hidden flex flex-wrap content-between bg-violet-50'>
-      <ChatBar star={star} setStar={setStar} deleteToggle={deleteToggle} setDeleteToggle={setDeleteToggle} setToggle={props.setToggle} secondPerson={props.secondPerson} room={room} ws={ws} />
-      <Messages star={star} setStar={setStar} elementArray={chat.value} deleteToggle={deleteToggle} googleID={user.googleID} />
+      <ChatBar getChat={getChat} star={star} setStar={setStar} setToggle={props.setToggle} secondPerson={props.secondPerson} room={room} ws={ws} />
+      <Messages star={star} setStar={setStar} elementArray={chat.value} googleID={user.googleID} />
       <TextBox secondPerson={props.secondPerson} ws={ws} />
-      <DeleteForMeModal setDeleteToggle={setDeleteToggle} room={room} />
+      <DeleteForMeModal room={room} />
     </section>
   )
 }

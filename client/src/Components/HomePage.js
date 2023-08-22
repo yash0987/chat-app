@@ -49,19 +49,15 @@ export default function HomePage() {
   }, []);
 
   return (
-    <>
-      { 
-        auth.authenticated ?
-        (<div className={`p-2 flex justify-center rounded bg-violet-100`}>
-            {
-              toggle === 'showSearch' ? <SearchSection /> : 
-              toggle === 'showChatSection' ? <ChatSection oldChatPerson={oldChatPerson} secondPerson={secondPerson} toggle={toggle} setToggle={setToggle} /> :
-              toggle === 'showProfile' ? <Profile setToggle={setToggle} secondPerson={secondPerson} /> :
-              <CreateGroup setToggle={setToggle} />
-            }
-            <FriendSection setOldChatPerson={setOldChatPerson} setSecondPerson={setSecondPerson} secondPerson={secondPerson} setToggle={setToggle} />
-          </div>) : null
+    auth.authenticated ?
+    (<div className={`p-2 flex justify-center rounded bg-violet-100`}>
+      {
+        toggle === 'showSearch' ? <SearchSection /> : 
+        toggle === 'showChatSection' ? <ChatSection oldChatPerson={oldChatPerson} secondPerson={secondPerson} toggle={toggle} setToggle={setToggle} /> :
+        toggle === 'showProfile' ? <Profile setToggle={setToggle} secondPerson={secondPerson} /> :
+        <CreateGroup setToggle={setToggle} />
       }
-    </>
+      <FriendSection setOldChatPerson={setOldChatPerson} setSecondPerson={setSecondPerson} secondPerson={secondPerson} setToggle={setToggle} />
+    </div>) : null
   )
 }

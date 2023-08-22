@@ -18,9 +18,9 @@ export default function Message(props) {
         props.elementArray.map((element) => {
           keyValue++;
           if (element.sender === props.googleID) {
-            return <SenderMsg key={keyValue} star={props.star} setStar={props.setStar} element={element} deleteToggle={props.deleteToggle} />;
+            return <SenderMsg key={keyValue} star={props.star} setStar={props.setStar} element={element} />;
           }
-          return <ReceiverMsg key={keyValue} star={props.star} setStar={props.setStar} element={element} deleteToggle={props.deleteToggle} />;
+          return <ReceiverMsg key={keyValue} star={props.star} setStar={props.setStar} element={element} />;
         })
       }
       <div ref={ scroll }></div>
