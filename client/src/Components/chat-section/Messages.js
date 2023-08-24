@@ -13,8 +13,8 @@ export default function Message(props) {
 
   let keyValue = 0;
   return (
-    <div id='messageSection' className='px-10 w-[46.7%] max-h-[75.5%] overflow-y-scroll absolute bottom-[6rem]'>
-      {
+    <div className='flex flex-col justify-end px-5 h-full overflow-y-scroll'>
+      <div className='overflow-y-scroll'>{
         props.elementArray.map((element) => {
           keyValue++;
           if (element.sender === props.googleID) {
@@ -24,6 +24,7 @@ export default function Message(props) {
         })
       }
       <div ref={ scroll }></div>
+      </div>
     </div>
   )
 }

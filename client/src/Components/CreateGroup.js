@@ -77,39 +77,39 @@ export default function CreateGroup(props) {
   let keyValue = 0;
 
   return (
-    <section className='m-2 p-5 w-[45rem] h-[95.5vh] rounded bg-violet-50'>
+    <section className='col-span-2 p-5 h-[91vh] bg-violet-50'>
       <div className='m-5 flex justify-center'>
         <img ref={imageRef} src="https://i.pinimg.com/originals/0a/1b/94/0a1b94c2a2c47651d174f4b91ce21eb9.jpg" alt="" className='w-36 h-36 rounded-full object-cover' />
       </div>
 
-      <div ref={GroupPhotoPanelRef} id='GroupPhotosPanel' className='mx-5 w-[40rem] flex overflow-hidden scroll-smooth'>
+      <div ref={GroupPhotoPanelRef} id='GroupPhotosPanel' className='flex overflow-hidden scroll-smooth'>
         {
           chibiPhotos.map((element) => {
             keyValue++;
-            return <img onClick={selectImage} src={element} alt="" key={keyValue} className='m-2 w-28 h-28 rounded-full shadow-md object-cover' />;
+            return <img onClick={selectImage} src={element} alt="" key={keyValue} className='mx-2 w-28 h-28 rounded-full shadow-md object-cover' />;
           })
         }
       </div>
 
-      <div className='w-41 flex justify-center'>
+      <div className='flex justify-center'>
         <button onClick={() => GroupPhotoPanelRef.current.scrollBy(-515, 0)} className= 'm-1 rounded-full shadow bg-white'><img src={left_arrow} alt=""  className='p-1 w-8' /></button>
         <button onClick={() => GroupPhotoPanelRef.current.scrollBy(515, 0)} className= 'm-1 rounded-full shadow bg-white'><img src={right_arrow} alt=""  className='p-1 w-8' /></button>
       </div>
 
-      <div ref={inputRef} className='m-2 mt-5'>
-        <input type="text" name="" placeholder='Group name' className='m-2 px-4 py-2 w-[47.5%] rounded focus:outline-none' />
-        <input type="text" name="" placeholder='Group ID' className='m-2 px-4 py-2 w-[47.5%] rounded focus:outline-none' />
+      <div ref={inputRef}>
+        <input type="text" name="" placeholder='Group name' className='w-1/3 m-2 px-4 py-2 rounded focus:outline-none' />
+        <input type="text" name="" placeholder='Group ID' className='w-1/3 m-2 px-4 py-2 rounded focus:outline-none' />
       </div>
 
       <div ref={friendListRef} className='h-1/4 overflow-y-scroll'>
         {
           user.friendsID.map((element) => {
-            return <section className='mx-4 flex'>
+            return <section className='px-4 flex'>
               <label className='flex p-2 w-full rounded-lg font-semibold hover:bg-violet-100'>
                 <input type="checkbox" name="" id="" className='mx-5 accent-violet-500' />
                 <div className='flex'>
                     <img src={ element.photoURL } alt="" className='w-10 rounded-full' />
-                    <div className='mx-4'>
+                    <div className='px-4'>
                       <p>{ element.fullName }</p>
                       <p className='text-[10px] text-gray-400'>{ element.googleID }</p>
                     </div>

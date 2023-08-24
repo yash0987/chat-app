@@ -64,15 +64,15 @@ export default function TextBox(props) {
 
   return (
     <>
-      <div className='m-3 p-2 w-full h-14 flex rounded-full bg-white'>
-        <img onClick={openEmojiPanel} src={emoji} alt="" className='w-11 p-2 rounded-full hover:bg-violet-200' />
+      <div className='p-2 h-14 flex bg-white'>
+        <img onClick={openEmojiPanel} src={emoji} alt="" className='w-10 p-2 rounded-full hover:bg-violet-200' />
         <textarea cols="0" rows="0" ref={messageBoxRef} placeholder='Type a message...' className='p-[6px] w-full resize-none focus:outline-none placeholder:text-violet-400'></textarea>
         <button onClick={displayMessage}>
           <img src={ sendMessageBtn } alt="" className='w-12 rounded-full bg-violet-400 hover:bg-violet-500' />
         </button>
       </div>
       <div ref={emojiPanelRef} className='absolute bottom-24' style={{display: 'none'}}>
-        <EmojiPicker width={720} height={350} previewConfig={{showPreview: false}} skinTonePickerLocation="SEARCH" onEmojiClick={selectEmoji} />
+        <EmojiPicker width={1010} height={350} previewConfig={{showPreview: false}} skinTonePickerLocation="SEARCH" onEmojiClick={selectEmoji} />
       </div>
     </>
   )

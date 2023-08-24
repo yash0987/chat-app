@@ -31,7 +31,7 @@ export default function SenderMsg(props) {
   
   return (
     <section onClick={ () => toggleFeaturesState ? selectAndUnselectMessage() : null } className = {`${ highlightSelectMessage && toggleFeaturesState ? 'bg-violet-500 bg-opacity-20' : 'bg-none' } select-none rounded-md flex justify-end my-1 p-1`} data-person='sender'>
-      <p className = 'whitespace-pre-wrap break-words px-2 py-1 max-w-xs rounded-md bg-gray-200 text-gray-600'>
+      <p className = 'whitespace-pre-wrap break-words px-2 py-1 max-w-lg rounded-md bg-gray-200 text-gray-600'>
         { props.element.collectedText }
         <span className = 'flex justify-end text-[10px]'> { props.element.star ? <span>&#9733;  </span> : null } { props.element.currentMsgTime } </span>
       </p>

@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { useSelector } from 'react-redux';
+import searchLogo from '../../img/searchBlack.png'
 
 export default function SearchSection() {
   const user = useSelector(state => state.auth.value.user);
@@ -93,9 +94,14 @@ export default function SearchSection() {
   }
 
   return (
-    <section className='m-2 rounded bg-violet-50'>
-      <input type="text" onKeyUp={ searchFriends } ref={searchRef} id="searchBox" placeholder='Search friends' className='m-6 px-5 py-3 w-[20rem] rounded-full bg-violet-100 focus:outline-none placeholder:text-violet-400' />
-      <div id="searchResult" className='my-3'> { elementArray } </div>
-    </section>
+    <div className='absolute top-0  w-screen h-screen bg-black bg-opacity-20'>
+      <div className='w-1/2 p-3 origin-center translate-x-[50%] rounded-lg bg-violet-50 border-[1px] border-violet-500'>
+        <label className='col-span-4 flex rounded-md border-2 border-violet-700 bg-violet-50'>
+          <img src={searchLogo} alt="" className='w-8 rounded-l-md bg-violet-100' />
+          <input type="text" onKeyUp={ searchFriends } ref={searchRef} id="searchBox" autoComplete='off' placeholder='Search new friends' className='p-1 w-full rounded-r-md bg-violet-100 focus:outline-none placeholder:text-violet-400' />
+        </label>
+        <div id="searchResult" className='mt-3 w-full max-h-80 overflow-y-scroll'> { elementArray } </div>
+      </div>
+    </div>
   )
 }

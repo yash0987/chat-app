@@ -62,7 +62,7 @@ export default function Profile(props) {
   }
 
   return (
-    <section className='m-2 p-5 w-[45rem] rounded bg-violet-50'>
+    <section className='col-span-2 p-5 rounded bg-violet-50'>
       {
         friendInfo ?
         (<div>

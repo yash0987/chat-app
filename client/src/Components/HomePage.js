@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setAuth } from '../features/auth-slice/authSlice';
+import Navbar from './Navbar';
 import FriendSection from './friend-section/FriendSection';
 import ChatSection from './chat-section/ChatSection';
-import SearchSection from './search-section/SearchSection';
 import CreateGroup from './CreateGroup';
 import Profile from './Profile';
 
@@ -50,14 +50,20 @@ export default function HomePage() {
 
   return (
     auth.authenticated ?
-    (<div className={`p-2 flex justify-center rounded bg-violet-100`}>
+    (
+    <div className='w-screen h-screen bg-violet-100'>
+
+    <div className=''>
+      <Navbar />
+    </div>
+    <div className={`grid grid-cols-3 grid-rows-1 bg-violet-100`}>
       {
-        toggle === 'showSearch' ? <SearchSection /> : 
         toggle === 'showChatSection' ? <ChatSection oldChatPerson={oldChatPerson} secondPerson={secondPerson} toggle={toggle} setToggle={setToggle} /> :
         toggle === 'showProfile' ? <Profile setToggle={setToggle} secondPerson={secondPerson} /> :
         <CreateGroup setToggle={setToggle} />
       }
       <FriendSection setOldChatPerson={setOldChatPerson} setSecondPerson={setSecondPerson} secondPerson={secondPerson} setToggle={setToggle} />
+      </div>
     </div>) : null
   )
 }

@@ -71,7 +71,7 @@ export default function ChatSection(props) {
   }, [room]);
 
   return (
-    <section className='m-2 w-[45rem] rounded overflow-hidden flex flex-wrap content-between bg-violet-50'>
+    <section className='col-span-2 h-[91vh] flex flex-col overflow-hidden bg-violet-50'>
       <ChatBar getChat={getChat} star={star} setStar={setStar} setToggle={props.setToggle} secondPerson={props.secondPerson} room={room} ws={ws} />
       <Messages star={star} setStar={setStar} elementArray={chat.value} googleID={user.googleID} />
       <TextBox secondPerson={props.secondPerson} ws={ws} />

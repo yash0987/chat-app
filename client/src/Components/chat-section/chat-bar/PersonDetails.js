@@ -9,6 +9,7 @@ export default function PersonDetails(props) {
   const user = useSelector(state => state.auth.value.user);
   const toggleFeaturesState = useSelector(state => state.toggle.value.toggleFeatures);
   const displayStarredMessages = useSelector(state => state.toggle.value.showStarredMessages);
+  const selectedMessagesList = useSelector(state => state.selectmessage.value);
   const dispatch = useDispatch();
 
   function closeChat() {
@@ -41,6 +42,7 @@ export default function PersonDetails(props) {
         </div> : null
       }
       { displayStarredMessages ? <p className='m-4 font-semibold text-lg'>Starred Messages</p> : null }
+      { toggleFeaturesState ? <p className='m-4 fount-semibold text-xl'>{ selectedMessagesList.length }</p> : null }
     </div>
   )
 }

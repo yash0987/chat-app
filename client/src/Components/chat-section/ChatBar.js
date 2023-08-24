@@ -9,7 +9,7 @@ export default function ChatBar(props) {
   const displayStarredMessages = useSelector(state => state.toggle.value.showStarredMessages);
   
   return (
-    <section className={`flex justify-between px-3 w-full ${toggleFeaturesState || displayStarredMessages ? 'bg-violet-500 saturate-[.80]' : 'bg-violet-400'} text-white`}>
+    <section className={`px-3 flex justify-between ${toggleFeaturesState || displayStarredMessages ? 'bg-violet-500 saturate-[.80]' : 'bg-violet-400'} text-white`}>
       <PersonDetails getChat={props.getChat} secondPerson={props.secondPerson} setToggle={props.setToggle} ws={props.ws} />
       <Features star={props.star} setStar={props.setStar} room={props.room} />
       <DropBox setToggle={props.setToggle} room={props.room} />
