@@ -50,8 +50,7 @@ export default function HomePage() {
 
   return (
     auth.authenticated ?
-    (
-    <div className='w-screen h-screen bg-violet-100'>
+    (<div className='w-screen h-screen bg-violet-100'>
     <Navbar />
     <div className={`grid grid-cols-3 grid-rows-1 bg-violet-100`}>
       {

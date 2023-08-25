@@ -1,10 +1,14 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import searchIcon from '../../img/searchBlack.png'
 import SearchedPerson from './SearchedPerson';
 
 export default function SearchSection() {
   const [searchedUsers, setSearchedUsers] = useState([]);
   const searchRef = useRef(null);
+
+  useEffect(() => {
+    searchRef.current.focus();
+  }, []);
 
   async function usersRecord(searchData) {
     const searchUserRequestURI = `http://localhost:5000/search/user?search=${searchData}`;
@@ -28,6 +32,7 @@ export default function SearchSection() {
       searchData = searchData.trim().toLowerCase();
 
       if (searchData !== "") usersRecord(searchData);
+      else setSearchedUsers([]);
     }, 100);
   }
 
