@@ -18,11 +18,21 @@ router.get('/user', (req, res, next) => {
 })
 
 router.get('/search/user', (req, res) => {
+    const searchUser = req.query.search;
+    console.log(searchUser);
     async function main() {
         try {
             await client.connect();
             const cursor = await client.db('chat-app').collection('userDetails').find({}).toArray();
-            res.json(cursor);
+            let record = cursor.filter((element) => {
+                const userFullName = (element.firstName + " " + element.familyName).toLowerCase();
+                if (userFullName.includes(searchUser)) {
+                    return element;
+                }
+            });
+
+            record = record.map(({ friendsID, email, sendRequestID, receiveRequestID, groups, ...rest }) => rest);
+            res.json({ success: true, record });
         } catch (e) {
             console.error(e);
         } finally {
