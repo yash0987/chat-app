@@ -66,6 +66,15 @@ export default function TextBox(props) {
     else emojiPanel.style.display = 'none';
   }
 
+  window.onkeydown = (event) => {
+    const messageBoxValue = messageBoxRef.current.value;
+    if (messageBoxValue.trim() !== "" && event.key === "Enter") {
+      event.preventDefault();
+      console.log("I am send message on click enter key");
+      displayMessage();
+    }
+  }
+
   return (
     <>
       <div className='p-2 h-14 flex bg-white'>
