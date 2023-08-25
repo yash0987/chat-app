@@ -52,10 +52,7 @@ export default function HomePage() {
     auth.authenticated ?
     (
     <div className='w-screen h-screen bg-violet-100'>
-
-    <div className=''>
-      <Navbar />
-    </div>
+    <Navbar />
     <div className={`grid grid-cols-3 grid-rows-1 bg-violet-100`}>
       {
         toggle === 'showChatSection' ? <ChatSection oldChatPerson={oldChatPerson} secondPerson={secondPerson} toggle={toggle} setToggle={setToggle} /> :
