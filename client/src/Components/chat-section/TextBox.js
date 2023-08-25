@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import EmojiPicker from 'emoji-picker-react';
 import { appendChat } from '../../features/chat-slice/chatSlice';
@@ -13,6 +13,10 @@ export default function TextBox(props) {
 
   const weekDays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
   const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+  useEffect(() => {
+    messageBoxRef.current.focus();
+  }, [])
   
   function currentTime() {
     const date = new Date();
@@ -71,8 +75,8 @@ export default function TextBox(props) {
           <img src={ sendMessageBtn } alt="" className='w-12 rounded-full bg-violet-400 hover:bg-violet-500' />
         </button>
       </div>
-      <div ref={emojiPanelRef} className='absolute bottom-24' style={{display: 'none'}}>
-        <EmojiPicker width={1010} height={350} previewConfig={{showPreview: false}} skinTonePickerLocation="SEARCH" onEmojiClick={selectEmoji} />
+      <div ref={emojiPanelRef} className='absolute bottom-20' style={{display: 'none'}}>
+        <EmojiPicker width={1024} height={350} previewConfig={{showPreview: false}} skinTonePickerLocation="SEARCH" onEmojiClick={selectEmoji} />
       </div>
     </>
   )
