@@ -51,14 +51,14 @@ export default function HomePage() {
   return (
     auth.authenticated ?
     (<div className='w-screen h-screen bg-violet-100'>
-    <Navbar />
-    <div className={`grid grid-cols-3 grid-rows-1 bg-violet-100`}>
-      {
-        toggle === 'showChatSection' ? <ChatSection oldChatPerson={oldChatPerson} secondPerson={secondPerson} toggle={toggle} setToggle={setToggle} /> :
-        toggle === 'showProfile' ? <Profile setToggle={setToggle} secondPerson={secondPerson} /> :
-        <CreateGroup setToggle={setToggle} />
-      }
-      <FriendSection setOldChatPerson={setOldChatPerson} setSecondPerson={setSecondPerson} secondPerson={secondPerson} setToggle={setToggle} />
+      <Navbar />
+      <div className={`grid grid-cols-3 grid-rows-1 bg-violet-100`}>
+        {
+          toggle === 'showChatSection' ? <ChatSection oldChatPerson={oldChatPerson} secondPerson={secondPerson} toggle={toggle} setToggle={setToggle} /> :
+          toggle === 'showProfile' ? <Profile setToggle={setToggle} secondPerson={secondPerson} /> :
+          <CreateGroup setToggle={setToggle} />
+        }
+        <FriendSection setOldChatPerson={setOldChatPerson} setSecondPerson={setSecondPerson} secondPerson={secondPerson} setToggle={setToggle} />
       </div>
     </div>) : null
   )

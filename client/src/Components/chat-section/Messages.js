@@ -17,9 +17,12 @@ export default function Message(props) {
       <div className='overflow-y-scroll'>{
         props.elementArray.map((element) => {
           keyValue++;
-          if (element.sender === props.googleID) {
+          if (element.senderID === props.googleID) {
+            console.log("i am sender");
             return <SenderMsg key={keyValue} star={props.star} setStar={props.setStar} element={element} />;
           }
+          console.log(element.senderID)
+          console.log("I am receiver");
           return <ReceiverMsg key={keyValue} star={props.star} setStar={props.setStar} element={element} />;
         })
       }

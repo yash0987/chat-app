@@ -19,16 +19,16 @@ export default function ChatSection(props) {
   console.log(room);
 
   useEffect(() => {
-      ws.onopen = () => {
-        console.log("connection has been established");
-      }
-      return () => ws.onclose = () => console.error("closed connection");
-      // eslint-disable-next-line
+    ws.onopen = () => {
+      console.log("connection has been established");
+    }
+    return () => ws.onclose = () => console.error("closed connection");
+    // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
     setTimeout(() => {
-      const detailsForRoom = { sender: user.googleID, receiver: props.secondPerson.ID, oldReceiver: props.oldChatPerson.ID };
+      const detailsForRoom = { senderID: user.googleID, receiverID: props.secondPerson.ID, oldReceiverID: props.oldChatPerson.ID };
       ws.send(JSON.stringify({ ...detailsForRoom, action: 'join' }));
     }, 500);
 

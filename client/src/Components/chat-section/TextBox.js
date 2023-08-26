@@ -37,10 +37,12 @@ export default function TextBox(props) {
     const currentMsgTime = currentTime();
     if (collectedText.trim() === "") return ;
 
-    const sender = user.googleID;
-    const receiver = props.secondPerson.ID;
-    const messageID = sender + Date.now();
-    const messageData = { messageID, collectedText, currentMsgTime, sender, receiver, star: false };
+    const senderID = user.googleID;
+    const receiverID = props.secondPerson.ID;
+    const senderName = user.firstName + " " + user.familyName;
+    const receiverName = props.secondPerson.fullName;
+    const messageID = senderID + Date.now();
+    const messageData = { messageID, collectedText, currentMsgTime, senderID, receiverID, senderName, receiverName, star: false };
 
     let emojiPanel = emojiPanelRef.current;
     if (emojiPanel.style.display === 'block') {
