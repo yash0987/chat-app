@@ -69,8 +69,8 @@ const rooms = {};
 function join(data, roomID, ws) {
     leave(ws);
     console.log("Joining");
-    ws.senderGoogleID = data.sender;
-    ws.receiverGoogleID = data.receiver;
+    ws.senderGoogleID = data.senderID;
+    ws.receiverGoogleID = data.receiverID;
     if (!rooms[roomID]) {
         rooms[roomID] = [ws];
         return ;
@@ -99,7 +99,7 @@ function leave(ws) {
 function send(data, roomID) {
     console.log("Sending " + roomID);
     rooms[roomID].forEach((client) => {
-        if (client.senderGoogleID !== data.sender) {
+        if (client.senderGoogleID !== data.senderID) {
             client.send(JSON.stringify(data));
         }
     })
@@ -112,7 +112,7 @@ function send(data, roomID) {
 wss.on('connection', (ws) => {
     ws.onmessage = (event) => {
         const data = JSON.parse(event.data);
-        const IDarray = [ data.sender, data.receiver ];
+        const IDarray = [ data.senderID, data.receiverID ];
         IDarray.sort();
         const roomID = IDarray[0] + IDarray[1];
         console.log(data);
