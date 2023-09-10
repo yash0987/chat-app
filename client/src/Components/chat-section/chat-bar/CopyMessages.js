@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector, useDispatch} from 'react-redux';
-import { toggleFeatures } from '../../../features/toggle-slice/toggleSlice';
 import copy from './../../../img/copy.png';
+import { unselectAllMessages } from '../../../features/select-message-slice/selectMessageSlice';
 
 export default function CopyMessages() {
   const selectedMessagesList = useSelector(state => state.selectmessage.value);
@@ -16,7 +16,7 @@ export default function CopyMessages() {
       })
       
       navigator.clipboard.writeText(copiedText);
-      dispatch(toggleFeatures());
+      dispatch(unselectAllMessages());
       return ;
     }
 
@@ -30,7 +30,7 @@ export default function CopyMessages() {
     });
     
     navigator.clipboard.writeText(copiedText);
-    dispatch(toggleFeatures());
+    dispatch(unselectAllMessages());
   }
   
   return (

@@ -2,7 +2,6 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateChat } from '../../../features/chat-slice/chatSlice';
 import { unselectAllMessages } from '../../../features/select-message-slice/selectMessageSlice';
-import { toggleFeatures } from '../../../features/toggle-slice/toggleSlice';
 import unstar from './../../../img/unstar.png';
 
 export default function StarMessages(props) {
@@ -35,7 +34,6 @@ export default function StarMessages(props) {
     const data = await response.json();
     console.log(data);
     dispatch(unselectAllMessages());
-    dispatch(toggleFeatures());
     props.setStar(0);
   }
 
