@@ -4,6 +4,7 @@ import { emptyChat, updateChat } from './../../../features/chat-slice/chatSlice'
 import backButton from './../../../img/backButton.png';
 import { ws } from '../websocket';
 import { unselectAllMessages } from '../../../features/select-message-slice/selectMessageSlice';
+import { setTogglesToDefault } from '../../../features/toggle-slice/toggleSlice';
 
 export default function PersonDetails(props) {
   const user = useSelector(state => state.auth.value.user);
@@ -26,6 +27,7 @@ export default function PersonDetails(props) {
         })
       }
       dispatch(unselectAllMessages());
+      dispatch(setTogglesToDefault());
     }
     else closeChat();
   }
