@@ -1,15 +1,23 @@
 import React, { useEffect, useRef } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import SenderMsg from './SenderMsg';
 import ReceiverMsg from './ReceiverMsg';
+import { toggleFeatures } from '../../features/toggle-slice/toggleSlice';
 
 export default function Message(props) {
   const scroll = useRef(null);
   const chat = useSelector(state => state.chat.value);
+  const selectedMessagesList = useSelector(state => state.selectmessage.value);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     scroll.current.scrollIntoView( { behavior: 'smooth' } );
   }, [chat.length])
+
+  useEffect(() => {
+    if (!selectedMessagesList.length) dispatch(toggleFeatures());
+    // eslint-disable-next-line
+  }, [selectedMessagesList.length])
 
   let keyValue = 0;
   return (
@@ -18,11 +26,8 @@ export default function Message(props) {
         props.elementArray.map((element) => {
           keyValue++;
           if (element.senderID === props.googleID) {
-            console.log("i am sender");
             return <SenderMsg key={keyValue} star={props.star} setStar={props.setStar} element={element} />;
           }
-          console.log(element.senderID)
-          console.log("I am receiver");
           return <ReceiverMsg key={keyValue} star={props.star} setStar={props.setStar} element={element} />;
         })
       }
