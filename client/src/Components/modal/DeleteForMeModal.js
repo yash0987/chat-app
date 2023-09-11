@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { updateChat } from '../../features/chat-slice/chatSlice';
 import { showDeleteModal } from './../../features/modal-slice/modalSlice';
 import { unselectAllMessages } from '../../features/select-message-slice/selectMessageSlice';
-import { toggleFeatures } from '../../features/toggle-slice/toggleSlice';
 
 export default function DeleteForMeModal(props) {
   const chat = useSelector(state => state.chat.value);
@@ -20,8 +19,7 @@ export default function DeleteForMeModal(props) {
     })
     dispatch(updateChat(remainingMessages))
     dispatch(unselectAllMessages());
-    dispatch(showDeleteModal());
-    dispatch(toggleFeatures());
+    dispatch(showDeleteModal(false));
 
     const deleteMessageRequestURI = `http://localhost:5000/delete/messages?selectedMessages=${JSON.stringify(selectedMessagesList)}&ID=${props.room}`;
     const response = await fetch(deleteMessageRequestURI, {
@@ -39,13 +37,13 @@ export default function DeleteForMeModal(props) {
   }
 
   return (
-    deleteModalState && selectedMessagesList.length > 0 ? 
+    deleteModalState && selectedMessagesList.length > 0 ?
     <section className='flex justify-center py-80 w-screen h-screen fixed top-0 left-0 bg-black bg-opacity-20'>
-      <div className='p-5 w-1/5 rounded-sm bg-violet-50'>
+      <div className='p-5 w-1/5 h-28 rounded-sm bg-violet-50'>
         <p>{ selectedMessagesList.length < 2 ? `Delete message?` : `Delete ${selectedMessagesList.length} messages?` }</p>
         <div className='text-violet-600'>
           <button onClick={ () => deleteForMe() } className='flex justify-end'>Delete for me</button>
-          <button onClick={ () => dispatch(showDeleteModal()) }>Cancel</button>
+          <button onClick={ () => dispatch(showDeleteModal(false)) }>Cancel</button>
         </div>
       </div>
     </section> : null

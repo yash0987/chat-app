@@ -6,8 +6,8 @@ export const modalSlice = createSlice({
         value: [false]
     },
     reducers: {
-        showDeleteModal: (state) => {
-            state.value[0] = !state.value[0];
+        showDeleteModal: (state, action) => {
+            state.value[0] = action.payload;
         }
     }
 })
