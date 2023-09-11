@@ -2,7 +2,7 @@ import React, { useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import menu from './../../../img/menu.png';
 import { updateChat } from '../../../features/chat-slice/chatSlice';
-import { showStarredMessages, toggleFeatures } from '../../../features/toggle-slice/toggleSlice';
+import { starMessageToggle, featureToggles } from '../../../features/toggle-slice/toggleSlice';
 
 export default function DropBox(props) {
   const dropboxRef = useRef(null);
@@ -24,7 +24,7 @@ export default function DropBox(props) {
 
     const data = await response.json();
     dispatch(updateChat(data));
-    dispatch(showStarredMessages());
+    dispatch(starMessageToggle());
     console.log(data);
   }
 
@@ -43,24 +43,24 @@ export default function DropBox(props) {
   return (
     <>
       {
-        !toggleFeaturesState ?
+        !toggleFeaturesState && !displayStarredMessages ?
         <img onClick={ openDropBox } src={ menu } id='dropboxBtn' alt="" className='my-2 h-12 rounded-full hover:bg-violet-400' /> 
         : null
       }
 
       {
-        !displayStarredMessages ? 
+        // !displayStarredMessages ? 
         <ul ref={ dropboxRef } className='absolute top-[15%] right-[33.5%] z-10 shadow-lg bg-violet-50 text-black' style={{ display: 'none' }}>
           <li onClick={ () => props.setToggle('showProfile') } className='px-4 py-2 hover:bg-violet-100'>Profile</li>
-          <li onClick={ () => dispatch(toggleFeatures()) } className='px-4 py-2 hover:bg-violet-100'>Select messages</li>
+          {/* <li onClick={ () => dispatch(toggleFeatures()) } className='px-4 py-2 hover:bg-violet-100'>Select messages</li> */}
           <li onClick={ () => getStarredMessages() } className='px-4 py-2 hover:bg-violet-100'>Starred Messages</li>
           <li className='px-4 py-2 hover:bg-violet-100'>Disappearing messages</li>
           <li className='px-4 py-2 hover:bg-violet-100'>Wallpaper</li>
           <li className='px-4 py-2 hover:bg-violet-100'>More</li>
         </ul>
-        : <ul ref={ dropboxRef } className='absolute top-[100%] right-0 z-10 shadow-lg bg-white text-black' style={{ display: 'none' }}>
-            <li onClick={ () => dispatch(toggleFeatures()) } className='px-4 py-2 hover:bg-violet-100'>Select messages</li>
-          </ul>
+        // : <ul ref={ dropboxRef } className='absolute top-[100%] right-0 z-10 shadow-lg bg-white text-black' style={{ display: 'none' }}>
+        //     <li onClick={ () => dispatch(toggleFeatures()) } className='px-4 py-2 hover:bg-violet-100'>Select messages</li>
+        //   </ul>
       }
     </>
   )
