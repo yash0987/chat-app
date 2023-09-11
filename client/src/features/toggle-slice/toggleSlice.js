@@ -9,11 +9,11 @@ export const toggleSlice = createSlice({
         }
     },
     reducers: {
-        toggleFeatures: (state) => {
-            state.value.toggleFeatures = !state.value.toggleFeatures;
+        featuresToggle: (state, action) => {
+            state.value.toggleFeatures = action.payload;
         },
-        showStarredMessages: (state) => {
-            state.value.showStarredMessages = !state.value.showStarredMessages;
+        starMessagesToggle: (state, action) => {
+            state.value.showStarredMessages = action.payload;
         },
         setTogglesToDefault: (state) => {
             state.value = { toggleFeatures: false, showStarredMessages: false };
@@ -21,5 +21,5 @@ export const toggleSlice = createSlice({
     }
 })
 
-export const { toggleFeatures, showStarredMessages, setTogglesToDefault } = toggleSlice.actions;
+export const { featuresToggle, starMessagesToggle, setTogglesToDefault } = toggleSlice.actions;
 export default toggleSlice.reducer;

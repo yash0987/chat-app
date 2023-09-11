@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import SenderMsg from './SenderMsg';
 import ReceiverMsg from './ReceiverMsg';
-import { toggleFeatures } from '../../features/toggle-slice/toggleSlice';
+import { featuresToggle } from '../../features/toggle-slice/toggleSlice';
 
 export default function Message(props) {
   const scroll = useRef(null);
@@ -15,7 +15,7 @@ export default function Message(props) {
   }, [chat.length])
 
   useEffect(() => {
-    if (!selectedMessagesList.length) dispatch(toggleFeatures());
+    if (!selectedMessagesList.length) dispatch(featuresToggle(false));
     // eslint-disable-next-line
   }, [selectedMessagesList.length])
 

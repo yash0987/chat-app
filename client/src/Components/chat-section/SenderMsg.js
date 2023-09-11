@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectMessage, unselectAllMessages, unselectMessage } from '../../features/select-message-slice/selectMessageSlice';
-import { toggleFeatures } from '../../features/toggle-slice/toggleSlice';
+import { featuresToggle } from '../../features/toggle-slice/toggleSlice';
 
 export default function SenderMsg(props) {
   const [highlightSelectMessage, setHighlightSelectMessage] = useState(0);
@@ -39,7 +39,7 @@ export default function SenderMsg(props) {
     holdEventTimer.current = setTimeout(() => {
       console.log("I am holding for selecting messages");
       selectAndUnselectMessage();
-      dispatch(toggleFeatures());
+      dispatch(featuresToggle(true));
     }, 1000);
   }
 
