@@ -1,8 +1,8 @@
 import React from 'react';
-import PersonDetails from './chat-bar/PersonDetails';
-import DropBox from './chat-bar/DropBox';
-import Features from './chat-bar/Features';
 import { useSelector } from 'react-redux';
+import PersonDetails from './PersonDetails';
+import DropBox from './DropBox';
+import Features from './Features';
 
 export default function ChatBar(props) {
   const toggleFeaturesState = useSelector(state => state.toggle.value.toggleFeatures);
