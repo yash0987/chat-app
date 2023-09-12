@@ -1,9 +1,9 @@
 import React, { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import EmojiPicker from 'emoji-picker-react';
-import { appendChat } from '../../features/chat-slice/chatSlice';
-import sendMessageBtn from './../../img/sendMessageBtn.png';
-import emoji from './../../img/emoji.png';
+import { appendChat } from '../../../features/chat-slice/chatSlice';
+import sendMessageBtn from './../../../img/sendMessageBtn.png';
+import emoji from './../../../img/emoji.png';
 
 export default function TextBox(props) {
   const user = useSelector(state => state.auth.value.user);
@@ -80,9 +80,6 @@ export default function TextBox(props) {
 
   return (
     <>
-      <div ref={emojiPanelRef} style={{display: 'none'}}>
-        <EmojiPicker width={1024} height={350} previewConfig={{showPreview: false}} skinTonePickerLocation="SEARCH" onEmojiClick={selectEmoji} />
-      </div>
       <div className='px-2 flex bg-white'>
         <button>
           <img onClick={openEmojiPanel} src={emoji} alt="" className='w-12 p-2 rounded-full hover:bg-violet-200' />
@@ -93,6 +90,9 @@ export default function TextBox(props) {
         <button>
           <img onClick={displayMessage} src={ sendMessageBtn } alt="" className='w-12 rounded-full bg-violet-400 hover:bg-violet-500' />
         </button>
+      </div>
+      <div ref={emojiPanelRef} style={{display: 'none'}}>
+        <EmojiPicker width={1024} height={350} previewConfig={{showPreview: false}} skinTonePickerLocation="SEARCH" onEmojiClick={selectEmoji} />
       </div>
       {/* <div className='p-2 h-14 flex bg-white'>
         <img onClick={openEmojiPanel} src={emoji} alt="" className='w-10 p-2 rounded-full hover:bg-violet-200' />
