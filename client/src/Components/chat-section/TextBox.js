@@ -69,9 +69,10 @@ export default function TextBox(props) {
   }
 
   window.onkeydown = (event) => {
-    const messageBoxValue = messageBoxRef.current.value;
-    if (messageBoxValue.trim() !== "" && event.key === "Enter") {
+    if (event.key === "Enter" && !event.shiftKey) {
       event.preventDefault();
+      const messageBoxValue = messageBoxRef.current.value;
+      if (messageBoxValue.trim() === "") return ;
       console.log("I am send message on click enter key");
       displayMessage();
     }
@@ -82,13 +83,23 @@ export default function TextBox(props) {
       <div ref={emojiPanelRef} style={{display: 'none'}}>
         <EmojiPicker width={1024} height={350} previewConfig={{showPreview: false}} skinTonePickerLocation="SEARCH" onEmojiClick={selectEmoji} />
       </div>
-      <div className='p-2 h-14 flex bg-white'>
+      <div className='p-2 flex bg-white'>
+        <button className='flex flex-col justify-end'>
+          <img onClick={openEmojiPanel} src={emoji} alt="" className='w-12 p-2 rounded-full hover:bg-violet-200' />
+        </button>
+        <textarea cols="0" rows="0" ref={messageBoxRef} placeholder='Type a message...' className='flex p-[6px] w-full resize-none focus:outline-none placeholder:text-violet-400'></textarea>
+        {/* <span role='textbox' contentEditable='true' ref={messageBoxRef} placeholder='Type a message...' className='p-[6px] w-full max-h-80 overflow-scroll resize-none focus:outline-none placeholder:text-violet-400'></span> */}
+        <button className='flex flex-col justify-end'>
+          <img onClick={displayMessage} src={ sendMessageBtn } alt="" className='w-12 rounded-full bg-violet-400 hover:bg-violet-500' />
+        </button>
+      </div>
+      {/* <div className='p-2 h-14 flex bg-white'>
         <img onClick={openEmojiPanel} src={emoji} alt="" className='w-10 p-2 rounded-full hover:bg-violet-200' />
         <textarea cols="0" rows="0" ref={messageBoxRef} placeholder='Type a message...' className='p-[6px] w-full resize-none focus:outline-none placeholder:text-violet-400'></textarea>
         <button onClick={displayMessage}>
           <img src={ sendMessageBtn } alt="" className='w-12 rounded-full bg-violet-400 hover:bg-violet-500' />
         </button>
-      </div>
+      </div> */}
     </>
   )
 }
