@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { prependChat, appendChat } from '../../features/chat-slice/chatSlice';
-import ChatBar from './ChatBar';
+import ChatBar from './chat-bar/ChatBar';
 import Messages from './Messages';
-import TextBox from './TextBox';
+import TextBox from './text-box/TextBox';
 import DeleteForMeModal from './../modal/DeleteForMeModal';
 import { ws } from './websocket';
 
