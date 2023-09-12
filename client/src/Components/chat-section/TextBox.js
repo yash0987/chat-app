@@ -83,13 +83,14 @@ export default function TextBox(props) {
       <div ref={emojiPanelRef} style={{display: 'none'}}>
         <EmojiPicker width={1024} height={350} previewConfig={{showPreview: false}} skinTonePickerLocation="SEARCH" onEmojiClick={selectEmoji} />
       </div>
-      <div className='p-2 flex bg-white'>
-        <button className='flex flex-col justify-end'>
+      <div className='px-2 flex bg-white'>
+        <button>
           <img onClick={openEmojiPanel} src={emoji} alt="" className='w-12 p-2 rounded-full hover:bg-violet-200' />
         </button>
-        <textarea cols="0" rows="0" ref={messageBoxRef} placeholder='Type a message...' className='flex p-[6px] w-full resize-none focus:outline-none placeholder:text-violet-400'></textarea>
-        {/* <span role='textbox' contentEditable='true' ref={messageBoxRef} placeholder='Type a message...' className='p-[6px] w-full max-h-80 overflow-scroll resize-none focus:outline-none placeholder:text-violet-400'></span> */}
-        <button className='flex flex-col justify-end'>
+        <div className='flex flex-col justify-end w-full h-10 m-4'>
+          <textarea cols="0" rows="0" ref={messageBoxRef} placeholder='Type a message...' className='py-2 resize-none focus:outline-none placeholder:text-violet-400'></textarea>
+        </div>
+        <button>
           <img onClick={displayMessage} src={ sendMessageBtn } alt="" className='w-12 rounded-full bg-violet-400 hover:bg-violet-500' />
         </button>
       </div>
