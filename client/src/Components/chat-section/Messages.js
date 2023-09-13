@@ -6,13 +6,12 @@ import { featuresToggle } from '../../features/toggle-slice/toggleSlice';
 
 export default function Message(props) {
   const scroll = useRef(null);
-  const chat = useSelector(state => state.chat.value);
   const selectedMessagesList = useSelector(state => state.selectmessage.value);
   const dispatch = useDispatch();
 
   useEffect(() => {
     scroll.current.scrollIntoView( { behavior: 'smooth' } );
-  }, [chat.length])
+  }, [props.elementArray.length])
 
   useEffect(() => {
     if (!selectedMessagesList.length) dispatch(featuresToggle(false));
