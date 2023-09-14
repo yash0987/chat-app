@@ -6,6 +6,7 @@ export const replySlice = createSlice({
         value: {
             replyToPerson: null,
             replyForMessage: null,
+            repliedMessageID: null
         }
     },
     reducers: {

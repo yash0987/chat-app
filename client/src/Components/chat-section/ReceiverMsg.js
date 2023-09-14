@@ -52,12 +52,31 @@ export default function ReceiverMsg(props) {
   }
 
   return (
-    <section onMouseDown={ () => triggerHoldEvent() } onMouseUp={ () => stopHoldEvent() } onMouseLeave={ () => stopHoldEvent() } className = {`${ highlightSelectMessage && toggleFeaturesState ? 'bg-violet-500 bg-opacity-20' : 'bg-none' } select-none rounded-md flex justify-start my-1 p-1`} data-person='receiver'>
+    <section onMouseDown={ () => triggerHoldEvent() } onMouseUp={ () => stopHoldEvent() } onMouseLeave={ () => stopHoldEvent() } id={props.element.messageID} className = {`${ highlightSelectMessage && toggleFeaturesState ? 'bg-violet-500 bg-opacity-20' : 'bg-none' } select-none rounded-md flex justify-start my-1 p-1`} data-person='receiver'>
       { toggleFeaturesState ? <div className='m-2'>&#9552;</div> : null }
       <p className = 'whitespace-pre-wrap break-words max-w-lg px-2 py-1 rounded-md text-white bg-violet-500'>
+        { 
+          props.element.replyToMessage ?
+          <a href={`#${props.element.replyToMessage.repliedMessageID}`}>            
+            <div href={`#${props.element.replyToMessage.repliedMessageID}`} className='border-l-4 border-pink-500 bg-violet-300 w-full p-2 rounded text-sm'>
+              <div className='flex justify-between'>
+                <p className='text-pink-500'>{ props.element.replyToMessage.replyToPerson }</p>
+              </div>
+              <p className='whitespace-pre-wrap break-words text-white leading-tight'>{ props.element.replyToMessage.replyForMessage }</p>
+            </div>
+          </a>
+          : null
+        }
         { props.element.collectedText }
         <span className = 'flex justify-end text-[10px] text-white'> { props.element.star ? <span>&#9733;  </span> : null } { props.element.currentMsgTime } </span>
       </p>
     </section>
+    // <section onMouseDown={ () => triggerHoldEvent() } onMouseUp={ () => stopHoldEvent() } onMouseLeave={ () => stopHoldEvent() } className = {`${ highlightSelectMessage && toggleFeaturesState ? 'bg-violet-500 bg-opacity-20' : 'bg-none' } select-none rounded-md flex justify-start my-1 p-1`} data-person='receiver'>
+    //   { toggleFeaturesState ? <div className='m-2'>&#9552;</div> : null }
+    //   <p className = 'whitespace-pre-wrap break-words max-w-lg px-2 py-1 rounded-md text-white bg-violet-500'>
+    //     { props.element.collectedText }
+    //     <span className = 'flex justify-end text-[10px] text-white'> { props.element.star ? <span>&#9733;  </span> : null } { props.element.currentMsgTime } </span>
+    //   </p>
+    // </section>
   )
 }
