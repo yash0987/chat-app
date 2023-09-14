@@ -4,9 +4,12 @@ import EmojiPicker from 'emoji-picker-react';
 import { appendChat } from '../../../features/chat-slice/chatSlice';
 import sendMessageBtn from './../../../img/sendMessageBtn.png';
 import emoji from './../../../img/emoji.png';
+import ReplyToMessage from './ReplyToMessage';
 
 export default function TextBox(props) {
   const user = useSelector(state => state.auth.value.user);
+  const reply = useSelector(state => state.reply.value);
+  const showReplyMessage = useSelector(state => state.toggle.value.replyMessage);
   const dispatch = useDispatch();
   const messageBoxRef = useRef(null);
   const emojiPanelRef = useRef(null);
@@ -42,7 +45,12 @@ export default function TextBox(props) {
     const senderName = user.firstName + " " + user.familyName;
     const receiverName = props.secondPerson.fullName;
     const messageID = senderID + Date.now();
-    const messageData = { messageID, collectedText, currentMsgTime, senderID, receiverID, senderName, receiverName, star: false };
+    let messageData;
+    if (showReplyMessage) {
+      const replyToMessage = { replyToPerson: reply.replyToPerson, replyForMessage: reply.replyForMessage, repliedMessageID: reply.repliedMessageID };
+      messageData = { messageID, collectedText, currentMsgTime, senderID, receiverID, senderName, receiverName, replyToMessage, star: false };
+    }
+    else messageData = { messageID, collectedText, currentMsgTime, senderID, receiverID, senderName, receiverName, star: false };
 
     let emojiPanel = emojiPanelRef.current;
     if (emojiPanel.style.display === 'block') {
@@ -80,6 +88,7 @@ export default function TextBox(props) {
 
   return (
     <>
+      <ReplyToMessage />
       <div className='px-2 flex bg-white'>
         <button>
           <img onClick={openEmojiPanel} src={emoji} alt="" className='w-12 p-2 rounded-full hover:bg-violet-200' />

@@ -6,7 +6,7 @@ export const toggleSlice = createSlice({
         value: {
             toggleFeatures: false,
             showStarredMessages: false,
-            replayMessage: false
+            replyMessage: false
         }
     },
     reducers: {
@@ -17,10 +17,10 @@ export const toggleSlice = createSlice({
             state.value.showStarredMessages = action.payload;
         },
         replyMessageToggle: (state, action) => {
-            state.value.replayMessage = action.payload;
+            state.value.replyMessage = action.payload;
         },
         setTogglesToDefault: (state) => {
-            state.value = { toggleFeatures: false, showStarredMessages: false, replayMessage: false };
+            state.value = { toggleFeatures: false, showStarredMessages: false, replyMessage: false };
         }
     }
 })

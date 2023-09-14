@@ -4,6 +4,7 @@ import authReducer from '../features/auth-slice/authSlice';
 import modalReducer from '../features/modal-slice/modalSlice';
 import selectMessageReducer from '../features/select-message-slice/selectMessageSlice';
 import toggleReducer from '../features/toggle-slice/toggleSlice';
+import replyReducer from '../features/reply-slice/replySlice';
 
 export default configureStore({
     reducer: {
@@ -12,5 +13,6 @@ export default configureStore({
         modal: modalReducer,
         selectmessage: selectMessageReducer,
         toggle: toggleReducer,
+        reply: replyReducer,
     }
 })
