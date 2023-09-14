@@ -307,6 +307,7 @@ router.get('/chat/data', (req, res) => {
                     receiverID: element.receiverID,
                     senderName: element.senderName,
                     receiverName: element.receiverName,
+                    replyToMessage: element.replyToMessage,
                     star
                 };
             })
