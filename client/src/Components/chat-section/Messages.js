@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import SenderMsg from './SenderMsg';
-import ReceiverMsg from './ReceiverMsg';
+import SentMessageBox from './SentMessageBox';
+import ReceivedMessageBox from './ReceivedMessageBox';
 import { featuresToggle } from '../../features/toggle-slice/toggleSlice';
 
 export default function Message(props) {
@@ -25,9 +25,9 @@ export default function Message(props) {
         props.elementArray.map((element) => {
           keyValue++;
           if (element.senderID === props.googleID) {
-            return <SenderMsg key={keyValue} star={props.star} setStar={props.setStar} element={element} />;
+            return <SentMessageBox key={keyValue} star={props.star} setStar={props.setStar} element={element} />;
           }
-          return <ReceiverMsg key={keyValue} star={props.star} setStar={props.setStar} element={element} />;
+          return <ReceivedMessageBox key={keyValue} star={props.star} setStar={props.setStar} element={element} />;
         })
       }
       <div ref={ scroll }></div>

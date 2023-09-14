@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { selectMessage, unselectAllMessages, unselectMessage } from '../../features/select-message-slice/selectMessageSlice';
 import { featuresToggle } from '../../features/toggle-slice/toggleSlice';
 
-export default function SenderMsg(props) {
+export default function SentMessageBox(props) {
   const [highlightSelectMessage, setHighlightSelectMessage] = useState(0);
   const holdEventTimer = useRef(null);
   const toggleFeaturesState = useSelector(state => state.toggle.value.toggleFeatures);
@@ -68,12 +68,5 @@ export default function SenderMsg(props) {
       </p>
       { toggleFeaturesState ? <div className='m-2'>&#9552;</div> : null }
     </section>
-    // <section onMouseDown={ () => triggerHoldEvent() } onMouseUp={ () => stopHoldEvent() } onMouseLeave={ () => stopHoldEvent() } className = {`${ highlightSelectMessage && toggleFeaturesState ? 'bg-violet-500 bg-opacity-20' : 'bg-none' } select-none rounded-md flex justify-end my-1 p-1`} data-person='sender'>
-    //   <p className = 'whitespace-pre-wrap break-words px-2 py-1 max-w-lg rounded-md bg-gray-200 text-gray-600'>
-    //     { props.element.collectedText }
-    //     <span className = 'flex justify-end text-[10px]'> { props.element.star ? <span>&#9733;  </span> : null } { props.element.currentMsgTime } </span>
-    //   </p>
-    //   { toggleFeaturesState ? <div className='m-2'>&#9552;</div> : null }
-    // </section>
   )
 }
