@@ -2,7 +2,7 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import { emptyChat } from './../../../features/chat-slice/chatSlice';
 import { unselectAllMessages } from '../../../features/select-message-slice/selectMessageSlice';
-import { starMessagesToggle } from '../../../features/toggle-slice/toggleSlice';
+import { replyMessageToggle, starMessagesToggle } from '../../../features/toggle-slice/toggleSlice';
 
 export default function Friend(props) {
   const dispatch = useDispatch();
@@ -17,6 +17,7 @@ export default function Friend(props) {
     props.setToggle('showChatSection');
     dispatch(unselectAllMessages());
     dispatch(starMessagesToggle(false));
+    dispatch(replyMessageToggle(false));
     dispatch(emptyChat());
   }
 

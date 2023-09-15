@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import replyIcon from './../../../img/reply.png';
 import { replyMessageToggle } from '../../../features/toggle-slice/toggleSlice';
 import { reply } from '../../../features/reply-slice/replySlice';
+import { unselectAllMessages } from '../../../features/select-message-slice/selectMessageSlice';
 
 export default function Reply() {
   const selectedMessagesList = useSelector(state => state.selectmessage.value);
@@ -20,6 +21,7 @@ export default function Reply() {
       }
     })
     dispatch(replyMessageToggle(true));
+    dispatch(unselectAllMessages());
   }
 
   return (
