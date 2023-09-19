@@ -7,7 +7,7 @@ import ChatSection from './chat-section/ChatSection';
 import CreateGroup from './CreateGroup';
 import Profile from './Profile';
 import DefaultPage from './DefaultPage';
-import SideBar from './SideBar';
+import SideBar from './sidebar/SideBar';
 
 export default function HomePage() {
   const [toggle, setToggle] = useState('showSearch');

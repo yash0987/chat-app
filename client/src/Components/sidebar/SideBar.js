@@ -1,10 +1,11 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import profile from '../img/profile.png';
-import star from '../img/star.png';
-import theme from '../img/theme.png';
-import wallpaper from '../img/wallpaper.png';
-import logout from '../img/logout.png';
+import profile from '../../img/profile.png';
+import star from '../../img/star.png';
+import theme from '../../img/theme.png';
+import wallpaper from '../../img/wallpaper.png';
+import Logout from './Logout';
+
 
 export default function SideBar(props) {
   const user = useSelector(state => state.auth.value.user);
@@ -33,19 +34,16 @@ export default function SideBar(props) {
 
         <li className='flex p-2 ml-3 rounded-l-full hover:bg-violet-100'>
           <img src={theme} alt="" className='mx-2 w-8' />
-          <span className='m-1'>Themes and Wallpaper</span>
+          <span className='m-1'>Themes</span>
         </li>
         <li className='flex p-2 ml-3 rounded-l-full hover:bg-violet-100'>
         <img src={wallpaper} alt="" className='mx-2 w-8' />
-          <span className='m-1'>Wallpaper</span>
+          <span className='m-1'>Wallpapers</span>
         </li>
 
         <hr className='my-3' />
 
-        <li className='flex p-2 ml-3 rounded-l-full hover:bg-violet-100'>
-          <img src={logout} alt="" className='mx-2 w-8' />
-          <span className='m-1'>Log out</span>
-        </li>
+        <Logout />
       </ul>
     </div>
     : null
