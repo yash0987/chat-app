@@ -32,7 +32,7 @@ export default function SideBar(props) {
 
         <hr className='my-3' />
 
-        <li className='flex p-2 ml-3 rounded-l-full hover:bg-violet-100'>
+        <li onClick={() => props.setToggle('showThemes')} className='flex p-2 ml-3 rounded-l-full hover:bg-violet-100'>
           <img src={theme} alt="" className='mx-2 w-8' />
           <span className='m-1'>Themes</span>
         </li>
