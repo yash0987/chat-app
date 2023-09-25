@@ -5,6 +5,7 @@ import modalReducer from '../features/modal-slice/modalSlice';
 import selectMessageReducer from '../features/select-message-slice/selectMessageSlice';
 import toggleReducer from '../features/toggle-slice/toggleSlice';
 import replyReducer from '../features/reply-slice/replySlice';
+import themeReducer from '../features/theme-slice/themeSlice';
 
 export default configureStore({
     reducer: {
@@ -14,5 +15,6 @@ export default configureStore({
         selectmessage: selectMessageReducer,
         toggle: toggleReducer,
         reply: replyReducer,
+        theme: themeReducer,
     }
 })
