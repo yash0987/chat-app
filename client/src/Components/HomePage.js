@@ -8,6 +8,8 @@ import CreateGroup from './CreateGroup';
 import Profile from './Profile';
 import DefaultPage from './DefaultPage';
 import SideBar from './sidebar/SideBar';
+import Themes from './sidebar/Themes';
+import ColorPalette from './sidebar/ColorPalette';
 
 export default function HomePage() {
   const [toggle, setToggle] = useState('showSearch');
@@ -59,11 +61,17 @@ export default function HomePage() {
         {
           toggle === 'showChatSection' ? <ChatSection oldChatPerson={oldChatPerson} secondPerson={secondPerson} toggle={toggle} setToggle={setToggle} /> :
           toggle === 'showProfile' ? <Profile setToggle={setToggle} secondPerson={secondPerson} /> :
-          toggle ==='showCreateGroup' ? <CreateGroup setToggle={setToggle} /> :
+          toggle === 'showCreateGroup' ? <CreateGroup setToggle={setToggle} /> :
+          toggle === 'showThemes' ? <Themes /> :
           <DefaultPage />
         }
-        <FriendSection setOldChatPerson={setOldChatPerson} setSecondPerson={setSecondPerson} secondPerson={secondPerson} setToggle={setToggle} />
-        <SideBar settingToggle={settingToggle} setSettingToggle={setSettingToggle} />
+
+        {
+          toggle !== 'showThemes' ? 
+          <FriendSection setOldChatPerson={setOldChatPerson} setSecondPerson={setSecondPerson} secondPerson={secondPerson} setToggle={setToggle} /> :
+          <ColorPalette />
+        }
+        <SideBar setToggle={setToggle} settingToggle={settingToggle} setSettingToggle={setSettingToggle} />
       </div>
     </div>) : null
   )
