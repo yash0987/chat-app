@@ -3,7 +3,7 @@ import { useSelector, useDispatch} from 'react-redux';
 import copy from './../../../img/copy.png';
 import { unselectAllMessages } from '../../../features/select-message-slice/selectMessageSlice';
 
-export default function CopyMessages() {
+export default function Copy() {
   const selectedMessagesList = useSelector(state => state.selectmessage.value);
   const chat = useSelector(state => state.chat.value);
   const theme = useSelector(state => state.theme.value);

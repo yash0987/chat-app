@@ -4,7 +4,7 @@ import { updateChat } from '../../../features/chat-slice/chatSlice';
 import { unselectAllMessages } from '../../../features/select-message-slice/selectMessageSlice';
 import unstar from './../../../img/unstar.png';
 
-export default function StarMessages(props) {
+export default function Star(props) {
   const chat = useSelector(state => state.chat.value);
   const selectedMessagesList = useSelector(state => state.selectmessage.value);
   const theme = useSelector(state => state.theme.value);
