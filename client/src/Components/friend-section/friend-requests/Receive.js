@@ -1,6 +1,9 @@
 import React from 'react'
+import { useSelector } from 'react-redux';
 
 export default function Receive(props) {
+  const theme = useSelector(state => state.theme.value);
+  
   async function acceptFriendRequest(event) {
     const ID = props.friendInfo.googleID;
     const fullName = props.friendInfo.fullName;
@@ -44,20 +47,20 @@ export default function Receive(props) {
   }
   
   return (
-    <section className='flex justify-between mx-1 px-6 py-2 rounded-lg hover:bg-violet-100'>
-        <div className='flex'>
-            <div>
-              <img src={ props.friendInfo.photoURL } alt="" className='w-10 rounded-full' />
-            </div>
-            <div className='mx-4'>
-              <p>{ props.friendInfo.fullName }</p>
-              <p className='text-[10px] text-gray-400'>{ props.friendInfo.googleID }</p>
-            </div>
-        </div>
-        <div className='flex'>
-            <button onClick={acceptFriendRequest} className='mx-1 my-2 px-3 py-1 text-xs rounded border-[1px] border-gray-400'>Accept</button>
-            <button onClick={declineFriendRequest} className='mx-1 my-2 px-3 py-1 text-xs rounded border-[1px] border-gray-400'>Decline</button>
-        </div>
+    <section className={`flex justify-between mx-1 px-6 py-2 rounded-lg ${theme.hoverBg100}`}>
+      <div className='flex'>
+          <div>
+            <img src={ props.friendInfo.photoURL } alt="" className='w-10 rounded-full' />
+          </div>
+          <div className='mx-4'>
+            <p>{ props.friendInfo.fullName }</p>
+            <p className='text-[10px] text-gray-400'>{ props.friendInfo.googleID }</p>
+          </div>
+      </div>
+      <div className='flex'>
+          <button onClick={acceptFriendRequest} className='mx-1 my-2 px-3 py-1 text-xs rounded border-[1px] border-gray-400'>Accept</button>
+          <button onClick={declineFriendRequest} className='mx-1 my-2 px-3 py-1 text-xs rounded border-[1px] border-gray-400'>Decline</button>
+      </div>
     </section>
   )
 }

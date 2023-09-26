@@ -7,6 +7,7 @@ export default function SentMessageBox(props) {
   const [highlightSelectMessage, setHighlightSelectMessage] = useState(0);
   const holdEventTimer = useRef(null);
   const toggleFeaturesState = useSelector(state => state.toggle.value.toggleFeatures);
+  const theme = useSelector(state => state.theme.value);
   const dispatch = useDispatch();
 
   function selectAndUnselectMessage() {
@@ -50,7 +51,7 @@ export default function SentMessageBox(props) {
   }
   
   return (
-    <section onMouseDown={ () => triggerHoldEvent() } onMouseUp={ () => stopHoldEvent() } onMouseLeave={ () => stopHoldEvent() } id={props.element.messageID} className = {`${ highlightSelectMessage && toggleFeaturesState ? 'bg-violet-500 bg-opacity-20' : 'bg-none' } select-none rounded-md flex justify-end my-1 p-1`} data-person='sender'>
+    <section onMouseDown={ () => triggerHoldEvent() } onMouseUp={ () => stopHoldEvent() } onMouseLeave={ () => stopHoldEvent() } id={props.element.messageID} className = {`${ highlightSelectMessage && toggleFeaturesState ? `${theme.bg500} bg-opacity-20` : 'bg-none' } select-none rounded-md flex justify-end my-1 p-1`} data-person='sender'>
       <p className = 'whitespace-pre-wrap break-words px-2 py-1 max-w-lg rounded-md bg-gray-200 text-gray-600'>
         { 
           props.element.replyToMessage ?

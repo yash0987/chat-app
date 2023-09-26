@@ -10,6 +10,7 @@ import { ws } from './websocket';
 export default function ChatSection(props) {
   const chat = useSelector(state => state.chat);
   const user = useSelector(state => state.auth.value.user);
+  const theme = useSelector(state => state.theme.value);
   const dispatch = useDispatch();
   const [star, setStar] = useState(0);
   
@@ -71,7 +72,7 @@ export default function ChatSection(props) {
   }, [room]);
 
   return (
-    <section className='col-span-2 h-[91vh] flex flex-col overflow-hidden bg-violet-50'>
+    <section className={`col-span-2 h-[91vh] flex flex-col overflow-hidden ${theme.bg50}`}>
       <ChatBar getChat={getChat} star={star} setStar={setStar} setToggle={props.setToggle} secondPerson={props.secondPerson} room={room} ws={ws} />
       <Messages star={star} setStar={setStar} elementArray={chat.value} googleID={user.googleID} />
       <TextBox secondPerson={props.secondPerson} ws={ws} />

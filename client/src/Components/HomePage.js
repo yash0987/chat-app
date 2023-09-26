@@ -17,6 +17,7 @@ export default function HomePage() {
   const [oldChatPerson, setOldChatPerson] = useState({});
   const [settingToggle, setSettingToggle] = useState(false);
   const auth = useSelector((state) => state.auth.value);
+  const theme = useSelector(state => state.theme.value);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -55,14 +56,14 @@ export default function HomePage() {
 
   return (
     auth.authenticated ?
-    (<div className='w-screen h-screen bg-violet-100'>
+    (<div className={`w-screen h-screen ${theme.bg100}`}>
       <Navbar setSettingToggle={setSettingToggle} />
-      <div className={`grid grid-cols-3 grid-rows-1 bg-violet-100`}>
+      <div className={`grid grid-cols-3 grid-rows-1 ${theme.bg100}`}>
         {
           toggle === 'showChatSection' ? <ChatSection oldChatPerson={oldChatPerson} secondPerson={secondPerson} toggle={toggle} setToggle={setToggle} /> :
           toggle === 'showProfile' ? <Profile setToggle={setToggle} secondPerson={secondPerson} /> :
           toggle === 'showCreateGroup' ? <CreateGroup setToggle={setToggle} /> :
-          toggle === 'showThemes' ? <Themes /> :
+          toggle === 'showThemes' ? <Themes setToggle={setToggle} /> :
           <DefaultPage />
         }
 

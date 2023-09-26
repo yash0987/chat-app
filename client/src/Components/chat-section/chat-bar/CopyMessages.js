@@ -6,6 +6,7 @@ import { unselectAllMessages } from '../../../features/select-message-slice/sele
 export default function CopyMessages() {
   const selectedMessagesList = useSelector(state => state.selectmessage.value);
   const chat = useSelector(state => state.chat.value);
+  const theme = useSelector(state => state.theme.value);
   const dispatch = useDispatch();
 
   function copyText() {
@@ -35,7 +36,7 @@ export default function CopyMessages() {
   
   return (
     <section>
-      <img onClick={ () => copyText() } src={copy} alt="" className='mx-1 w-10 rounded-full hover:bg-violet-400' />
+      <img onClick={ () => copyText() } src={copy} alt="" className={`mx-1 w-10 rounded-full ${theme.hoverBg400}`} />
     </section>
   )
 }

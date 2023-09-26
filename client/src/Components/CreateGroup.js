@@ -26,6 +26,7 @@ export default function CreateGroup(props) {
   const imageRef = useRef(null);
   const friendListRef = useRef(null);
   const GroupPhotoPanelRef = useRef(null);
+  const theme = useSelector(state => state.theme.value);
 
   function selectImage(event) {
     const imageURL = event.target.src;
@@ -77,7 +78,7 @@ export default function CreateGroup(props) {
   let keyValue = 0;
 
   return (
-    <section className='col-span-2 p-5 h-[91vh] bg-violet-50'>
+    <section className={`col-span-2 p-5 h-[91vh] ${theme.bg50}`}>
       <div className='m-5 flex justify-center'>
         <img ref={imageRef} src="https://i.pinimg.com/originals/0a/1b/94/0a1b94c2a2c47651d174f4b91ce21eb9.jpg" alt="" className='w-36 h-36 rounded-full object-cover' />
       </div>
@@ -105,7 +106,7 @@ export default function CreateGroup(props) {
         {
           user.friendsID.map((element) => {
             return <section className='px-4 flex'>
-              <label className='flex p-2 w-full rounded-lg font-semibold hover:bg-violet-100'>
+              <label className={`flex p-2 w-full rounded-lg font-semibold ${theme.hoverBg100}`}>
                 <input type="checkbox" name="" id="" className='mx-5 accent-violet-500' />
                 <div className='flex'>
                     <img src={ element.photoURL } alt="" className='w-10 rounded-full' />
@@ -121,8 +122,8 @@ export default function CreateGroup(props) {
       </div>
 
       <div className='mx-2'>
-        <button onClick={createGroup} className='m-2 px-4 py-2 bg-violet-400 text-white rounded-lg hover:bg-violet-500'>Create</button>
-        <button onClick={cancelGroup} className='m-2 px-4 py-2 bg-violet-400 text-white rounded-lg hover:bg-violet-500'>Cancel</button>
+        <button onClick={createGroup} className={`m-2 px-4 py-2 ${theme.bg400} text-white rounded-lg ${theme.hoverBg500}`}>Create</button>
+        <button onClick={cancelGroup} className={`m-2 px-4 py-2 ${theme.bg400} text-white rounded-lg ${theme.hoverBg500}`}>Cancel</button>
       </div>
     </section>
   )

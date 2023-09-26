@@ -8,6 +8,7 @@ import { unselectAllMessages } from '../../../features/select-message-slice/sele
 export default function Reply() {
   const selectedMessagesList = useSelector(state => state.selectmessage.value);
   const chat = useSelector(state => state.chat.value);
+  const theme = useSelector(state => state.theme.value);
   const dispatch = useDispatch();
 
   function replyToThisMessage() {
@@ -26,7 +27,7 @@ export default function Reply() {
 
   return (
     selectedMessagesList.length === 1 ? 
-      <img onClick={ () => replyToThisMessage() } src={replyIcon} alt="" className='mx-1 w-10 rounded-full hover:bg-violet-400' /> 
+      <img onClick={ () => replyToThisMessage() } src={replyIcon} alt="" className={`mx-1 w-10 rounded-full ${theme.hoverBg400}`} /> 
     : null    
   )
 }

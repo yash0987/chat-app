@@ -1,10 +1,11 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { emptyChat } from './../../../features/chat-slice/chatSlice';
 import { unselectAllMessages } from '../../../features/select-message-slice/selectMessageSlice';
 import { replyMessageToggle, starMessagesToggle } from '../../../features/toggle-slice/toggleSlice';
 
 export default function Friend(props) {
+  const theme = useSelector(state => state.theme.value);
   const dispatch = useDispatch();
 
   function openChat(event) {
@@ -22,7 +23,7 @@ export default function Friend(props) {
   }
 
   return (
-    <section onClick={openChat} className='flex justify-between mx-2 px-6 py-2 rounded-lg font-semibold hover:bg-violet-100'>
+    <section onClick={openChat} className={`flex justify-between mx-2 px-6 py-2 rounded-lg font-semibold ${theme.hoverBg100}`}>
       <div className='flex'>
         <img src={ props.friendInfo.photoURL } alt="" className='w-10 rounded-full' />
         <div className='mx-4'>

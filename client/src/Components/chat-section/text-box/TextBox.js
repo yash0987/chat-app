@@ -10,6 +10,7 @@ export default function TextBox(props) {
   const user = useSelector(state => state.auth.value.user);
   const reply = useSelector(state => state.reply.value);
   const showReplyMessage = useSelector(state => state.toggle.value.replyMessage);
+  const theme = useSelector(state => state.theme.value);
   const dispatch = useDispatch();
   const messageBoxRef = useRef(null);
   const emojiPanelRef = useRef(null);
@@ -91,13 +92,13 @@ export default function TextBox(props) {
       <ReplyToMessage />
       <div className='px-2 flex bg-white'>
         <button>
-          <img onClick={openEmojiPanel} src={emoji} alt="" className='w-12 p-2 rounded-full hover:bg-violet-200' />
+          <img onClick={openEmojiPanel} src={emoji} alt="" className={`w-12 p-2 rounded-full ${theme.hoverBg200}`} />
         </button>
         <div className='flex flex-col justify-end w-full h-10 m-4'>
-          <textarea cols="0" rows="0" ref={messageBoxRef} placeholder='Type a message...' className='py-2 resize-none focus:outline-none placeholder:text-violet-400'></textarea>
+          <textarea cols="0" rows="0" ref={messageBoxRef} placeholder='Type a message...' className={`py-2 resize-none focus:outline-none ${theme.placeholderText400}`}></textarea>
         </div>
         <button>
-          <img onClick={displayMessage} src={ sendMessageBtn } alt="" className='w-12 rounded-full bg-violet-400 hover:bg-violet-500' />
+            <img onClick={displayMessage} src={ sendMessageBtn } alt="" className={`w-12 rounded-full ${theme.bg400} ${theme.hoverBg500}`} />
         </button>
       </div>
       <div ref={emojiPanelRef} style={{display: 'none'}}>

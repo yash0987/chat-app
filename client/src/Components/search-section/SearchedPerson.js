@@ -3,7 +3,8 @@ import { useSelector } from 'react-redux';
 
 export default function SearchedPerson(props) {
   const user = useSelector(state => state.auth.value.user);
-
+  const theme = useSelector(state => state.theme.value);
+  
   async function AddFriend() {
     const ID = props.person.googleID;
     const name = props.person.firstName + " " + props.person.familyName;
@@ -33,7 +34,7 @@ export default function SearchedPerson(props) {
   }
 
   return (
-    <section className='flex justify-between rounded px-6 py-2 hover:bg-violet-100'>
+    <section className={`flex justify-between rounded px-6 py-2 ${theme.hoverBg100}`}>
       <div className='flex'>
         <img src={ props.person.photoURL } alt="" className='w-11 rounded-full' />
         <div className='mx-4'>

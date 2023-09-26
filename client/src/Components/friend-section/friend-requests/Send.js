@@ -1,6 +1,9 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 
 export default function Send(props) {
+  const theme = useSelector(state => state.theme.value);
+
   async function cancelFriendRequest(event) {
     const ID = props.friendInfo.googleID;
     const fullName = props.friendInfo.fullName;
@@ -25,19 +28,19 @@ export default function Send(props) {
   console.log('this is length of string' + props.friendInfo.fullName.length);
 
   return (
-    <section className='flex justify-between mx-1 px-6 py-2 rounded-lg hover:bg-violet-100'>
-        <div className='flex'>
-          <div>
-            <img src={ props.friendInfo.photoURL } alt="" className='w-10 rounded-full' />
-          </div>
-          <div className='mx-4'>
-            <p>{ props.friendInfo.fullName }</p>
-            <p className='text-[10px] text-gray-400'>{ props.friendInfo.googleID }</p>
-          </div>
-        </div>
+    <section className={`flex justify-between mx-1 px-6 py-2 rounded-lg ${theme.hoverBg100}`}>
+      <div className='flex'>
         <div>
-            <button onClick={cancelFriendRequest} className='mx-1 my-2 px-3 py-1 text-xs rounded border-[1px] border-gray-400'>Cancel</button>
+          <img src={ props.friendInfo.photoURL } alt="" className='w-10 rounded-full' />
         </div>
+        <div className='mx-4'>
+          <p>{ props.friendInfo.fullName }</p>
+          <p className='text-[10px] text-gray-400'>{ props.friendInfo.googleID }</p>
+        </div>
+      </div>
+      <div>
+          <button onClick={cancelFriendRequest} className='mx-1 my-2 px-3 py-1 text-xs rounded border-[1px] border-gray-400'>Cancel</button>
+      </div>
     </section>
   )
 }

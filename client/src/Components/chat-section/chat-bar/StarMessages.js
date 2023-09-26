@@ -7,6 +7,7 @@ import unstar from './../../../img/unstar.png';
 export default function StarMessages(props) {
   const chat = useSelector(state => state.chat.value);
   const selectedMessagesList = useSelector(state => state.selectmessage.value);
+  const theme = useSelector(state => state.theme.value);
   const dispatch = useDispatch();
 
   async function starAndUnstarMessage() {
@@ -40,8 +41,8 @@ export default function StarMessages(props) {
   return (
     <div>{
       props.star ? 
-      <span onClick={ () => starAndUnstarMessage() } className='mx-1 px-2 text-3xl rounded-full hover:bg-violet-400'>&#9733;</span> : 
-      <img onClick={ () => starAndUnstarMessage() } src={unstar} alt="" className='mx-1 w-10 rounded-full hover:bg-violet-400' />
+      <span onClick={ () => starAndUnstarMessage() } className={`mx-1 px-2 text-3xl rounded-full ${theme.hoverBg400}`}>&#9733;</span> : 
+      <img onClick={ () => starAndUnstarMessage() } src={unstar} alt="" className={`mx-1 w-10 rounded-full ${theme.hoverBg400}`} />
     }</div>
   )
 }

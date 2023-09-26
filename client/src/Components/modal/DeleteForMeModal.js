@@ -8,6 +8,7 @@ export default function DeleteForMeModal(props) {
   const chat = useSelector(state => state.chat.value);
   const deleteModalState = useSelector(state => state.modal.value[0]);
   const selectedMessagesList = useSelector(state => state.selectmessage.value);
+  const theme = useSelector(state => state.theme.value);
   const dispatch = useDispatch();
 
   console.log(selectedMessagesList);
@@ -41,7 +42,7 @@ export default function DeleteForMeModal(props) {
     <section className='flex justify-center py-80 w-screen h-screen fixed top-0 left-0 bg-black bg-opacity-20'>
       <div className='p-5 w-1/5 h-28 rounded-sm bg-violet-50'>
         <p>{ selectedMessagesList.length < 2 ? `Delete message?` : `Delete ${selectedMessagesList.length} messages?` }</p>
-        <div className='text-violet-600'>
+        <div className={`${theme.text600}`}>
           <button onClick={ () => deleteForMe() } className='flex justify-end'>Delete for me</button>
           <button onClick={ () => dispatch(showDeleteModal(false)) }>Cancel</button>
         </div>

@@ -1,12 +1,15 @@
 import React from 'react'
+import { useSelector } from 'react-redux'
 
 export default function Group(props) {
+  const theme = useSelector(state => state.theme.value);
+
   function openChat() {
     
   }
 
   return (
-    <section className='flex justify-between mx-1 px-6 py-2 rounded-lg font-semibold hover:bg-violet-100'>
+    <section className={`flex justify-between mx-1 px-6 py-2 rounded-lg font-semibold ${theme.hoverBg100}`}>
         <div className='flex'>
             <img src={ props.GroupInfo.groupPhotoURL } alt="" className='w-10 rounded-full' />
             <div className='mx-4'>

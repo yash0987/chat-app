@@ -1,8 +1,10 @@
 import React, { useState } from 'react'
 import Groups from './Group';
+import { useSelector } from 'react-redux';
 
 export default function GroupSection(props) {
   const [groups, setGroups] = useState(null);
+  const theme = useSelector(state => state.theme.value);
   let keyValue = 0;
 
   function getGroups() {
@@ -33,7 +35,7 @@ export default function GroupSection(props) {
 
   return (
     <section>
-      <button onClick={createGroupComp} className='p-1 w-full flex justify-center text-violet-400 hover:bg-violet-200'>
+      <button onClick={createGroupComp} className={`p-1 w-full flex justify-center ${theme.text400} ${theme.hoverBg200}`}>
         <p className='p-2'>Create new group</p>
         <span className='text-3xl'>&#43;</span>
       </button>
