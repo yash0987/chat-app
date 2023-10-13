@@ -9,6 +9,7 @@ const cors = require('cors');
 const session = require('express-session');
 const authRouter = require('./routes/auth');
 const indexRouter = require('./routes/index');
+const filesRouter = require('./routes/multer');
 
 const app = express();
 const server = http.createServer(app);
@@ -28,6 +29,7 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(cors( { origin: 'http://localhost:3000', methods: "GET,HEAD,PUT,PATCH,POST,DELETE", credentials: true } ));
+app.use(express.json());
 
 app.use('/', authRouter);
 
@@ -52,6 +54,7 @@ const authCheck = (req, res, next) => {
 };
 
 app.use('/', authCheck, indexRouter);
+app.use('/', authCheck, filesRouter);
 
 async function main(room, message) {
     try {
