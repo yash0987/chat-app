@@ -6,6 +6,7 @@ import selectMessageReducer from '../features/select-message-slice/selectMessage
 import toggleReducer from '../features/toggle-slice/toggleSlice';
 import replyReducer from '../features/reply-slice/replySlice';
 import themeReducer from '../features/theme-slice/themeSlice';
+import wallpaperReducer from '../features/wallpaper-slice/wallpaperSlice';
 
 export default configureStore({
     reducer: {
@@ -16,5 +17,6 @@ export default configureStore({
         toggle: toggleReducer,
         reply: replyReducer,
         theme: themeReducer,
+        wallpaper: wallpaperReducer,
     }
 })

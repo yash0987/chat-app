@@ -10,6 +10,7 @@ import DefaultPage from './DefaultPage';
 import SideBar from './sidebar/SideBar';
 import Themes from './sidebar/Themes';
 import ColorPalette from './sidebar/ColorPalette';
+import Wallpapers from './sidebar/Wallpapers';
 
 export default function HomePage() {
   const [toggle, setToggle] = useState('showSearch');
@@ -63,14 +64,14 @@ export default function HomePage() {
           toggle === 'showChatSection' ? <ChatSection oldChatPerson={oldChatPerson} secondPerson={secondPerson} toggle={toggle} setToggle={setToggle} /> :
           toggle === 'showProfile' ? <Profile setToggle={setToggle} secondPerson={secondPerson} /> :
           toggle === 'showCreateGroup' ? <CreateGroup setToggle={setToggle} /> :
-          toggle === 'showThemes' ? <Themes setToggle={setToggle} /> :
+          toggle === 'showThemes' || toggle === 'showWallpapers' ? <Themes setToggle={setToggle} /> :
           <DefaultPage />
         }
 
         {
-          toggle !== 'showThemes' ? 
-          <FriendSection setOldChatPerson={setOldChatPerson} setSecondPerson={setSecondPerson} secondPerson={secondPerson} setToggle={setToggle} /> :
-          <ColorPalette />
+          toggle === 'showThemes' ? <ColorPalette /> :
+          toggle === 'showWallpapers' ? <Wallpapers /> :
+          <FriendSection setOldChatPerson={setOldChatPerson} setSecondPerson={setSecondPerson} secondPerson={secondPerson} setToggle={setToggle} />
         }
         <SideBar setToggle={setToggle} settingToggle={settingToggle} setSettingToggle={setSettingToggle} />
       </div>

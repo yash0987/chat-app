@@ -1,12 +1,13 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import backButton from '../../img/backButton.png';
 import menu from '../../img/menu.png';
 import emoji from '../../img/emoji.png';
 import sendMessageBtn from '../../img/sendMessageBtn.png';
-import { useSelector } from 'react-redux';
 
 export default function Themes(props) {
   const theme = useSelector(state => state.theme.value);
+  const wallpaper = useSelector(state => state.wallpaper.value);
   
   return (
     <section className='col-span-2 h-[91vh] grid grid-cols-1'>
@@ -22,7 +23,7 @@ export default function Themes(props) {
           <img src={ menu } alt="" className={`my-2 h-12 rounded-full`} />
         </div>
 
-        <div className='flex flex-col justify-end px-5 h-full overflow-y-scroll'>
+        <div className='flex flex-col justify-end px-5 h-full overflow-y-scroll' style={{backgroundImage: `url('${wallpaper}')`, backgroundSize: "100%"}}>
           <div className='select-none'>
             <div className='flex justify-start my-1 p-1 rounded-md text-white'>
               <p className={`px-2 py-1 rounded-md ${theme.bg500}`}>

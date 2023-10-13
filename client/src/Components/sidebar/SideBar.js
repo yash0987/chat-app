@@ -37,8 +37,8 @@ export default function SideBar(props) {
           <img src={themes} alt="" className='mx-2 w-8' />
           <span className='m-1'>Themes</span>
         </li>
-        <li className={`flex p-2 ml-3 rounded-l-full ${theme.hoverBg100}`}>
-        <img src={wallpaper} alt="" className='mx-2 w-8' />
+        <li onClick={() => props.setToggle('showWallpapers')} className={`flex p-2 ml-3 rounded-l-full ${theme.hoverBg100}`}>
+          <img src={wallpaper} alt="" className='mx-2 w-8' />
           <span className='m-1'>Wallpapers</span>
         </li>
 
