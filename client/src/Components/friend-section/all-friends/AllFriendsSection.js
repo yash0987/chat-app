@@ -1,9 +1,11 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 import Friend from './Friend';
 
 export default function AllFriendsSection(props) {
   const [friends, setFriends] = useState(null);
-  
+  const theme = useSelector(state => state.theme.value);
+
   function getFriends() {
     async function getData() {
       const friendListRequestURI = 'http://localhost:5000/friends/list';
@@ -28,6 +30,7 @@ export default function AllFriendsSection(props) {
 
   return (
     <section>
+      <input type="search" name="" id="" placeholder='Search friends' className={`my-4 mx-9 px-5 py-1 w-[85%] rounded-sm ${theme.bg50} border-[1px] border-b-[3px] ${theme.border500} font-normal focus:outline-none ${theme.placeholderText400}`} />
       {
         friends ? friends.map((element) => {
           keyValue++;

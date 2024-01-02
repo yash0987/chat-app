@@ -8,7 +8,7 @@ export default function Friend(props) {
   const theme = useSelector(state => state.theme.value);
   const dispatch = useDispatch();
 
-  function openChat(event) {
+  function openChat() {
     const ID = props.friendInfo.googleID;
     const fullName = props.friendInfo.fullName;
     const photoURL = props.friendInfo.photoURL;
@@ -23,7 +23,7 @@ export default function Friend(props) {
   }
 
   return (
-    <section onClick={openChat} className={`flex justify-between mx-2 px-6 py-2 rounded-lg font-semibold ${theme.hoverBg100}`}>
+    <section onClick={() => openChat()} className={`flex justify-between mx-2 px-6 py-2 rounded-lg font-semibold ${theme.hoverBg100}`}>
       <div className='flex'>
         <img src={ props.friendInfo.photoURL } alt="" className='w-10 rounded-full' />
         <div className='mx-4'>
