@@ -24,3 +24,14 @@ code {
   background: #b5b5b5;
   border-radius: 2px;
 }
+
+.animation-bar {
+  transition: linear;
+  transition-duration: 250ms;
+}
+
+#firstbtn:hover .animation-bar, #secondbtn:hover .animation-bar, #thirdbtn:hover .animation-bar {
+  transition: linear;
+  transition-duration: 250ms;
+  height: 2rem;
+}
