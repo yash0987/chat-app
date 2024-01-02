@@ -60,15 +60,15 @@ export default function FriendList(props) {
       <div className='grid grid-flow-row grid-rows-10 my-2 ml-2'>
         <button onClick={() => setFriendsList()} className='flex items-center justify-between' id='firstbtn'>
           <img src={personIcon} alt="" className={buttonStyle.first} />
-          <div className={`${block === 1? `h-[1rem] ${theme.bg600}`:`h-[7px] ${theme.bg500}`} my-1 w-[5px] rounded-l-full animation-bar`}></div>
+          <div className={`${block === 1? `h-[2rem] ${theme.bg600}`:`h-[7px] ${theme.bg500}`} my-1 w-[5px] rounded-l-full animation-bar`}></div>
         </button>
         <button onClick={() => setGroupList()} className='flex items-center justify-between' id='secondbtn'>
           <img src={groupIcon} alt="" className={buttonStyle.second} />
-          <div className={`${block === 2? `h-[1rem] ${theme.bg600}`:`h-[7px] ${theme.bg500}`} my-1 w-[5px] rounded-l-full animation-bar`}></div>
+          <div className={`${block === 2? `h-[2rem] ${theme.bg600}`:`h-[7px] ${theme.bg500}`} my-1 w-[5px] rounded-l-full animation-bar`}></div>
         </button>
         <button onClick={() => setFriendRequests()} className='flex items-center justify-between' id='thirdbtn'>
           <img src={inboxIcon} alt="" className={buttonStyle.third} />
-          <div className={`${block === 3? `h-[1rem] ${theme.bg600}`:`h-[7px] ${theme.bg500}`} my-1 w-[5px] rounded-l-full animation-bar`}></div>
+          <div className={`${block === 3? `h-[2rem] ${theme.bg600}`:`h-[7px] ${theme.bg500}`} my-1 w-[5px] rounded-l-full animation-bar`}></div>
         </button>
       </div>
     </section>

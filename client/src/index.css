@@ -27,11 +27,11 @@ code {
 
 .animation-bar {
   transition: linear;
-  transition-duration: 250ms;
+  transition-duration: 150ms;
 }
 
 #firstbtn:hover .animation-bar, #secondbtn:hover .animation-bar, #thirdbtn:hover .animation-bar {
   transition: linear;
-  transition-duration: 250ms;
-  height: 2rem;
+  transition-duration: 150ms;
+  height: 1rem;
 }
