@@ -11,8 +11,8 @@ export default function FriendList(props) {
   const theme = useSelector(state => state.theme.value);
   const [block, setBlock] = useState(1);
   const style = {
-    activeBtn: `${theme.bg500} ${theme.hoverBg600} w-12 rounded-[25px] hover:rounded-xl transition-all duration-200 peer`,
-    inactiveBtn: `${theme.bg400} ${theme.hoverBg500} w-12 rounded-[25px] hover:rounded-xl transition-all duration-200 peer`
+    activeBtn: `${theme.bg500} ${theme.hoverBg600} w-12 rounded-2xl peer`,
+    inactiveBtn: `${theme.bg400} ${theme.hoverBg500} w-12 rounded-[25px] hover:rounded-2xl peer`
   }
 
   const [buttonStyle, setbuttonStyle] = useState({
