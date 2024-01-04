@@ -11,8 +11,8 @@ export default function FriendList(props) {
   const theme = useSelector(state => state.theme.value);
   const [block, setBlock] = useState(1);
   const style = {
-    activeBtn: `${theme.bg500} ${theme.hoverBg600} w-12 rounded-2xl transition-all duration-200`,
-    inactiveBtn: `${theme.bg400} ${theme.hoverBg500} w-12 rounded-full hover:rounded-2xl hover:transition-all hover:duration-200 transition-all duration-200`
+    activeBtn: `${theme.bg500} ${theme.hoverBg600} w-12 rounded-[25px] hover:rounded-xl transition-all duration-200 peer`,
+    inactiveBtn: `${theme.bg400} ${theme.hoverBg500} w-12 rounded-[25px] hover:rounded-xl transition-all duration-200 peer`
   }
 
   const [buttonStyle, setbuttonStyle] = useState({
@@ -58,17 +58,17 @@ export default function FriendList(props) {
         }</div>
       </div>
       <div className='grid grid-flow-row grid-rows-10 my-2 ml-2'>
-        <button onClick={() => setFriendsList()} className='flex items-center justify-between' id='firstbtn'>
+        <button onClick={() => setFriendsList()} className='flex items-center justify-between *:transition-all *:duration-200'>
           <img src={personIcon} alt="" className={buttonStyle.first} />
-          <div className={`${block === 1? `h-[2rem] ${theme.bg600}`:`h-[7px] ${theme.bg500}`} my-1 w-[5px] rounded-l-full animation-bar`}></div>
+          <div className={`${block === 1? `h-[2rem] ${theme.bg600}`:`h-[7px] ${theme.bg500}`} my-1 w-[5px] rounded-l-full peer-hover:h-[1rem]`}></div>
         </button>
-        <button onClick={() => setGroupList()} className='flex items-center justify-between' id='secondbtn'>
+        <button onClick={() => setGroupList()} className='flex items-center justify-between *:transition-all *:duration-200'>
           <img src={groupIcon} alt="" className={buttonStyle.second} />
-          <div className={`${block === 2? `h-[2rem] ${theme.bg600}`:`h-[7px] ${theme.bg500}`} my-1 w-[5px] rounded-l-full animation-bar`}></div>
+          <div className={`${block === 2? `h-[2rem] ${theme.bg600}`:`h-[7px] ${theme.bg500}`} my-1 w-[5px] rounded-l-full peer-hover:h-[1rem]`}></div>
         </button>
-        <button onClick={() => setFriendRequests()} className='flex items-center justify-between' id='thirdbtn'>
+        <button onClick={() => setFriendRequests()} className='flex items-center justify-between *:transition-all *:duration-200'>
           <img src={inboxIcon} alt="" className={buttonStyle.third} />
-          <div className={`${block === 3? `h-[2rem] ${theme.bg600}`:`h-[7px] ${theme.bg500}`} my-1 w-[5px] rounded-l-full animation-bar`}></div>
+          <div className={`${block === 3? `h-[2rem] ${theme.bg600}`:`h-[7px] ${theme.bg500}`} my-1 w-[5px] rounded-l-full peer-hover:h-[1rem]`}></div>
         </button>
       </div>
     </section>
