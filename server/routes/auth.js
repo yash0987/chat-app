@@ -61,7 +61,7 @@ function (accessToken, refreshToken, profile, cb) {
     main().catch(console.error);
 }));
 
-router.get('/auth/google/callback', passport.authenticate('google', { failureRedirect: '/', successRedirect: 'http://localhost:3000/Home' }));
+router.get('/auth/google/callback', passport.authenticate('google', { failureRedirect: '/', successRedirect: `http://localhost:3000/chats/@me` }));
 
 passport.serializeUser((user, cb) => {
     return cb(null, user);
