@@ -36,6 +36,8 @@ export const themes = [
         text400: 'text-red-400',
         text500: 'text-red-500',
         text600: 'text-red-600',
+        text700: 'text-red-700',
+        text800: 'text-red-800',
         placeholderText400: 'placeholder:text-red-400',
     },
     {
@@ -75,6 +77,8 @@ export const themes = [
         text400: 'text-orange-400',
         text500: 'text-orange-500',
         text600: 'text-orange-600',
+        text700: 'text-orange-700',
+        text800: 'text-orange-800',
         placeholderText400: 'placeholder:text-orange-400',
     },
     {
@@ -114,6 +118,8 @@ export const themes = [
         text400: 'text-yellow-400',
         text500: 'text-yellow-500',
         text600: 'text-yellow-600',
+        text700: 'text-yellow-700',
+        text800: 'text-yellow-800',
         placeholderText400: 'placeholder:text-yellow-400',
     },
     {
@@ -153,6 +159,8 @@ export const themes = [
         text400: 'text-lime-400',
         text500: 'text-lime-500',
         text600: 'text-lime-600',
+        text700: 'text-lime-700',
+        text800: 'text-lime-800',
         placeholderText400: 'placeholder:text-lime-400',
     },
     {
@@ -192,6 +200,8 @@ export const themes = [
         text400: 'text-green-400',
         text500: 'text-green-500',
         text600: 'text-green-600',
+        text700: 'text-green-700',
+        text800: 'text-green-800',
         placeholderText400: 'placeholder:text-green-400',
     },
     {
@@ -231,6 +241,8 @@ export const themes = [
         text400: 'text-emerald-400',
         text500: 'text-emerald-500',
         text600: 'text-emerald-600',
+        text700: 'text-emerald-700',
+        text800: 'text-emerald-800',
         placeholderText400: 'placeholder:text-emerald-400',
     },
     {
@@ -270,6 +282,8 @@ export const themes = [
         text400: 'text-sky-400',
         text500: 'text-sky-500',
         text600: 'text-sky-600',
+        text700: 'text-sky-700',
+        text800: 'text-sky-800',
         placeholderText400: 'placeholder:text-sky-400',
     },
     {
@@ -309,6 +323,8 @@ export const themes = [
         text400: 'text-blue-400',
         text500: 'text-blue-500',
         text600: 'text-blue-600',
+        text700: 'text-blue-700',
+        text800: 'text-blue-800',
         placeholderText400: 'placeholder:text-blue-400',
     },
     {
@@ -348,6 +364,8 @@ export const themes = [
         text400: 'text-indigo-400',
         text500: 'text-indigo-500',
         text600: 'text-indigo-600',
+        text700: 'text-indigo-700',
+        text800: 'text-indigo-800',
         placeholderText400: 'placeholder:text-indigo-400',
     },
     {
@@ -387,6 +405,8 @@ export const themes = [
         text400: 'text-violet-400',
         text500: 'text-violet-500',
         text600: 'text-violet-600',
+        text700: 'text-violet-700',
+        text800: 'text-violet-800',
         placeholderText400: 'placeholder:text-violet-400',
     },
     {
@@ -426,6 +446,8 @@ export const themes = [
         text400: 'text-fuchsia-400',
         text500: 'text-fuchsia-500',
         text600: 'text-fuchsia-600',
+        text700: 'text-fuchsia-700',
+        text800: 'text-fuchsia-800',
         placeholderText400: 'placeholder:text-fuchsia-400',
     },
     {
@@ -465,6 +487,8 @@ export const themes = [
         text400: 'text-pink-400',
         text500: 'text-pink-500',
         text600: 'text-pink-600',
+        text700: 'text-pink-700',
+        text800: 'text-pink-800',
         placeholderText400: 'placeholder:text-pink-400',
     }
 ];

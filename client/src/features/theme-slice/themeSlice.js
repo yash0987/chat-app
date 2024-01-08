@@ -40,6 +40,8 @@ export const themeSlice = createSlice({
             text400: 'text-violet-400',
             text500: 'text-violet-500',
             text600: 'text-violet-600',
+            text700: 'text-violet-700',
+            text800: 'text-violet-800',
             placeholderText400: 'placeholder:text-violet-400',
         }
     },
