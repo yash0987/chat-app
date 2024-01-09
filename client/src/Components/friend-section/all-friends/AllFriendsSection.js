@@ -29,14 +29,18 @@ export default function AllFriendsSection(props) {
   let keyValue = 0;
 
   return (
-    <section>
-      <input type="search" name="" id="" placeholder='Search friends' className={`my-4 mx-9 px-5 py-1 w-[85%] rounded-sm ${theme.bg50} border-[1px] border-b-[3px] ${theme.border500} font-normal focus:outline-none ${theme.placeholderText400}`} />
-      {
-        friends ? friends.map((element) => {
-          keyValue++;
-          return <Friend key={keyValue} friendInfo={element} setOldChatPerson={props.setOldChatPerson} secondPerson={props.secondPerson} setSecondPerson={props.setSecondPerson} setToggle={props.setToggle} />
-        }) : (getFriends())
-      }
+    <section className='grid grid-flow-col'>
+      <div className={`h-[91vh] border-l-[1px] ${theme.borderL700} font-semibold ${theme.bg50}`}>
+        <div className='min-w-[27rem]'>
+        <input type="search" name="" id="" placeholder='Search friends' className={`my-4 mx-9 px-5 py-1 w-[85%] rounded-sm ${theme.bg50} border-[1px] border-b-[3px] ${theme.border500} font-normal focus:outline-none ${theme.placeholderText400}`} />
+        {
+          friends ? friends.map((element) => {
+            keyValue++;
+            return <Friend key={keyValue} friendInfo={element} setOldChatPerson={props.setOldChatPerson} secondPerson={props.secondPerson} setSecondPerson={props.setSecondPerson} setToggle={props.setToggle} />
+          }) : (getFriends())
+        }
+        </div>
+      </div>
     </section>
   )
 }
