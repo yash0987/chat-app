@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { emptyChat } from './../../../features/chat-slice/chatSlice';
 import { unselectAllMessages } from '../../../features/select-message-slice/selectMessageSlice';
@@ -23,7 +24,7 @@ export default function Friend(props) {
   }
 
   return (
-    <section onClick={() => openChat()} className={`flex justify-between mx-2 px-6 py-2 rounded-lg font-semibold ${theme.hoverBg100}`}>
+    <Link to={`/chats/@me/${props.friendInfo.googleID}`} onClick={() => openChat()} className={`flex justify-between mx-2 px-6 py-2 rounded-lg font-semibold ${theme.hoverBg100}`}>
       <div className='flex'>
         <img src={ props.friendInfo.photoURL } alt="" className='w-10 rounded-full' />
         <div className='mx-4'>
@@ -31,6 +32,6 @@ export default function Friend(props) {
           <p className='text-[10px] text-gray-400'>{ props.friendInfo.googleID }</p>
         </div>
       </div>
-    </section>
+    </Link>
   )
 }
