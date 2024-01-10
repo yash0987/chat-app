@@ -67,11 +67,6 @@ export default function CreateGroup(props) {
     }
 
     sendData(groupID, groupName, groupPhotoURL, arr);
-    props.setToggle('showSearch');
-  }
-
-  function cancelGroup() {
-    props.setToggle('showSearch');
   }
 
   let user = useSelector(state => state.auth.value.user);
@@ -123,7 +118,7 @@ export default function CreateGroup(props) {
 
       <div className='mx-2'>
         <button onClick={createGroup} className={`m-2 px-4 py-2 ${theme.bg400} text-white rounded-lg ${theme.hoverBg500}`}>Create</button>
-        <button onClick={cancelGroup} className={`m-2 px-4 py-2 ${theme.bg400} text-white rounded-lg ${theme.hoverBg500}`}>Cancel</button>
+        <button className={`m-2 px-4 py-2 ${theme.bg400} text-white rounded-lg ${theme.hoverBg500}`}>Cancel</button>
       </div>
     </section>
   )

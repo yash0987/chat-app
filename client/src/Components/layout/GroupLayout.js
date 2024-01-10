@@ -5,12 +5,12 @@ import GroupSection from '../friend-section/groups/GroupSection';
 
 export default function GroupLayout() {
   const theme = useSelector(state => state.theme.value);
-  const { toggle, setToggle, secondPerson, setSecondPerson, oldChatPerson, setOldChatPerson } = useOutletContext();
+  const { secondPerson, setSecondPerson, oldChatPerson, setOldChatPerson } = useOutletContext();
 
   return (
     <div className={`grid grid-flow-col ${theme.bg100}`}>
-      <Outlet context={{ toggle, setToggle, secondPerson, setSecondPerson, oldChatPerson, setOldChatPerson }} />
-      <GroupSection setOldChatPerson={setOldChatPerson} setSecondPerson={setSecondPerson} secondPerson={secondPerson} setToggle={setToggle} />
+      <Outlet context={{ secondPerson, setSecondPerson, oldChatPerson, setOldChatPerson }} />
+      <GroupSection setOldChatPerson={setOldChatPerson} setSecondPerson={setSecondPerson} secondPerson={secondPerson} />
     </div>
   )
 }

@@ -38,7 +38,6 @@ export default function Profile(props) {
 
     const data = response.json();
     console.log(data);
-    props.setToggle('showSearch');
   }
 
   async function commonGroups() {

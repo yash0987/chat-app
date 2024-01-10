@@ -14,7 +14,7 @@ export default function ChatSection(props) {
   const theme = useSelector(state => state.theme.value);
   const dispatch = useDispatch();
   const [star, setStar] = useState(0);
-  const { toggle, setToggle, secondPerson, setSecondPerson, oldChatPerson, setOldChatPerson } = useOutletContext();
+  const { secondPerson, setSecondPerson, oldChatPerson, setOldChatPerson } = useOutletContext();
   
   let IDarray = [ secondPerson.ID, user.googleID ];
   IDarray.sort();
@@ -75,7 +75,7 @@ export default function ChatSection(props) {
 
   return (
     <section className={`w-[64.15rem] h-[91vh] flex flex-col overflow-hidden ${theme.bg50}`}>
-      <ChatBar getChat={getChat} star={star} setStar={setStar} setToggle={setToggle} secondPerson={secondPerson} room={room} ws={ws} />
+      <ChatBar getChat={getChat} star={star} setStar={setStar} secondPerson={secondPerson} room={room} ws={ws} />
       <Messages star={star} setStar={setStar} elementArray={chat.value} googleID={user.googleID} />
       <TextBox secondPerson={secondPerson} ws={ws} />
       <DeleteForMeModal room={room} />

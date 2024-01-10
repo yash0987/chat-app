@@ -7,7 +7,6 @@ import SideBar from '../sidebar/SideBar';
 import PinBar from '../PinBar';
 
 export default function HomeLayout() {
-  const [toggle, setToggle] = useState('showSearch');
   const [secondPerson, setSecondPerson] = useState({});
   const [oldChatPerson, setOldChatPerson] = useState({});
   const [settingToggle, setSettingToggle] = useState(false);
@@ -56,10 +55,10 @@ export default function HomeLayout() {
     (<div className={`w-screen h-screen ${theme.bg100}`}>
       <Navbar setSettingToggle={setSettingToggle} />
       <div className='grid grid-flow-col justify-end'>
-        <Outlet context={{ toggle, setToggle, secondPerson, setSecondPerson, oldChatPerson, setOldChatPerson }} />
+        <Outlet context={{ secondPerson, setSecondPerson, oldChatPerson, setOldChatPerson }} />
         <PinBar />
       </div>
-      <SideBar setToggle={setToggle} settingToggle={settingToggle} setSettingToggle={setSettingToggle} />
+      <SideBar settingToggle={settingToggle} setSettingToggle={setSettingToggle} />
     </div>) : null
   )
 }

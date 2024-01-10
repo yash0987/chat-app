@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import profile from '../../img/profile.png';
 import star from '../../img/star.png';
@@ -33,14 +34,14 @@ export default function SideBar(props) {
 
         <hr className='my-3' />
 
-        <li onClick={() => props.setToggle('showThemes')} className={`flex p-2 ml-3 rounded-l-full ${theme.hoverBg100}`}>
+        <Link to={'/themes'} className={`flex p-2 ml-3 rounded-l-full ${theme.hoverBg100}`}>
           <img src={themes} alt="" className='mx-2 w-8' />
           <span className='m-1'>Themes</span>
-        </li>
-        <li onClick={() => props.setToggle('showWallpapers')} className={`flex p-2 ml-3 rounded-l-full ${theme.hoverBg100}`}>
+        </Link>
+        <Link to={'/wallpapers'} className={`flex p-2 ml-3 rounded-l-full ${theme.hoverBg100}`}>
           <img src={wallpaper} alt="" className='mx-2 w-8' />
           <span className='m-1'>Wallpapers</span>
-        </li>
+        </Link>
 
         <hr className='my-3' />
 

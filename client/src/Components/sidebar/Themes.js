@@ -14,7 +14,7 @@ export default function Themes(props) {
       <div className={`place-self-center w-5/6 h-5/6 flex flex-col overflow-hidden rounded border-[1px] ${theme.border500} ${theme.bg50}`}>
         <div className={`flex justify-between px-3 ${theme.bg400} text-white`}>
           <div className='flex'>
-            <button onClick={() => props.setToggle('showDefaultPage')}><img src={ backButton } alt="" className='m-2 p-2 w-9 rounded-full' /></button>
+            <button><img src={ backButton } alt="" className='m-2 p-2 w-9 rounded-full' /></button>
             <div className='flex'>
               <img src="https://i.pinimg.com/custom_covers/222x/274508608476412825_1635270442.jpg" alt="" className='mx-4 my-2 w-12 rounded-full' />
               <p className='my-4 font-semibold text-lg'>Cai lin</p>

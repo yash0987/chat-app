@@ -20,8 +20,6 @@ export default function Features(props) {
       <img onClick={ () => selectedMessagesList.length ? dispatch(showDeleteModal(true)) : null } src={ trash } alt="" className={`mx-1 w-10 rounded-full ${theme.hoverBg400}`} />
       <Copy />
       <img src={forward} alt="" className={`mx-1 w-10 rounded-full ${theme.hoverBg400}`} />
-      {/* <img src={copy} alt="" className='mx-1 w-10 rounded-full ${theme.hoverBg400}' /> */}
-      {/* <span onClick={ () => dispatch(toggleFeatures()) } className='px-[10px] text-3xl rounded-full ${theme.hoverBg400}'>&times;</span> */}
     </div>) : null
   )
 }

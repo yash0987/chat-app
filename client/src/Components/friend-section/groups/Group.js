@@ -16,7 +16,6 @@ export default function Group(props) {
     const photoURL = props.groupInfo.groupPhotoURL;
     props.setOldChatPerson(props.secondPerson);
     props.setSecondPerson( { ID, fullName, photoURL } );
-    props.setToggle('showChatSection');
     dispatch(unselectAllMessages());
     dispatch(starMessagesToggle(false));
     dispatch(replyMessageToggle(false));

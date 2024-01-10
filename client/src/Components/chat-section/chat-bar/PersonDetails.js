@@ -14,7 +14,6 @@ export default function PersonDetails(props) {
   const dispatch = useDispatch();
 
   function closeChat() {
-    props.setToggle('showSearch');
     ws.send(JSON.stringify({ action: 'leave', senderID: user.googleID, receiverID: props.secondPerson.ID }));
     dispatch(setTogglesToDefault());
     dispatch(emptyChat());
