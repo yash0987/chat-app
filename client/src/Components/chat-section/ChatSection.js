@@ -6,6 +6,7 @@ import Messages from './Messages';
 import TextBox from './text-box/TextBox';
 import DeleteForMeModal from './../modal/DeleteForMeModal';
 import { ws } from './websocket';
+import { useOutletContext } from 'react-router-dom';
 
 export default function ChatSection(props) {
   const chat = useSelector(state => state.chat);
@@ -13,8 +14,9 @@ export default function ChatSection(props) {
   const theme = useSelector(state => state.theme.value);
   const dispatch = useDispatch();
   const [star, setStar] = useState(0);
+  const { toggle, setToggle, secondPerson, setSecondPerson, oldChatPerson, setOldChatPerson } = useOutletContext();
   
-  let IDarray = [ props.secondPerson.ID, user.googleID ];
+  let IDarray = [ secondPerson.ID, user.googleID ];
   IDarray.sort();
   let room = IDarray[0] + IDarray[1];
   console.log(room);
@@ -29,7 +31,7 @@ export default function ChatSection(props) {
 
   useEffect(() => {
     setTimeout(() => {
-      const detailsForRoom = { senderID: user.googleID, receiverID: props.secondPerson.ID, oldReceiverID: props.oldChatPerson.ID };
+      const detailsForRoom = { senderID: user.googleID, receiverID: secondPerson.ID, oldReceiverID: oldChatPerson.ID };
       ws.send(JSON.stringify({ ...detailsForRoom, action: 'join' }));
     }, 500);
 
@@ -72,10 +74,10 @@ export default function ChatSection(props) {
   }, [room]);
 
   return (
-    <section className={`col-span-2 h-[91vh] flex flex-col overflow-hidden ${theme.bg50}`}>
-      <ChatBar getChat={getChat} star={star} setStar={setStar} setToggle={props.setToggle} secondPerson={props.secondPerson} room={room} ws={ws} />
+    <section className={`w-[64.15rem] h-[91vh] flex flex-col overflow-hidden ${theme.bg50}`}>
+      <ChatBar getChat={getChat} star={star} setStar={setStar} setToggle={setToggle} secondPerson={secondPerson} room={room} ws={ws} />
       <Messages star={star} setStar={setStar} elementArray={chat.value} googleID={user.googleID} />
-      <TextBox secondPerson={props.secondPerson} ws={ws} />
+      <TextBox secondPerson={secondPerson} ws={ws} />
       <DeleteForMeModal room={room} />
     </section>
   )
