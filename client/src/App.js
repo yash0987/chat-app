@@ -4,6 +4,7 @@ import store from './app/store';
 import LoginPage from './components/LoginPage';
 import DefaultPage from './components/DefaultPage';
 import ChatSection from './components/chat-section/ChatSection';
+import CreateGroup from './components/CreateGroup';
 import HomeLayout from './components/layout/HomeLayout';
 import ChatLayout from './components/layout/ChatLayout';
 import GroupLayout from './components/layout/GroupLayout';
@@ -22,6 +23,7 @@ function App() {
           <Route path='/groups' element={<GroupLayout />}>
             <Route path='/groups' element={<DefaultPage />} />
             <Route path='/groups/:groupid' element={<ChatSection />} />
+            <Route path='/groups/create' element={<CreateGroup />} />
           </Route>
           <Route path='/requests' element={<RequestLayout />} />
         </Route>
