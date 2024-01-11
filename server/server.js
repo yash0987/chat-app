@@ -73,7 +73,8 @@ function join(data, roomID, ws) {
     leave(ws);
     console.log("Joining");
     ws.senderGoogleID = data.senderID;
-    ws.receiverGoogleID = data.receiverID;
+    ws.receiverGoogleID = data.newChat.ID;
+    ws.chatInfo = data.newChat;
     if (!rooms[roomID]) {
         rooms[roomID] = [ws];
         return ;
@@ -90,9 +91,13 @@ function join(data, roomID, ws) {
 }
 
 function leave(ws) {
-    const IDarray = [ ws.senderGoogleID, ws.receiverGoogleID ];
-    IDarray.sort();
-    const roomID = IDarray[0] + IDarray[1];
+    let roomID;
+    if (!ws.chatInfo) return ;
+    if (ws.chatInfo.isGroup) roomID = ws.receiverGoogleID;
+    else {
+        const IDarray = [ ws.senderGoogleID, ws.receiverGoogleID ].sort();
+        roomID = IDarray[0] + IDarray[1];
+    }
     console.log("i am leaving")
     if (!rooms[roomID]) return ;
 
@@ -115,14 +120,33 @@ function send(data, roomID) {
 wss.on('connection', (ws) => {
     ws.onmessage = (event) => {
         const data = JSON.parse(event.data);
-        const IDarray = [ data.senderID, data.receiverID ];
-        IDarray.sort();
-        const roomID = IDarray[0] + IDarray[1];
+        console.log(data);
+        let roomID;
+        if (data.newChat.isGroup) roomID = data.newChat.ID;
+        else {
+            const IDarray = [ data.senderID, data.newChat.ID ].sort();
+            roomID = IDarray[0] + IDarray[1];
+        }
         console.log(data);
 
         if (data.action === 'join') join(data, roomID, ws);
         else if (data.action === 'leave') leave(ws);
         else if (data.action === 'send') send(data, roomID);
+
+
+        // let roomID;
+        // console.log(data.isGroup);
+        // if (data.isGroup) roomID = data.groupID;
+        // else {
+        //     const IDarray = [ data.senderID, data.receiverID ];
+        //     IDarray.sort();
+        //     roomID = IDarray[0] + IDarray[1];
+        // }
+        // console.log(data);
+
+        // if (data.action === 'join') join(data, roomID, ws);
+        // else if (data.action === 'leave') leave(ws);
+        // else if (data.action === 'send') send(data, roomID);
     }
 })
 

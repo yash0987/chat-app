@@ -7,8 +7,8 @@ import SideBar from '../sidebar/SideBar';
 import PinBar from '../PinBar';
 
 export default function HomeLayout() {
-  const [secondPerson, setSecondPerson] = useState({});
-  const [oldChatPerson, setOldChatPerson] = useState({});
+  const [latestChat, setLatestChat] = useState({});
+  const [newChat, setNewChat] = useState({});
   const [settingToggle, setSettingToggle] = useState(false);
   const theme = useSelector(state => state.theme.value);
   const auth = useSelector((state) => state.auth.value);
@@ -55,7 +55,7 @@ export default function HomeLayout() {
     (<div className={`w-screen h-screen ${theme.bg100}`}>
       <Navbar setSettingToggle={setSettingToggle} />
       <div className='grid grid-flow-col justify-end'>
-        <Outlet context={{ secondPerson, setSecondPerson, oldChatPerson, setOldChatPerson }} />
+        <Outlet context={{ newChat, setNewChat, latestChat, setLatestChat }} />
         <PinBar />
       </div>
       <SideBar settingToggle={settingToggle} setSettingToggle={setSettingToggle} />

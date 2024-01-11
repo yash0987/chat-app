@@ -42,16 +42,16 @@ export default function TextBox(props) {
     if (collectedText.trim() === "") return ;
 
     const senderID = user.googleID;
-    const receiverID = props.secondPerson.ID;
+    const receiverID = props.newChat.ID;
     const senderName = user.firstName + " " + user.familyName;
-    const receiverName = props.secondPerson.fullName;
+    const receiverName = props.newChat.fullName;
     const messageID = senderID + Date.now();
     let messageData;
     if (showReplyMessage) {
       const replyToMessage = { replyToPerson: reply.replyToPerson, replyForMessage: reply.replyForMessage, repliedMessageID: reply.repliedMessageID };
       messageData = { messageID, collectedText, currentMsgTime, senderID, receiverID, senderName, receiverName, replyToMessage, star: false };
     }
-    else messageData = { messageID, collectedText, currentMsgTime, senderID, receiverID, senderName, receiverName, star: false };
+    else messageData = { messageID, collectedText, currentMsgTime, senderID, receiverID, senderName, receiverName, newChat: props.newChat, star: false };
 
     let emojiPanel = emojiPanelRef.current;
     if (emojiPanel.style.display === 'block') {
@@ -104,13 +104,6 @@ export default function TextBox(props) {
       <div ref={emojiPanelRef} style={{display: 'none'}}>
         <EmojiPicker width={1024} height={350} previewConfig={{showPreview: false}} skinTonePickerLocation="SEARCH" onEmojiClick={selectEmoji} />
       </div>
-      {/* <div className='p-2 h-14 flex bg-white'>
-        <img onClick={openEmojiPanel} src={emoji} alt="" className='w-10 p-2 rounded-full hover:bg-violet-200' />
-        <textarea cols="0" rows="0" ref={messageBoxRef} placeholder='Type a message...' className='p-[6px] w-full resize-none focus:outline-none placeholder:text-violet-400'></textarea>
-        <button onClick={displayMessage}>
-          <img src={ sendMessageBtn } alt="" className='w-12 rounded-full bg-violet-400 hover:bg-violet-500' />
-        </button>
-      </div> */}
     </>
   )
 }
