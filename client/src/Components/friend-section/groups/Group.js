@@ -14,8 +14,8 @@ export default function Group(props) {
     const ID = props.groupInfo.groupID;
     const fullName = props.groupInfo.groupName;
     const photoURL = props.groupInfo.groupPhotoURL;
-    props.setOldChatPerson(props.secondPerson);
-    props.setSecondPerson( { ID, fullName, photoURL } );
+    props.setLatestChat(props.newChat);
+    props.setNewChat({ ID, fullName, photoURL, isGroup: true });
     dispatch(unselectAllMessages());
     dispatch(starMessagesToggle(false));
     dispatch(replyMessageToggle(false));

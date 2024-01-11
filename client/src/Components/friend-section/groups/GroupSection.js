@@ -42,7 +42,7 @@ export default function GroupSection(props) {
           {
             groups ? groups.map((element) => {
               keyValue++;
-              return <Groups key={keyValue} groupInfo={element} setOldChatPerson={props.setOldChatPerson} secondPerson={props.secondPerson} setSecondPerson={props.setSecondPerson} />
+              return <Groups key={keyValue} groupInfo={element} newChat={props.newChat} setNewChat={props.setNewChat} latestChat={props.latestChat} setLatestChat={props.setLatestChat} />
             }) : (getGroups())
           }
         </div>

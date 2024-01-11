@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useOutletContext } from 'react-router-dom';
 import { prependChat, appendChat } from '../../features/chat-slice/chatSlice';
 import ChatBar from './chat-bar/ChatBar';
 import Messages from './Messages';
 import TextBox from './text-box/TextBox';
 import DeleteForMeModal from './../modal/DeleteForMeModal';
 import { ws } from './websocket';
-import { useOutletContext } from 'react-router-dom';
 
 export default function ChatSection(props) {
   const chat = useSelector(state => state.chat);
@@ -14,25 +14,28 @@ export default function ChatSection(props) {
   const theme = useSelector(state => state.theme.value);
   const dispatch = useDispatch();
   const [star, setStar] = useState(0);
-  const { secondPerson, setSecondPerson, oldChatPerson, setOldChatPerson } = useOutletContext();
+  const { newChat, setNewChat, latestChat, setLatestChat, } = useOutletContext();
   
-  let IDarray = [ secondPerson.ID, user.googleID ];
+  let IDarray = [ newChat.ID, user.googleID ];
   IDarray.sort();
   let room = IDarray[0] + IDarray[1];
   console.log(room);
 
   useEffect(() => {
-    ws.onopen = () => {
-      console.log("connection has been established");
-    }
+    ws.onopen = () => console.log("connection has been established");
     return () => ws.onclose = () => console.error("closed connection");
     // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
     setTimeout(() => {
-      const detailsForRoom = { senderID: user.googleID, receiverID: secondPerson.ID, oldReceiverID: oldChatPerson.ID };
-      ws.send(JSON.stringify({ ...detailsForRoom, action: 'join' }));
+      const detailsForRoom = {
+        senderID: user.googleID,
+        newChat,
+        latestChat,
+        action: 'join',
+      };
+      ws.send(JSON.stringify(detailsForRoom));
     }, 500);
 
     return () => clearTimeout();
@@ -75,9 +78,9 @@ export default function ChatSection(props) {
 
   return (
     <section className={`w-[64.15rem] h-[91vh] flex flex-col overflow-hidden ${theme.bg50}`}>
-      <ChatBar getChat={getChat} star={star} setStar={setStar} secondPerson={secondPerson} room={room} ws={ws} />
+      <ChatBar getChat={getChat} star={star} setStar={setStar} newChat={newChat} room={room} ws={ws} />
       <Messages star={star} setStar={setStar} elementArray={chat.value} googleID={user.googleID} />
-      <TextBox secondPerson={secondPerson} ws={ws} />
+      <TextBox newChat={newChat} ws={ws} />
       <DeleteForMeModal room={room} />
     </section>
   )

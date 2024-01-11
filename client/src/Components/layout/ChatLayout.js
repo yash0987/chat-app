@@ -5,12 +5,12 @@ import AllFriendsSection from '../friend-section/all-friends/AllFriendsSection';
 
 export default function ChatLayout() {
   const theme = useSelector(state => state.theme.value);
-  const { secondPerson, setSecondPerson, oldChatPerson, setOldChatPerson } = useOutletContext();
+  const { newChat, setNewChat, latestChat, setLatestChat } = useOutletContext();
 
   return (
     <div className={`grid grid-flow-col ${theme.bg100}`}>
-      <Outlet context={{ secondPerson, setSecondPerson, oldChatPerson, setOldChatPerson }} />
-      <AllFriendsSection setOldChatPerson={setOldChatPerson} setSecondPerson={setSecondPerson} secondPerson={secondPerson} />
+      <Outlet context={{ newChat, setNewChat, latestChat, setLatestChat }} />
+      <AllFriendsSection newChat={newChat} setNewChat={setNewChat} latestChat={latestChat} setLatestChat={setLatestChat} />
     </div>
   )
 }

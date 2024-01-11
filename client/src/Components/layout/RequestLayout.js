@@ -5,12 +5,12 @@ import FriendRequests from '../friend-section/friend-requests/FriendRequests';
 
 export default function RequestLayout() {
   const theme = useSelector(state => state.theme.value);
-  const { secondPerson, setSecondPerson, oldChatPerson, setOldChatPerson } = useOutletContext();
+  const { newChat, setNewChat, latestChat, setLatestChat } = useOutletContext();
 
   return (
     <div className={`grid grid-flow-col ${theme.bg100}`}>
-      <Outlet context={{ secondPerson, setSecondPerson, oldChatPerson, setOldChatPerson }} />
-      <FriendRequests setOldChatPerson={setOldChatPerson} setSecondPerson={setSecondPerson} secondPerson={secondPerson} />
+      <Outlet context={{ newChat, setNewChat, latestChat, setLatestChat }} />
+      <FriendRequests setLatestChat={setLatestChat} setNewChat={setNewChat} newChat={newChat} />
     </div>
   )
 }

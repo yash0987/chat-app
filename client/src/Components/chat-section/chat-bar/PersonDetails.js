@@ -14,7 +14,7 @@ export default function PersonDetails(props) {
   const dispatch = useDispatch();
 
   function closeChat() {
-    ws.send(JSON.stringify({ action: 'leave', senderID: user.googleID, receiverID: props.secondPerson.ID }));
+    ws.send(JSON.stringify({ action: 'leave', senderID: user.googleID, receiverID: props.newChat.ID }));
     dispatch(setTogglesToDefault());
     dispatch(emptyChat());
   }
@@ -42,8 +42,8 @@ export default function PersonDetails(props) {
       </button>
       {
         !toggleFeaturesState && !displayStarredMessages ? <div className='flex'>
-          <img src={ props.secondPerson.photoURL } alt="" className='mx-4 my-2 w-12 rounded-full' />
-          <p className='my-4 font-semibold text-lg'>{ props.secondPerson.fullName }</p>
+          <img src={ props.newChat.photoURL } alt="" className='mx-4 my-2 w-12 rounded-full' />
+          <p className='my-4 font-semibold text-lg'>{ props.newChat.fullName }</p>
         </div> : null
       }
       { displayStarredMessages ? <p className='m-4 font-semibold text-lg'>Starred Messages</p> : null }

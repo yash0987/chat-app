@@ -14,8 +14,8 @@ export default function Friend(props) {
     const fullName = props.friendInfo.fullName;
     const photoURL = props.friendInfo.photoURL;
     console.log({ID, fullName, photoURL})
-    props.setOldChatPerson(props.secondPerson);
-    props.setSecondPerson( { ID, fullName, photoURL } );
+    props.setLatestChat(props.newChat);
+    props.setNewChat({ ID, fullName, photoURL, isGroup: false });
     dispatch(unselectAllMessages());
     dispatch(starMessagesToggle(false));
     dispatch(replyMessageToggle(false));
