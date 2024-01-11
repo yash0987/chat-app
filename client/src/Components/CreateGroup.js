@@ -99,7 +99,7 @@ export default function CreateGroup(props) {
 
       <div ref={friendListRef} className='h-1/4 overflow-y-scroll'>
         {
-          user.friendsID.map((element) => {
+          user.friends.map((element) => {
             return <section className='px-4 flex'>
               <label className={`flex p-2 w-full rounded-lg font-semibold ${theme.hoverBg100}`}>
                 <input type="checkbox" name="" id="" className='mx-5 accent-violet-500' />

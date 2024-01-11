@@ -14,7 +14,7 @@ export default function ChatSection(props) {
   const theme = useSelector(state => state.theme.value);
   const dispatch = useDispatch();
   const [star, setStar] = useState(0);
-  const { newChat, setNewChat, latestChat, setLatestChat, } = useOutletContext();
+  const { newChat, latestChat, } = useOutletContext();
   
   let IDarray = [ newChat.ID, user.googleID ];
   IDarray.sort();
