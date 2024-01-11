@@ -365,7 +365,7 @@ router.post('/group', (req, res) => {
         groupPhotoURL: req.query.photoURL,
     };
 
-    groupMembers = JSON.parse(req.query.friends);
+    const groupMembers = JSON.parse(req.query.friends);
     groupMembers.push(req.user.googleID);
 
     async function main() {
