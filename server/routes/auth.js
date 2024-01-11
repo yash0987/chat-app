@@ -31,9 +31,9 @@ function (accessToken, refreshToken, profile, cb) {
         familyName: profile._json.family_name,
         photoURL: profile._json.picture,
         email: profile._json.email,
-        friendsID: [],
-        receiveRequestID: [],
-        sendRequestID: [],
+        friends: [],
+        receiveRequests: [],
+        sendRequests: [],
         groups: []
     };
 

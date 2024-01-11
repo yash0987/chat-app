@@ -34,7 +34,7 @@ router.get('/search/user', (req, res) => {
                 }
             });
 
-            record = record.map(({ friendsID, email, sendRequestID, receiveRequestID, groups, ...rest }) => rest);
+            record = record.map(({ friends, email, sendRequests, receiveRequests, groups, ...rest }) => rest);
             res.json({ success: true, record });
         } catch (e) {
             console.error(e);
@@ -59,8 +59,8 @@ router.post('/add/friend', (req, res, next) => {
 
     async function main() {
         try {
-            await userDetailsCollection.updateOne( { googleID: req.user.googleID }, { $addToSet: { sendRequestID: friendData } } );
-            await userDetailsCollection.updateOne( { googleID: req.query.ID }, { $addToSet: { receiveRequestID: userData } } );
+            await userDetailsCollection.updateOne( { googleID: req.user.googleID }, { $addToSet: { sendRequests: friendData } } );
+            await userDetailsCollection.updateOne( { googleID: req.query.ID }, { $addToSet: { receiveRequests: userData } } );
         } catch (e) {
             console.error(e);
         }
@@ -85,8 +85,8 @@ router.delete('/cancelRequest', (req, res) => {
 
     async function main() {
         try {
-            await userDetailsCollection.updateOne( { googleID: req.user.googleID }, { $pull: { sendRequestID: friendData } } );
-            await userDetailsCollection.updateOne( { googleID: req.query.ID }, { $pull: { receiveRequestID: userData } } );
+            await userDetailsCollection.updateOne( { googleID: req.user.googleID }, { $pull: { sendRequests: friendData } } );
+            await userDetailsCollection.updateOne( { googleID: req.query.ID }, { $pull: { receiveRequests: userData } } );
         } catch (e) {
             console.error(e);
         }
@@ -111,10 +111,10 @@ router.put('/acceptRequest', (req, res) => {
 
     async function main() {
         try {
-            await userDetailsCollection.updateOne( { googleID: req.user.googleID }, { $addToSet: { friendsID: friendData } } );
-            await userDetailsCollection.updateOne( { googleID: req.user.googleID }, { $pull: { receiveRequestID: friendData } } );
-            await userDetailsCollection.updateOne( { googleID: req.query.ID }, { $addToSet: { friendsID: userData } } );
-            await userDetailsCollection.updateOne( { googleID: req.query.ID }, { $pull: { sendRequestID: userData } } );
+            await userDetailsCollection.updateOne( { googleID: req.user.googleID }, { $addToSet: { friends: friendData } } );
+            await userDetailsCollection.updateOne( { googleID: req.user.googleID }, { $pull: { receiveRequests: friendData } } );
+            await userDetailsCollection.updateOne( { googleID: req.query.ID }, { $addToSet: { friends: userData } } );
+            await userDetailsCollection.updateOne( { googleID: req.query.ID }, { $pull: { sendRequests: userData } } );
         } catch (e) {
             console.error(e);
         }
@@ -139,8 +139,8 @@ router.delete('/declineRequest', (req, res) => {
 
     async function main() {
         try {
-            await userDetailsCollection.updateOne( { googleID: req.user.googleID }, { $pull: { receiveRequestID: friendData } } );
-            await userDetailsCollection.updateOne( { googleID: req.query.ID }, { $pull: { sendRequestID: userData } } );
+            await userDetailsCollection.updateOne( { googleID: req.user.googleID }, { $pull: { receiveRequests: friendData } } );
+            await userDetailsCollection.updateOne( { googleID: req.query.ID }, { $pull: { sendRequests: userData } } );
         } catch (e) {
             console.error(e);
         }
@@ -169,7 +169,7 @@ router.get('/friends/list', (req, res) => {
     async function main() {
         try {
             const cursor = await userDetailsCollection.findOne( { googleID: req.user.googleID } );
-            res.json(cursor.friendsID);
+            res.json(cursor.friends);
         } catch (e) {
             console.error(e);
         }
@@ -182,7 +182,7 @@ router.get('/friends/request/send', (req, res) => {
     async function main() {
         try {
             const cursor = await userDetailsCollection.findOne( { googleID: req.user.googleID } );
-            res.json(cursor.sendRequestID);
+            res.json(cursor.sendRequests);
         } catch (e) {
             console.error(e);
         }
@@ -195,7 +195,7 @@ router.get('/friends/request/receive', (req, res) => {
     async function main() {
         try {
             const cursor = await userDetailsCollection.findOne( { googleID: req.user.googleID } );
-            res.json(cursor.receiveRequestID);
+            res.json(cursor.receiveRequests);
         } catch (e) {
             console.error(e);
         }
@@ -221,8 +221,8 @@ router.put('/unfriend/:ID', (req, res) => {
     console.log("unfriend")
     async function main() {
         try {
-            await userDetailsCollection.updateOne( { googleID: req.user.googleID }, { $pull: { friendsID: { googleID: req.params.ID } } } );
-            await userDetailsCollection.updateOne( { googleID: req.params.ID }, { $pull: { friendsID: { googleID: req.user.googleID } } } );
+            await userDetailsCollection.updateOne( { googleID: req.user.googleID }, { $pull: { friends: { googleID: req.params.ID } } } );
+            await userDetailsCollection.updateOne( { googleID: req.params.ID }, { $pull: { friends: { googleID: req.user.googleID } } } );
         } catch (e) {
             console.error(e);
         }

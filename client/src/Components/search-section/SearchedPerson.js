@@ -14,7 +14,7 @@ export default function SearchedPerson(props) {
       console.log(`You cannot send request to yourself`);
       return ;
     }
-    else if (user.friendsID.findIndex(element => element.googleID === ID) > -1 || user.sendRequestID.findIndex(element => element.googleID === ID) > -1) {
+    else if (user.friends.findIndex(element => element.googleID === ID) > -1 || user.sendRequests.findIndex(element => element.googleID === ID) > -1) {
       console.log(`${name} is already friend`);
       return ;
     }
