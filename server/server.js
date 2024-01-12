@@ -73,7 +73,6 @@ function join(data, roomID, ws) {
     leave(ws);
     console.log("Joining");
     ws.senderGoogleID = data.senderID;
-    ws.receiverGoogleID = data.newChat.ID;
     ws.chatInfo = data.newChat;
     if (!rooms[roomID]) {
         rooms[roomID] = [ws];
@@ -93,9 +92,9 @@ function join(data, roomID, ws) {
 function leave(ws) {
     let roomID;
     if (!ws.chatInfo) return ;
-    if (ws.chatInfo.isGroup) roomID = ws.receiverGoogleID;
+    if (ws.chatInfo.isGroup) roomID = ws.chatInfo.ID;
     else {
-        const IDarray = [ ws.senderGoogleID, ws.receiverGoogleID ].sort();
+        const IDarray = [ ws.senderGoogleID, ws.chatInfo.ID ].sort();
         roomID = IDarray[0] + IDarray[1];
     }
     console.log("i am leaving")
@@ -132,21 +131,6 @@ wss.on('connection', (ws) => {
         if (data.action === 'join') join(data, roomID, ws);
         else if (data.action === 'leave') leave(ws);
         else if (data.action === 'send') send(data, roomID);
-
-
-        // let roomID;
-        // console.log(data.isGroup);
-        // if (data.isGroup) roomID = data.groupID;
-        // else {
-        //     const IDarray = [ data.senderID, data.receiverID ];
-        //     IDarray.sort();
-        //     roomID = IDarray[0] + IDarray[1];
-        // }
-        // console.log(data);
-
-        // if (data.action === 'join') join(data, roomID, ws);
-        // else if (data.action === 'leave') leave(ws);
-        // else if (data.action === 'send') send(data, roomID);
     }
 })
 
