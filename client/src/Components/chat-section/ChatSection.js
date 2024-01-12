@@ -16,9 +16,12 @@ export default function ChatSection(props) {
   const [star, setStar] = useState(0);
   const { newChat, latestChat, } = useOutletContext();
   
-  let IDarray = [ newChat.ID, user.googleID ];
-  IDarray.sort();
-  let room = IDarray[0] + IDarray[1];
+  let room;
+  if (newChat.isGroup) room = newChat.ID;
+  else {
+    let IDarray = [ newChat.ID, user.googleID ].sort();
+    room = IDarray[0] + IDarray[1];
+  }
   console.log(room);
 
   useEffect(() => {
