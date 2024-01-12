@@ -109,12 +109,16 @@ router.put('/acceptRequest', (req, res) => {
         photoURL: req.user.photoURL
     };
 
+    const IDarray = [req.user.googleID, req.query.ID].sort();
+    const room = IDarray[0] + IDarray[1];
+
     async function main() {
         try {
             await userDetailsCollection.updateOne( { googleID: req.user.googleID }, { $addToSet: { friends: friendData } } );
             await userDetailsCollection.updateOne( { googleID: req.user.googleID }, { $pull: { receiveRequests: friendData } } );
             await userDetailsCollection.updateOne( { googleID: req.query.ID }, { $addToSet: { friends: userData } } );
             await userDetailsCollection.updateOne( { googleID: req.query.ID }, { $pull: { sendRequests: userData } } );
+            await chatsCollection.insertOne( { chatID: room, chatMsg: [] } );
         } catch (e) {
             console.error(e);
         }
