@@ -42,23 +42,36 @@ export default function TextBox(props) {
     if (collectedText.trim() === "") return ;
 
     const senderID = user.googleID;
-    const receiverID = props.newChat.ID;
     const senderName = user.firstName + " " + user.familyName;
-    const receiverName = props.newChat.fullName;
     const messageID = senderID + Date.now();
-    let messageData;
+    let messageData = {
+      messageID,
+      collectedText,
+      currentMsgTime,
+      senderID,
+      senderName,
+      newChat: props.newChat,
+      star: false,
+      action: 'send'
+    };
+
     if (showReplyMessage) {
-      const replyToMessage = { replyToPerson: reply.replyToPerson, replyForMessage: reply.replyForMessage, repliedMessageID: reply.repliedMessageID };
-      messageData = { messageID, collectedText, currentMsgTime, senderID, receiverID, senderName, receiverName, replyToMessage, star: false };
+      messageData = { 
+        ...messageData,
+        replyToMessage: {
+          replyToPerson: reply.replyToPerson,
+          replyForMessage: reply.replyForMessage,
+          repliedMessageID: reply.repliedMessageID
+        }
+      };
     }
-    else messageData = { messageID, collectedText, currentMsgTime, senderID, receiverID, senderName, receiverName, newChat: props.newChat, star: false };
 
     let emojiPanel = emojiPanelRef.current;
     if (emojiPanel.style.display === 'block') {
       emojiPanel.style.display = 'none';
     }
     dispatch(appendChat([messageData]));
-    props.ws.send(JSON.stringify({ ...messageData, action: 'send' }));
+    props.ws.send(JSON.stringify(messageData));
   }
 
   function selectEmoji(event) {
