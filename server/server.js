@@ -59,6 +59,8 @@ app.use('/', authCheck, filesRouter);
 async function main(room, message) {
     try {
         await client.connect();
+        message.newChat.isGroup ?
+        await client.db('chat-app').collection('groupChats').updateOne( { groupID: room }, { $push: { chatMsg: message } }, { $set: { groupId: room }, upsert: true } ) :
         await client.db('chat-app').collection('chats').updateOne( { chatID: room }, { $push: { chatMsg: message } }, { $set: { chatID: room }, upsert: true } );
     } catch (e) {
         console.error(e);
