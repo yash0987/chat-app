@@ -14,7 +14,7 @@ export default function ChatSection(props) {
   const theme = useSelector(state => state.theme.value);
   const dispatch = useDispatch();
   const [star, setStar] = useState(0);
-  const { newChat, latestChat, } = useOutletContext();
+  const { newChat, latestChat } = useOutletContext();
   
   let room;
   if (newChat.isGroup) room = newChat.ID;
@@ -53,7 +53,7 @@ export default function ChatSection(props) {
   }
 
   async function getChat() {
-    const getChatRequestURI = `http://localhost:5000/chat/data?ID=${room}`;
+    const getChatRequestURI = `http://localhost:5000/chat/data?ID=${room}&isGroup=${newChat.isGroup}`;
     const response = await fetch(getChatRequestURI, {
       method: 'GET',
       credentials: 'include',
