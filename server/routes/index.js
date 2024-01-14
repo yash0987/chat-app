@@ -376,7 +376,7 @@ router.post('/group', (req, res) => {
         try {
             const cursor = await client.db('chat-app').collection('groupChats').findOne( { groupID: group.groupID } );
             if (!cursor) {
-                await client.db('chat-app').collection('groupChats').insertOne( { groupID: group.groupID } );
+                await client.db('chat-app').collection('groupChats').insertOne( { groupID: group.groupID, chatMsg: [] } );
                 for (let i = 0; i < groupMembers.length; i++) {
                     await userDetailsCollection.updateOne( { googleID: groupMembers[i] }, { $addToSet: { groups: group } } );
                 }
