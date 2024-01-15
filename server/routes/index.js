@@ -119,7 +119,7 @@ router.put('/acceptRequest', (req, res) => {
             await userDetailsCollection.updateOne( { googleID: req.user.googleID }, { $pull: { receiveRequests: friendData } } );
             await userDetailsCollection.updateOne( { googleID: req.query.ID }, { $addToSet: { friends: userData } } );
             await userDetailsCollection.updateOne( { googleID: req.query.ID }, { $pull: { sendRequests: userData } } );
-            await chatsCollection.insertOne( { chatID: room, chatMsg: [] } );
+            await personalChatsCollection.insertOne( { chatID: room, chatMsg: [] } );
         } catch (e) {
             console.error(e);
         }
