@@ -6,7 +6,8 @@ const router = express.Router();
 const uri = 'mongodb://127.0.0.1:27017/';
 const client = new MongoClient(uri);
 const userDetailsCollection = client.db('chat-app').collection('userDetails');
-const chatsCollection =  client.db('chat-app').collection('chats');
+const personalChatsCollection =  client.db('chat-app').collection('chats');
+const groupChatsCollection =  client.db('chat-app').collection('groupChats');
 
 (async () => await client.connect())();
 
@@ -374,9 +375,9 @@ router.post('/group', (req, res) => {
 
     async function main() {
         try {
-            const cursor = await client.db('chat-app').collection('groupChats').findOne( { groupID: group.groupID } );
+            const cursor = await groupChatsCollection.findOne( { groupID: group.groupID } );
             if (!cursor) {
-                await client.db('chat-app').collection('groupChats').insertOne( { groupID: group.groupID, chatMsg: [] } );
+                await groupChatsCollection.insertOne( { groupID: group.groupID, chatMsg: [] } );
                 for (let i = 0; i < groupMembers.length; i++) {
                     await userDetailsCollection.updateOne( { googleID: groupMembers[i] }, { $addToSet: { groups: group } } );
                 }
