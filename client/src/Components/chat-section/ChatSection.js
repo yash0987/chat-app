@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useOutletContext } from 'react-router-dom';
 import { prependChat, appendChat } from '../../features/chat-slice/chatSlice';
 import ChatBar from './chat-bar/ChatBar';
 import Messages from './Messages';
@@ -12,14 +11,14 @@ export default function ChatSection(props) {
   const chat = useSelector(state => state.chat);
   const user = useSelector(state => state.auth.value.user);
   const theme = useSelector(state => state.theme.value);
+  const chatInfo = useSelector(state => state.chatinfo.value);
   const dispatch = useDispatch();
   const [star, setStar] = useState(0);
-  const { newChat, latestChat } = useOutletContext();
   
   let room;
-  if (newChat.isGroup) room = newChat.ID;
+  if (chatInfo.newChat.isGroup) room = chatInfo.newChat.ID;
   else {
-    let IDarray = [ newChat.ID, user.googleID ].sort();
+    let IDarray = [ chatInfo.newChat.ID, user.googleID ].sort();
     room = IDarray[0] + IDarray[1];
   }
   console.log(room);
@@ -34,8 +33,8 @@ export default function ChatSection(props) {
     setTimeout(() => {
       const detailsForRoom = {
         senderID: user.googleID,
-        newChat,
-        latestChat,
+        newChat: chatInfo.newChat,
+        latestChat: chatInfo.latestChat,
         action: 'join',
       };
       ws.send(JSON.stringify(detailsForRoom));
@@ -53,7 +52,7 @@ export default function ChatSection(props) {
   }
 
   async function getChat() {
-    const getChatRequestURI = `http://localhost:5000/chat/data?ID=${room}&isGroup=${newChat.isGroup}`;
+    const getChatRequestURI = `http://localhost:5000/chat/data?ID=${room}&isGroup=${chatInfo.newChat.isGroup}`;
     const response = await fetch(getChatRequestURI, {
       method: 'GET',
       credentials: 'include',
@@ -81,9 +80,9 @@ export default function ChatSection(props) {
 
   return (
     <section className={`w-[64.15rem] h-[91vh] flex flex-col overflow-hidden ${theme.bg50}`}>
-      <ChatBar getChat={getChat} star={star} setStar={setStar} newChat={newChat} room={room} ws={ws} />
+      <ChatBar getChat={getChat} star={star} setStar={setStar} room={room} ws={ws} />
       <Messages star={star} setStar={setStar} elementArray={chat.value} googleID={user.googleID} />
-      <TextBox newChat={newChat} ws={ws} />
+      <TextBox ws={ws} />
       <DeleteForMeModal room={room} />
     </section>
   )

@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { emptyChat } from './../../../features/chat-slice/chatSlice';
 import { unselectAllMessages } from '../../../features/select-message-slice/selectMessageSlice';
 import { replyMessageToggle, starMessagesToggle } from '../../../features/toggle-slice/toggleSlice';
+import { startNewChat } from '../../../features/chatinfo-slice/chatInfoSlice';
 
 export default function Friend(props) {
   const theme = useSelector(state => state.theme.value);
@@ -14,8 +15,7 @@ export default function Friend(props) {
     const fullName = props.friendInfo.fullName;
     const photoURL = props.friendInfo.photoURL;
     console.log({ID, fullName, photoURL})
-    props.setLatestChat(props.newChat);
-    props.setNewChat({ ID, fullName, photoURL, isGroup: false });
+    dispatch(startNewChat({ ID, fullName, photoURL, isGroup: false }));
     dispatch(unselectAllMessages());
     dispatch(starMessagesToggle(false));
     dispatch(replyMessageToggle(false));

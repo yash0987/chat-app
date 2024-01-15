@@ -36,7 +36,7 @@ export default function AllFriendsSection(props) {
         {
           friends ? friends.map((element) => {
             keyValue++;
-            return <Friend key={keyValue} friendInfo={element} newChat={props.newChat} setNewChat={props.setNewChat} latestChat={props.latestChat} setLatestChat={props.setLatestChat} />
+            return <Friend key={keyValue} friendInfo={element} />
           }) : (getFriends())
         }
         </div>

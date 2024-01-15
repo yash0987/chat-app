@@ -11,6 +11,7 @@ export default function TextBox(props) {
   const reply = useSelector(state => state.reply.value);
   const showReplyMessage = useSelector(state => state.toggle.value.replyMessage);
   const theme = useSelector(state => state.theme.value);
+  const newChat = useSelector(state => state.chatinfo.value.newchat);
   const dispatch = useDispatch();
   const messageBoxRef = useRef(null);
   const emojiPanelRef = useRef(null);
@@ -50,7 +51,7 @@ export default function TextBox(props) {
       currentMsgTime,
       senderID,
       senderName,
-      newChat: props.newChat,
+      newChat,
       star: false,
       action: 'send'
     };

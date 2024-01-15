@@ -8,6 +8,7 @@ export default function Star(props) {
   const chat = useSelector(state => state.chat.value);
   const selectedMessagesList = useSelector(state => state.selectmessage.value);
   const theme = useSelector(state => state.theme.value);
+  const isGroup = useSelector(state => state.chatinfo.value.newChat.isGroup);
   const dispatch = useDispatch();
 
   async function starAndUnstarMessage() {
@@ -22,7 +23,7 @@ export default function Star(props) {
     })
     dispatch(updateChat(updatedMessageArray));
 
-    const starAndUnstarMessageRequestURI = `http://localhost:5000/starAndUnstar/messages?selectedMessages=${JSON.stringify(selectedMessagesList)}&starStatus=${props.star > 0}&ID=${props.room}`;
+    const starAndUnstarMessageRequestURI = `http://localhost:5000/starAndUnstar/messages?selectedMessages=${JSON.stringify(selectedMessagesList)}&starStatus=${props.star > 0}&ID=${props.room}&isGroup=${isGroup}`;
     const response = await fetch(starAndUnstarMessageRequestURI, {
       method: 'PUT',
       credentials: "include",
