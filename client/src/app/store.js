@@ -7,6 +7,7 @@ import toggleReducer from '../features/toggle-slice/toggleSlice';
 import replyReducer from '../features/reply-slice/replySlice';
 import themeReducer from '../features/theme-slice/themeSlice';
 import wallpaperReducer from '../features/wallpaper-slice/wallpaperSlice';
+import chatInfoSlice from '../features/chatinfo-slice/chatInfoSlice';
 
 export default configureStore({
     reducer: {
@@ -18,5 +19,6 @@ export default configureStore({
         reply: replyReducer,
         theme: themeReducer,
         wallpaper: wallpaperReducer,
+        chatinfo: chatInfoSlice,
     }
 })
