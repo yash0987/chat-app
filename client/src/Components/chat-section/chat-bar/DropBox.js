@@ -9,10 +9,12 @@ export default function DropBox(props) {
   const toggleFeaturesState = useSelector(state => state.toggle.value.toggleFeatures);
   const displayStarredMessages = useSelector(state => state.toggle.value.showStarredMessages);
   const theme = useSelector(state => state.theme.value);
+  const isGroup = useSelector(state => state.chatinfo.value.newChat.isGroup);
   const dispatch = useDispatch();
 
   async function getStarredMessages() {
-    const getStarredMessagesRequestURI = `http://localhost:5000/starred/messages?ID=${props.room}`;
+    const getStarredMessagesRequestURI = isGroup ? `http://localhost:5000/group/starred/messages?ID=${props.room}` :
+    `http://localhost:5000/starred/messages?ID=${props.room}`;
     const response = await fetch(getStarredMessagesRequestURI, {
       method: 'GET',
       credentials: "include",

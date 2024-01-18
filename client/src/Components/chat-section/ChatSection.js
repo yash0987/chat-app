@@ -52,7 +52,8 @@ export default function ChatSection(props) {
   }
 
   async function getChat() {
-    const getChatRequestURI = `http://localhost:5000/chat/data?ID=${room}&isGroup=${chatInfo.newChat.isGroup}`;
+    const getChatRequestURI = chatInfo.newChat.isGroup ? `http://localhost:5000/group/data?ID=${room}` :
+    `http://localhost:5000/chat/data?ID=${room}`;
     const response = await fetch(getChatRequestURI, {
       method: 'GET',
       credentials: 'include',

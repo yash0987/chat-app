@@ -9,6 +9,7 @@ export default function DeleteForMeModal(props) {
   const deleteModalState = useSelector(state => state.modal.value[0]);
   const selectedMessagesList = useSelector(state => state.selectmessage.value);
   const theme = useSelector(state => state.theme.value);
+  const isGroup = useSelector(state => state.chatinfo.value.newChat.isGroup);
   const dispatch = useDispatch();
 
   console.log(selectedMessagesList);
@@ -22,7 +23,8 @@ export default function DeleteForMeModal(props) {
     dispatch(unselectAllMessages());
     dispatch(showDeleteModal(false));
 
-    const deleteMessageRequestURI = `http://localhost:5000/delete/messages?selectedMessages=${JSON.stringify(selectedMessagesList)}&ID=${props.room}`;
+    const deleteMessageRequestURI = isGroup ? `http://localhost:5000/group/delete/messages?selectedMessages=${JSON.stringify(selectedMessagesList)}&ID=${props.room}` :
+    `http://localhost:5000/delete/messages?selectedMessages=${JSON.stringify(selectedMessagesList)}&ID=${props.room}`;
     const response = await fetch(deleteMessageRequestURI, {
       method: 'DELETE',
       credentials: "include",

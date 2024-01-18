@@ -23,7 +23,9 @@ export default function Star(props) {
     })
     dispatch(updateChat(updatedMessageArray));
 
-    const starAndUnstarMessageRequestURI = `http://localhost:5000/starAndUnstar/messages?selectedMessages=${JSON.stringify(selectedMessagesList)}&starStatus=${props.star > 0}&ID=${props.room}&isGroup=${isGroup}`;
+    const starAndUnstarMessageRequestURI = isGroup ? 
+    `http://localhost:5000/group/starAndUnstar/messages?selectedMessages=${JSON.stringify(selectedMessagesList)}&starStatus=${props.star > 0}&ID=${props.room}` :
+    `http://localhost:5000/starAndUnstar/messages?selectedMessages=${JSON.stringify(selectedMessagesList)}&starStatus=${props.star > 0}&ID=${props.room}`;
     const response = await fetch(starAndUnstarMessageRequestURI, {
       method: 'PUT',
       credentials: "include",
