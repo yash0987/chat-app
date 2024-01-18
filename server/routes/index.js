@@ -493,6 +493,24 @@ router.put('/group/starAndunstar/messages', (req, res) => {
     main().catch(console.error);
 })
 
+router.get('/group/starred/messages', (req, res) => {
+    async function main() {
+        try {
+            const cursor = await groupChatsCollection.findOne( { groupID: req.query.ID } );
+            let chatMsg = cursor.chatMsg;
+            const starMessagesArray = chatMsg.filter((element) =>
+                element.deleteMsg.indexOf(req.user.googleID) === -1 && element.star.indexOf(req.user.googleID) !== -1
+            );
+            console.log(starMessagesArray);
+            res.json(starMessagesArray);
+        } catch (e) {
+            console.error(e);
+        }
+    }
 
+    console.log("show me starred messages")
+
+    main().catch(console.error);
+})
 
 module.exports = router;
