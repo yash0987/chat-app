@@ -415,7 +415,23 @@ router.get('/group/data', (req, res) => {
     async function main() {
         try {
             const cursor = await groupChatsCollection.findOne( { groupID: req.query.ID } );
-            res.json(cursor.chatMsg);
+
+            let chatMsg = cursor.chatMsg.filter((element) => element.deleteMsg.indexOf(req.user.googleID) === -1);
+            chatMsg = chatMsg.map((element) => {
+                const star = element.star.indexOf(req.user.googleID) !== -1;
+                return {
+                    messageID: element.messageID,
+                    collectedText: element.collectedText,
+                    currentMsgTime: element.currentMsgTime,
+                    senderID: element.senderID,
+                    receiverID: element.newChat.ID,
+                    senderName: element.senderName,
+                    receiverName: element.newChat.fullName,
+                    replyToMessage: element.replyToMessage,
+                    star
+                };
+            })
+            res.json(chatMsg);
         } catch (e) {
             console.error(e);
         }
