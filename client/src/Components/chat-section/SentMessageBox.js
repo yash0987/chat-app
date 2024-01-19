@@ -53,7 +53,7 @@ export default function SentMessageBox(props) {
   return (
     <section onMouseDown={ () => triggerHoldEvent() } onMouseUp={ () => stopHoldEvent() } onMouseLeave={ () => stopHoldEvent() } id={props.element.messageID} className = {`${ highlightSelectMessage && toggleFeaturesState ? `${theme.bg500} bg-opacity-20` : 'bg-none' } select-none rounded-md flex justify-end my-1 p-1`} data-person='sender'>
       <p className = 'whitespace-pre-wrap break-words px-2 py-1 max-w-lg rounded-md bg-gray-200 text-gray-600'>
-        { 
+        {
           props.element.replyToMessage ?
           <a href={`#${props.element.replyToMessage.repliedMessageID}`}>
             <div className='border-l-4 border-pink-500 bg-gray-100 w-full p-2 rounded text-sm'>
@@ -61,11 +61,11 @@ export default function SentMessageBox(props) {
                 <p className='text-pink-500'>{ props.element.replyToMessage.replyToPerson }</p>
               </div>
               <p className='whitespace-pre-wrap break-words text-gray-500 leading-tight'>{ props.element.replyToMessage.replyForMessage }</p>
-            </div> 
+            </div>
           </a> : null
         }
         { props.element.collectedText }
-        <span className = 'flex justify-end text-[10px]'> { props.element.star ? <span>&#9733;  </span> : null } { props.element.currentMsgTime } </span>
+        <span className = 'flex justify-end text-[10px]'> { props.element.star ? <span>&#9733;  </span> : null } { props.currentTime(props.element.currentMsgTime) } </span>
       </p>
       { toggleFeaturesState ? <div className='m-2'>&#9552;</div> : null }
     </section>

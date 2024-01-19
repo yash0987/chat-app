@@ -10,6 +10,23 @@ export default function Message(props) {
   const wallpaper = useSelector(state => state.wallpaper.value);
   const dispatch = useDispatch();
 
+  const weekDays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+  function currentTime(timeEpoch) {
+    const date = new Date(timeEpoch);
+    let day = date.getDay();
+    let dd = date.getDate(), mm = date.getMonth(), yy = date.getFullYear();
+    let hours = date.getHours(), minutes = date.getMinutes();
+    
+    let ampm = hours >= 12 ? 'pm' : 'am';
+    hours = hours % 12;
+    hours = hours ? hours : 12;
+    minutes = minutes < 10 ? '0'+ minutes : minutes;
+    let strTime = `${weekDays[day]}, ${dd} ${months[mm]} ${yy} ${hours}:${minutes} ${ampm}`;
+    return strTime;
+  }
+
   useEffect(() => {
     scroll.current.scrollIntoView( { behavior: 'smooth' } );
   }, [props.elementArray.length])
@@ -26,9 +43,9 @@ export default function Message(props) {
         props.elementArray.map((element) => {
           keyValue++;
           if (element.senderID === props.googleID) {
-            return <SentMessageBox key={keyValue} star={props.star} setStar={props.setStar} element={element} />;
+            return <SentMessageBox key={keyValue} star={props.star} setStar={props.setStar} currentTime={currentTime} element={element} />;
           }
-          return <ReceivedMessageBox key={keyValue} star={props.star} setStar={props.setStar} element={element} />;
+          return <ReceivedMessageBox key={keyValue} star={props.star} setStar={props.setStar} currentTime={currentTime} element={element} />;
         })
       }
       <div ref={ scroll }></div>

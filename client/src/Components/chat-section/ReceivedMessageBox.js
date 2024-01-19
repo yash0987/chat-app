@@ -69,7 +69,7 @@ export default function ReceivedMessageBox(props) {
           : null
         }
         { props.element.collectedText }
-        <span className = 'flex justify-end text-[10px] text-white'> { props.element.star ? <span>&#9733;  </span> : null } { props.element.currentMsgTime } </span>
+        <span className = 'flex justify-end text-[10px] text-white'> { props.element.star ? <span>&#9733;  </span> : null } { props.currentTime(props.element.currentMsgTime) } </span>
       </p>
     </section>
   )
