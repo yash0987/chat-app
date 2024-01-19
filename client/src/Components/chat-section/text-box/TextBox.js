@@ -5,6 +5,7 @@ import { appendChat } from '../../../features/chat-slice/chatSlice';
 import sendMessageBtn from './../../../img/sendMessageBtn.png';
 import emoji from './../../../img/emoji.png';
 import ReplyToMessage from './ReplyToMessage';
+import AlertBar from '../../AlertBar';
 
 export default function TextBox(props) {
   const user = useSelector(state => state.auth.value.user);
@@ -16,35 +17,18 @@ export default function TextBox(props) {
   const messageBoxRef = useRef(null);
   const emojiPanelRef = useRef(null);
 
-  const weekDays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-
   useEffect(() => {
     messageBoxRef.current.focus();
-  }, [])
-  
-  function currentTime() {
-    const date = new Date();
-    let day = date.getDay();
-    let dd = date.getDate(), mm = date.getMonth(), yy = date.getFullYear();
-    let hours = date.getHours(), minutes = date.getMinutes();
-    
-    let ampm = hours >= 12 ? 'pm' : 'am';
-    hours = hours % 12;
-    hours = hours ? hours : 12;
-    minutes = minutes < 10 ? '0'+ minutes : minutes;
-    let strTime = `${weekDays[day]}, ${dd} ${months[mm]} ${yy} ${hours}:${minutes} ${ampm}`;
-    return strTime;
-  }
+  }, []);
 
   function displayMessage() {
     const collectedText = messageBoxRef.current.value;
-    const currentMsgTime = currentTime();
+    const currentMsgTime = Date.now();
     if (collectedText.trim() === "") return ;
 
     const senderID = user.googleID;
     const senderName = user.firstName + " " + user.familyName;
-    const messageID = senderID + Date.now();
+    const messageID = senderID + currentMsgTime;
     let messageData = {
       messageID,
       collectedText,
@@ -103,6 +87,7 @@ export default function TextBox(props) {
 
   return (
     <>
+      <AlertBar />
       <ReplyToMessage />
       <div className='px-2 flex bg-white'>
         <button>
