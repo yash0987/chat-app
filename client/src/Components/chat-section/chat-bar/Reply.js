@@ -14,9 +14,14 @@ export default function Reply() {
   function replyToThisMessage() {
     chat.forEach(element => {
       if (element.messageID === selectedMessagesList[0]) {
+        let replyForMessage = element.collectedText.slice(0, Math.min(50, element.collectedText.length));
+        let array = replyForMessage.split('\n');
+        if (array.length > 3) {
+          replyForMessage = array.splice(0, 3).join('\n') + '...';
+        }
         dispatch(reply({
           replyToPerson: element.senderName,
-          replyForMessage: element.collectedText,
+          replyForMessage,
           repliedMessageID: element.messageID
         }));
       }
