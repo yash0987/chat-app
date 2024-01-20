@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import EmojiPicker from 'emoji-picker-react';
 import { appendChat } from '../../../features/chat-slice/chatSlice';
 import sendMessageBtn from './../../../img/sendMessageBtn.png';
+import plusIcon from './../../../img/plus.png';
 import emoji from './../../../img/emoji.png';
 import ReplyToMessage from './ReplyToMessage';
 import AlertBar from '../../AlertBar';
@@ -86,23 +87,28 @@ export default function TextBox(props) {
   }
 
   return (
-    <>
+    <div className='w-full grid place-items-center'>
       <AlertBar />
       <ReplyToMessage />
-      <div className='px-2 flex bg-white'>
-        <button>
-          <img onClick={openEmojiPanel} src={emoji} alt="" className={`w-12 p-2 rounded-full ${theme.hoverBg200}`} />
-        </button>
-        <div className='flex flex-col justify-end w-full h-10 m-4'>
-          <textarea cols="0" rows="0" ref={messageBoxRef} placeholder='Type a message...' className={`py-2 resize-none focus:outline-none ${theme.placeholderText400}`}></textarea>
+      <div className='mb-2 px-2 w-[94%] rounded-lg flex place-items-center bg-white'>
+        <div className='grid grid-flow-col'>
+          <button className={`rounded-full text-4xl text-white ${theme.bg200} ${theme.hoverBg300}`}>
+            <img src={plusIcon} alt="" className='w-8 p-1' />
+          </button>
+          <button className='mx-2'>
+            <img onClick={openEmojiPanel} src={emoji} alt="" className={`w-9 p-1 rounded-full ${theme.hoverBg200}`} />
+          </button>
         </div>
-        <button>
-            <img onClick={displayMessage} src={ sendMessageBtn } alt="" className={`w-12 rounded-full ${theme.bg400} ${theme.hoverBg500}`} />
-        </button>
+        <div className='w-full'>
+          <textarea cols="0" rows="0" ref={messageBoxRef} placeholder='Type a message...' className={`w-full mt-2 h-7 resize-none focus:outline-none ${theme.placeholderText400}`}></textarea>
+        </div>
+        {/* <button>
+            <img onClick={displayMessage} src={ sendMessageBtn } alt="" className={`w-8 rounded-full ${theme.bg400} ${theme.hoverBg500}`} />
+        </button> */}
       </div>
       <div ref={emojiPanelRef} style={{display: 'none'}}>
         <EmojiPicker width={1024} height={350} previewConfig={{showPreview: false}} skinTonePickerLocation="SEARCH" onEmojiClick={selectEmoji} />
       </div>
-    </>
+    </div>
   )
 }
