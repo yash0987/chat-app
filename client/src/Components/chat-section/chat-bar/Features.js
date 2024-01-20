@@ -14,12 +14,12 @@ export default function Features(props) {
   const dispatch = useDispatch();
 
   return (
-    toggleFeaturesState ? (<div className='flex mx-2 my-3'>
+    toggleFeaturesState ? (<div className='grid grid-flow-col mx-2 my-1'>
       <Reply />
       <Star star={props.star} setStar={props.setStar} room={props.room} />
-      <img onClick={ () => selectedMessagesList.length ? dispatch(showDeleteModal(true)) : null } src={ trash } alt="" className={`mx-1 w-10 rounded-full ${theme.hoverBg400}`} />
+      <img onClick={ () => selectedMessagesList.length ? dispatch(showDeleteModal(true)) : null } src={ trash } alt="" className={`mx-1 w-8 rounded-full ${theme.hoverBg400}`} />
       <Copy />
-      <img src={forward} alt="" className={`mx-1 w-10 rounded-full ${theme.hoverBg400}`} />
+      <img src={forward} alt="" className={`mx-1 w-8 rounded-full ${theme.hoverBg400}`} />
     </div>) : null
   )
 }

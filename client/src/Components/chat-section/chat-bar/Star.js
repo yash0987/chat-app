@@ -44,8 +44,8 @@ export default function Star(props) {
   return (
     <div>{
       props.star ? 
-      <span onClick={ () => starAndUnstarMessage() } className={`mx-1 px-2 text-3xl rounded-full ${theme.hoverBg400}`}>&#9733;</span> : 
-      <img onClick={ () => starAndUnstarMessage() } src={unstar} alt="" className={`mx-1 w-10 rounded-full ${theme.hoverBg400}`} />
+      <span onClick={ () => starAndUnstarMessage() } className={`mx-1 px-2 text-xl rounded-full ${theme.hoverBg400}`}>&#9733;</span> : 
+      <img onClick={ () => starAndUnstarMessage() } src={unstar} alt="" className={`mx-1 w-8 rounded-full ${theme.hoverBg400}`} />
     }</div>
   )
 }

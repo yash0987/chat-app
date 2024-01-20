@@ -47,7 +47,7 @@ export default function DropBox(props) {
     <>
       {
         !toggleFeaturesState && !displayStarredMessages ?
-        <img onClick={ openDropBox } src={ menu } id='dropboxBtn' alt="" className={`my-2 h-12 rounded-full ${theme.hoverBg400}`} /> 
+        <img onClick={ openDropBox } src={ menu } id='dropboxBtn' alt="" className={`w-10 rounded-full ${theme.hoverBg400}`} /> 
         : null
       }
 

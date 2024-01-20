@@ -39,16 +39,16 @@ export default function PersonDetails(props) {
   return (
     <div className='flex'>
       <button onClick={ () => resetChatOrCloseChat() }>
-        <img src={ backButton } alt="" className='m-2 p-2 w-9 rounded-full' />
+        <img src={ backButton } alt="" className='w-5 rounded-full' />
       </button>
       {
-        !toggleFeaturesState && !displayStarredMessages ? <div className='flex'>
-          <img src={ newChat.photoURL } alt="" className='mx-4 my-2 w-12 rounded-full' />
-          <p className='my-4 font-semibold text-lg'>{ newChat.fullName }</p>
+        !toggleFeaturesState && !displayStarredMessages ? <div className='grid grid-flow-col place-items-center'>
+          <img src={ newChat.photoURL } alt="" className='mx-3 w-8 rounded-full' />
+          <p className='font-semibold'>{ newChat.fullName }</p>
         </div> : null
       }
-      { displayStarredMessages ? <p className='m-4 font-semibold text-lg'>Starred Messages</p> : null }
-      { toggleFeaturesState ? <p className='m-4 fount-semibold text-xl'>{ selectedMessagesList.length }</p> : null }
+      { displayStarredMessages ? <p className='mx-5 my-2 font-semibold'>Starred Messages</p> : null }
+      { toggleFeaturesState ? <p className='mx-5 my-2 fount-semibold'>{ selectedMessagesList.length }</p> : null }
     </div>
   )
 }

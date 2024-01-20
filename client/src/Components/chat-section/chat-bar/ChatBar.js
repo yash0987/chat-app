@@ -10,7 +10,7 @@ export default function ChatBar(props) {
   const theme = useSelector(state => state.theme.value);
   
   return (
-    <section className={`px-3 flex justify-between ${toggleFeaturesState || displayStarredMessages ? `${theme.bg500} saturate-[.80]` : `${theme.bg400}`} text-white`}>
+    <section className={`px-8 py-1 flex justify-between ${toggleFeaturesState || displayStarredMessages ? `${theme.bg500} saturate-[.80]` : `${theme.bg400}`} text-white`}>
       <PersonDetails getChat={props.getChat} ws={props.ws} />
       <Features star={props.star} setStar={props.setStar} room={props.room} />
       <DropBox room={props.room} />

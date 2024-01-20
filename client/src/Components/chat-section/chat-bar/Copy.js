@@ -36,7 +36,7 @@ export default function Copy() {
   
   return (
     <section>
-      <img onClick={ () => copyText() } src={copy} alt="" className={`mx-1 w-10 rounded-full ${theme.hoverBg400}`} />
+      <img onClick={ () => copyText() } src={copy} alt="" className={`mx-1 w-8 rounded-full ${theme.hoverBg400}`} />
     </section>
   )
 }
