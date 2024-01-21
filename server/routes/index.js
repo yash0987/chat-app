@@ -276,8 +276,9 @@ router.get('/chat/data', (req, res) => {
                     collectedText: element.collectedText,
                     currentMsgTime: element.currentMsgTime,
                     senderID: element.senderID,
-                    receiverID: element.newChat.ID,
                     senderName: element.senderName,
+                    senderPhotoURL: element.senderPhotoURL,
+                    receiverID: element.newChat.ID,
                     receiverName: element.newChat.fullName,
                     replyToMessage: element.replyToMessage,
                     star
@@ -424,8 +425,9 @@ router.get('/group/data', (req, res) => {
                     collectedText: element.collectedText,
                     currentMsgTime: element.currentMsgTime,
                     senderID: element.senderID,
-                    receiverID: element.newChat.ID,
                     senderName: element.senderName,
+                    senderPhotoURL: element.senderPhotoURL,
+                    receiverID: element.newChat.ID,
                     receiverName: element.newChat.fullName,
                     replyToMessage: element.replyToMessage,
                     star
