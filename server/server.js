@@ -60,8 +60,8 @@ async function main(room, message) {
     try {
         await client.connect();
         message.newChat.isGroup ?
-        await client.db('chat-app').collection('groupChats').updateOne( { groupID: room }, { $push: { chatMsg: message } }, { $set: { groupId: room }, upsert: true } ) :
-        await client.db('chat-app').collection('chats').updateOne( { chatID: room }, { $push: { chatMsg: message } }, { $set: { chatID: room }, upsert: true } );
+        await client.db('chat-app').collection('groupChats').updateOne( { groupID: room }, { $push: { chatMsg: message } }, { $set: { groupID: room, chatMsg: [] }, upsert: true } ) :
+        await client.db('chat-app').collection('personalChats').updateOne( { chatID: room }, { $push: { chatMsg: message } }, { $set: { chatID: room, chatMsg: [] }, upsert: true } );
     } catch (e) {
         console.error(e);
     } finally {
@@ -115,10 +115,17 @@ function send(data, roomID) {
 
     data['deleteMsg'] = [];
     data['star'] = [];
+    delete data.newChat;
     main(roomID, data).catch(console.error);
 }
 
 wss.on('connection', (ws) => {
+    ws.isAlive = true;
+    ws.on('pong', () => {
+        console.log("pong");
+        ws.isAlive = true;
+    });
+    
     ws.onmessage = (event) => {
         const data = JSON.parse(event.data);
         console.log(data);
@@ -135,6 +142,15 @@ wss.on('connection', (ws) => {
         else if (data.action === 'send') send(data, roomID);
     }
 })
+
+setInterval(function ping() {
+    wss.clients.forEach(function each(ws) {
+        if (ws.isAlive === false) return ws.terminate();
+        console.log("ping");
+        ws.isAlive = false;
+        ws.ping();
+    });
+}, 30000);
 
 server.listen(5000, () => {
     console.log('Server is listening to port 5000: http://localhost:5000');
