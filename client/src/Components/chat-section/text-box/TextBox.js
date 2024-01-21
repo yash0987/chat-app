@@ -29,6 +29,7 @@ export default function TextBox(props) {
 
     const senderID = user.googleID;
     const senderName = user.firstName + " " + user.familyName;
+    const senderPhotoURL = user.photoURL;
     const messageID = senderID + currentMsgTime;
     let messageData = {
       messageID,
@@ -36,6 +37,7 @@ export default function TextBox(props) {
       currentMsgTime,
       senderID,
       senderName,
+      senderPhotoURL,
       newChat,
       star: false,
       action: 'send'
