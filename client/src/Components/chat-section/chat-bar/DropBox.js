@@ -51,7 +51,7 @@ export default function DropBox(props) {
         : null
       }
 
-      <ul ref={ dropboxRef } className={`absolute top-[15%] right-[33.5%] z-10 shadow-lg ${theme.bg50} text-black`} style={{ display: 'none' }}>
+      <ul ref={ dropboxRef } className={`absolute top-12 right-0 z-10 shadow-lg ${theme.bg50} text-black`} style={{ display: 'none' }}>
         <li className={`px-4 py-2 ${theme.hoverBg100}`}>Profile</li>
         <li onClick={ () => getStarredMessages() } className={`px-4 py-2 ${theme.hoverBg100}`}>Starred Messages</li>
         <li className={`px-4 py-2 ${theme.hoverBg100}`}>Disappearing messages</li>
