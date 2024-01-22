@@ -13,18 +13,22 @@ export default function UploadFiles() {
         <label className={`flex items-center ${theme.hoverBg100}`}>
           <img src={documentIcon} className='w-8' alt="" />
           <p>Document</p>
+          <input type="file" name="" id="" className='hidden' accept='' />
         </label>
         <label className={`flex items-center ${theme.hoverBg100}`}>
           <img src={photoIcon} className='w-8' alt="" />
           <p>Photos & videos</p>
+          <input type="file" name="" id="" className='hidden' />
         </label>
         <label className={`flex items-center ${theme.hoverBg100}`}>
           <img src={pollIcon} className='w-8' alt="" />
           <p>Audio</p>
+          <input type="file" name="" id="" className='hidden' />
         </label>
         <label className={`flex items-center ${theme.hoverBg100}`}>
           <img src={audioIcon} className='w-8' alt="" />
           <p>Poll</p>
+          <input type="file" name="" id="" className='hidden' />
         </label>
       </div>
     </section>
