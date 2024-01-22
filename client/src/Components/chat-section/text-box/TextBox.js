@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import EmojiPicker from 'emoji-picker-react';
 import { appendChat } from '../../../features/chat-slice/chatSlice';
@@ -10,14 +10,15 @@ import AlertBar from '../../AlertBar';
 import UploadFiles from './UploadFiles';
 
 export default function TextBox(props) {
+  const messageBoxRef = useRef(null);
+  const emojiPanelRef = useRef(null);
+  const [uploadfiles, setUploadfiles] = useState(false);
   const user = useSelector(state => state.auth.value.user);
   const reply = useSelector(state => state.reply.value);
   const showReplyMessage = useSelector(state => state.toggle.value.replyMessage);
   const theme = useSelector(state => state.theme.value);
   const newChat = useSelector(state => state.chatinfo.value.newChat);
   const dispatch = useDispatch();
-  const messageBoxRef = useRef(null);
-  const emojiPanelRef = useRef(null);
 
   useEffect(() => {
     messageBoxRef.current.focus();
@@ -93,10 +94,10 @@ export default function TextBox(props) {
     <div className='relative w-full grid place-items-center'>
       <AlertBar />
       <ReplyToMessage />
-      <UploadFiles />
+      { uploadfiles ? <UploadFiles /> : null }
       <div className='mb-2 px-2 w-[94%] rounded-lg flex place-items-center bg-white'>
         <div className='grid grid-flow-col'>
-          <button className={`rounded-full text-4xl text-white ${theme.bg200} ${theme.hoverBg300}`}>
+          <button onClick={() => setUploadfiles(uploadfiles ^ 1)} className={`rounded-full text-4xl text-white ${theme.bg200} ${theme.hoverBg300}`}>
             <img src={plusIcon} alt="" className='w-8 p-1' />
           </button>
           <button className='mx-2'>
