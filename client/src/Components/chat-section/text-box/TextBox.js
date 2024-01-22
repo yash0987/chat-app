@@ -2,11 +2,12 @@ import React, { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import EmojiPicker from 'emoji-picker-react';
 import { appendChat } from '../../../features/chat-slice/chatSlice';
-import sendMessageBtn from './../../../img/sendMessageBtn.png';
+// import sendMessageBtn from './../../../img/sendMessageBtn.png';
 import plusIcon from './../../../img/plus.png';
 import emoji from './../../../img/emoji.png';
 import ReplyToMessage from './ReplyToMessage';
 import AlertBar from '../../AlertBar';
+import UploadFiles from './UploadFiles';
 
 export default function TextBox(props) {
   const user = useSelector(state => state.auth.value.user);
@@ -89,9 +90,10 @@ export default function TextBox(props) {
   }
 
   return (
-    <div className='w-full grid place-items-center'>
+    <div className='relative w-full grid place-items-center'>
       <AlertBar />
       <ReplyToMessage />
+      <UploadFiles />
       <div className='mb-2 px-2 w-[94%] rounded-lg flex place-items-center bg-white'>
         <div className='grid grid-flow-col'>
           <button className={`rounded-full text-4xl text-white ${theme.bg200} ${theme.hoverBg300}`}>
