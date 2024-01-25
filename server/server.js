@@ -58,8 +58,10 @@ app.use('/', authCheck, filesRouter);
 
 async function main(room, message) {
     try {
+        const isGroup = message.newChat.isGroup;
+        delete message.isGroup;
         await client.connect();
-        message.newChat.isGroup ?
+        isGroup ?
         await client.db('chat-app').collection('groupChats').updateOne( { groupID: room }, { $push: { chatMsg: message } }, { $set: { groupID: room, chatMsg: [] }, upsert: true } ) :
         await client.db('chat-app').collection('personalChats').updateOne( { chatID: room }, { $push: { chatMsg: message } }, { $set: { chatID: room, chatMsg: [] }, upsert: true } );
     } catch (e) {
@@ -115,7 +117,6 @@ function send(data, roomID) {
 
     data['deleteMsg'] = [];
     data['star'] = [];
-    delete data.newChat;
     main(roomID, data).catch(console.error);
 }
 
