@@ -69,7 +69,14 @@ export default function ReceivedMessageBox(props) {
           </a>
           : null
         }
-        { props.element.collectedText }
+        {
+					props.element.type !== 'text' ?
+					<div>
+            { props.element.name.split(".")[0] }
+            <p className='text-[10px] font-semibold'>{ fileSize(props.element.size) } &#183; { props.element.type.split("/")[1].toUpperCase() }</p>
+          </div>
+					: <p>{ props.element.collectedText }</p>
+				}
         <span className = 'flex justify-end text-[10px] text-white'> { props.element.star ? <span>&#9733;  </span> : null } { props.currentTime(props.element.currentMsgTime) } </span>
       </p>
     </section>
