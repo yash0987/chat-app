@@ -73,11 +73,11 @@ async function main(room, message) {
 
 const rooms = {};
 
-function join(data, roomID, ws) {
+function join(senderID, newChat, roomID, ws) {
     leave(ws);
     console.log("Joining");
-    ws.senderGoogleID = data.senderID;
-    ws.chatInfo = data.newChat;
+    ws.senderGoogleID = senderID;
+    ws.chatInfo = newChat;
     if (!rooms[roomID]) {
         rooms[roomID] = [ws];
         return ;
@@ -107,17 +107,20 @@ function leave(ws) {
     rooms[roomID] = rooms[roomID].filter((client) => client.senderGoogleID !== ws.senderGoogleID);
 }
 
-function send(data, roomID) {
+function send(data, senderID, isGroup, roomID) {
     console.log("Sending " + roomID);
     rooms[roomID].forEach((client) => {
-        if (client.senderGoogleID !== data.senderID) {
+        if (client.senderGoogleID !== senderID) {
             client.send(JSON.stringify(data));
         }
     })
 
-    data['deleteMsg'] = [];
-    data['star'] = [];
-    main(roomID, data).catch(console.error);
+    // data['deleteMsg'] = [];
+    // data['star'] = [];
+    data = data.map((element) => {
+        return { ...element, deleteMsg: [], star: [] };
+    })
+    main(roomID, isGroup, data).catch(console.error);
 }
 
 wss.on('connection', (ws) => {
@@ -129,18 +132,19 @@ wss.on('connection', (ws) => {
     
     ws.onmessage = (event) => {
         const data = JSON.parse(event.data);
+        const { newChat, senderID, action } = data[0];
+        const { ID: receiverID, isGroup } = newChat;
         console.log(data);
         let roomID;
-        if (data.newChat.isGroup) roomID = data.newChat.ID;
+        if (isGroup) roomID = receiverID;
         else {
-            const IDarray = [ data.senderID, data.newChat.ID ].sort();
+            const IDarray = [ senderID, receiverID ].sort();
             roomID = IDarray[0] + IDarray[1];
         }
-        console.log(data);
 
-        if (data.action === 'join') join(data, roomID, ws);
-        else if (data.action === 'leave') leave(ws);
-        else if (data.action === 'send') send(data, roomID);
+        if (action === 'join') join(senderID, newChat, roomID, ws);
+        else if (action === 'leave') leave(ws);
+        else if (action === 'send') send(data, senderID, isGroup, roomID);
     }
 })
 
