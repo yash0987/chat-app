@@ -57,6 +57,7 @@ export default function ReceivedMessageBox(props) {
       { toggleFeaturesState ? <div className='m-2'>&#9552;</div> : null }
       <img src={props.element.senderPhotoURL} alt="" className='w-7 my-2 rounded-full' />
       <p className = {`whitespace-pre-wrap break-words leading-5 max-w-lg mx-2 px-2 py-1 rounded-md text-white ${theme.bg500}`}>
+        <p className={`text-xs ${theme.text200}`}>@{ props.element.senderName }</p>
         { 
           props.element.replyToMessage ?
           <a href={`#${props.element.replyToMessage.repliedMessageID}`}>            
