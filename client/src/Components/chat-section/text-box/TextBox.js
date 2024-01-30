@@ -42,6 +42,7 @@ export default function TextBox(props) {
       senderPhotoURL,
       newChat,
       star: false,
+      type: 'text',
       action: 'send'
     };
 
