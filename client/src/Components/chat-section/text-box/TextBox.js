@@ -61,7 +61,7 @@ export default function TextBox(props) {
       emojiPanel.style.display = 'none';
     }
     dispatch(appendChat([messageData]));
-    props.ws.send(JSON.stringify(messageData));
+    props.ws.send(JSON.stringify([messageData]));
   }
 
   function selectEmoji(event) {

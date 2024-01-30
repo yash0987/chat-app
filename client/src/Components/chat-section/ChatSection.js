@@ -37,7 +37,7 @@ export default function ChatSection(props) {
         latestChat: chatInfo.latestChat,
         action: 'join',
       };
-      ws.send(JSON.stringify(detailsForRoom));
+      ws.send(JSON.stringify([detailsForRoom]));
     }, 500);
 
     return () => clearTimeout();
@@ -48,7 +48,8 @@ export default function ChatSection(props) {
     const message = JSON.parse(event.data);
     console.log(message);
     console.log("I am receiving")
-    dispatch(appendChat([message]));
+    // if (message.type !== 'text') return ;
+    dispatch(appendChat(message));
   }
 
   async function getChat() {
