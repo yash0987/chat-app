@@ -56,14 +56,19 @@ const authCheck = (req, res, next) => {
 app.use('/', authCheck, indexRouter);
 app.use('/', authCheck, filesRouter);
 
-async function main(room, message) {
+// (async () => await client.connect())();
+
+async function main(room, isGroup, messages) {
+    messages = messages.map((element) => {
+        delete element.newChat;
+        return element;
+    });
+
     try {
-        const isGroup = message.newChat.isGroup;
-        delete message.isGroup;
         await client.connect();
         isGroup ?
-        await client.db('chat-app').collection('groupChats').updateOne( { groupID: room }, { $push: { chatMsg: message } }, { $set: { groupID: room, chatMsg: [] }, upsert: true } ) :
-        await client.db('chat-app').collection('personalChats').updateOne( { chatID: room }, { $push: { chatMsg: message } }, { $set: { chatID: room, chatMsg: [] }, upsert: true } );
+        await client.db('chat-app').collection('groupChats').updateOne( { groupID: room }, { $push: { chatMsg: { $each: messages } } }, { $set: { groupID: room, chatMsg: [] }, upsert: true } ) :
+        await client.db('chat-app').collection('personalChats').updateOne( { chatID: room }, { $push: { chatMsg: { $each: messages } } }, { $set: { chatID: room, chatMsg: [] }, upsert: true } );
     } catch (e) {
         console.error(e);
     } finally {
