@@ -73,7 +73,7 @@ export default function ReceivedMessageBox(props) {
 					props.element.type !== 'text' ?
 					<div>
             { props.element.name.split(".")[0] }
-            <p className='text-[10px] font-semibold'>{ fileSize(props.element.size) } &#183; { props.element.type.split("/")[1].toUpperCase() }</p>
+            <p className='text-[10px] font-semibold'>{ props.fileSize(props.element.size) } &#183; { props.element.type.split("/")[1].toUpperCase() }</p>
           </div>
 					: <p>{ props.element.collectedText }</p>
 				}

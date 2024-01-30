@@ -27,6 +27,18 @@ export default function Message(props) {
     return strTime;
   }
 
+  function fileSize(dataSize) {
+    let count = 0;
+    let bytes = Number(dataSize);
+    while (bytes > 1024) {
+      bytes /= 1024;
+      count++;
+    }
+
+    const unitOfDigits = ['B', 'kB', 'MB', 'GB'];
+    return `${bytes.toFixed(1)} ${unitOfDigits[count]}`;
+  }
+
   useEffect(() => {
     scroll.current.scrollIntoView( { behavior: 'smooth' } );
   }, [props.elementArray.length])
@@ -43,9 +55,9 @@ export default function Message(props) {
         props.elementArray.map((element) => {
           keyValue++;
           if (element.senderID === props.googleID) {
-            return <SentMessageBox key={keyValue} star={props.star} setStar={props.setStar} currentTime={currentTime} element={element} />;
+            return <SentMessageBox key={keyValue} star={props.star} setStar={props.setStar} currentTime={currentTime} fileSize={fileSize} element={element} />;
           }
-          return <ReceivedMessageBox key={keyValue} star={props.star} setStar={props.setStar} currentTime={currentTime} element={element} />;
+          return <ReceivedMessageBox key={keyValue} star={props.star} setStar={props.setStar} currentTime={currentTime} fileSize={fileSize} element={element} />;
         })
       }
       <div ref={ scroll }></div>
