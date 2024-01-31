@@ -95,7 +95,7 @@ export default function TextBox(props) {
     <div className='relative w-full grid place-items-center'>
       <AlertBar />
       <ReplyToMessage />
-      { uploadfiles ? <UploadFiles /> : null }
+      { uploadfiles ? <UploadFiles ws={props.ws} /> : null }
       <div className='mb-2 px-2 w-[94%] rounded-lg flex place-items-center bg-white'>
         <div className='grid grid-flow-col'>
           <button onClick={() => setUploadfiles(uploadfiles ^ 1)} className={`rounded-full text-4xl text-white ${theme.bg200} ${theme.hoverBg300}`}>
