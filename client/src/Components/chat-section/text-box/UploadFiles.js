@@ -58,17 +58,17 @@ export default function UploadFiles(props) {
         <label className={`flex items-center ${theme.hoverBg100}`}>
           <img src={documentIcon} className='w-8' alt="" />
           <p>Document</p>
-          <input onChange={(e) => uploadFile(e, 'document')} type="file" name="document" id="" multiple className='hidden' accept="application/*" />
+          <input onChange={(e) => uploadFile(e, e.target.name)} type="file" name="document" id="" multiple className='hidden' accept="application/*" />
         </label>
         <label className={`flex items-center ${theme.hoverBg100}`}>
           <img src={photoIcon} className='w-8' alt="" />
           <p>Photos & videos</p>
-          <input type="file" name="gallery" id="" multiple accept="image/*, video/*" className='hidden' />
+          <input onChange={(e) => uploadFile(e, e.target.name)} type="file" name="gallery" id="" multiple accept="image/*, video/*" className='hidden' />
         </label>
         <label className={`flex items-center ${theme.hoverBg100}`}>
           <img src={pollIcon} className='w-8' alt="" />
           <p>Audio</p>
-          <input type="file" name="audio" id="" multiple accept="audio/*" className='hidden' />
+          <input onChange={(e) => uploadFile(e, e.target.name)} type="file" name="audio" id="" multiple accept="audio/*" className='hidden' />
         </label>
         <div className={`flex items-center ${theme.hoverBg100}`}>
           <img src={audioIcon} className='w-8' alt="" />
