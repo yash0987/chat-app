@@ -15,17 +15,18 @@ const storage = multer.diskStorage({
 })
 
 const upload = multer({ storage: storage, limits: { fileSize: 5 * 1000 * 1000 } });
+const fileFields = [ { name: 'document', maxCount: 5 }, { name: 'gallery', maxCount: 5 }, { name: 'audio', maxCount: 5 } ];
 
 router.post('/wallpaper', upload.single('wallpaper'), (req, res, next) => {
     console.log(req.body);
-    res.json({ success: 'true', description: "Image uploaded" });
+    res.json({ success: true, description: "Image uploaded" });
     next();
 })
 
-router.post('/group/upload/files', upload.single('document'), (req, res, next) => {
+router.post('/group/upload/files', upload.fields(fileFields), (req, res, next) => {
     console.log(req.body);
-	res.json({ success: true, description: "Image uploaded" });
-	next();
+    res.json({ success: true, description: "File uploaded" });
+    next();
 })
 
 module.exports = router;
