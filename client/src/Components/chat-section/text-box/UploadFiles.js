@@ -1,27 +1,55 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import documentIcon from '../../../img/document.png';
 import photoIcon from '../../../img/photos.png';
 import pollIcon from '../../../img/poll.png';
 import audioIcon from '../../../img/headphone.png';
+import { appendChat } from '../../../features/chat-slice/chatSlice';
 
-export default function UploadFiles() {
+export default function UploadFiles(props) {
+  const user = useSelector(state => state.auth.value.user);
   const theme = useSelector(state => state.theme.value);
+  const newChat = useSelector(state => state.chatinfo.value.newChat);
+  const dispatch = useDispatch();
+
   async function uploadFile(e, name) {
-    const file = e.target.files[0];
+    const messageData = [];
+    const files = e.target.files;
     const formdata = new FormData();
-    formdata.append(name, file);
-	const response = await fetch('http://localhost:5000/group/upload/files', {
-	  method: 'POST',
-    credentials: 'include',
-    headers: {
-      Accept: "application/json",
-      "Access-Control-Allow-Credentials": true
-    },
-    body: formdata
-	});
-	const data = await response.json();
-	console.log(data);
+    let currentMsgTime = Date.now();
+    for (let file of files) {
+      formdata.append(name, file);
+      currentMsgTime += 1;
+      messageData.push({
+        messageID: user.googleID + currentMsgTime,
+        name: file.name,
+        currentMsgTime,
+        lastModified: file.lastModified,
+        size: file.size,
+        type: file.type,
+        senderID: user.googleID,
+        senderName: user.firstName + " " + user.familyName,
+        senderPhotoURL: user.photoURL,
+        newChat,
+        star: false,
+        action: 'send'
+      });
+    }
+	
+    const response = await fetch('http://localhost:5000/group/upload/files', {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        Accept: "application/json",
+        "Access-Control-Allow-Credentials": true
+      },
+			body: formdata
+    });
+    const data = await response.json();
+    console.log(data);
+
+    dispatch(appendChat(messageData));
+    props.ws.send(JSON.stringify(messageData));
   }
 		
   return (
