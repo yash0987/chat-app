@@ -278,8 +278,8 @@ router.get('/chat/data', (req, res) => {
                     senderID: element.senderID,
                     senderName: element.senderName,
                     senderPhotoURL: element.senderPhotoURL,
-                    receiverID: element.newChat.ID,
-                    receiverName: element.newChat.fullName,
+                    // receiverID: element.newChat.ID,
+                    // receiverName: element.newChat.fullName,
                     replyToMessage: element.replyToMessage,
                     star
                 };
