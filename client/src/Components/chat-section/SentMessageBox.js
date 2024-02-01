@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectMessage, unselectAllMessages, unselectMessage } from '../../features/select-message-slice/selectMessageSlice';
 import { featuresToggle } from '../../features/toggle-slice/toggleSlice';
+import fileIcon from '../../img/file1.png';
+import downloadIcon from '../../img/download.png';
 
 export default function SentMessageBox(props) {
   const [highlightSelectMessage, setHighlightSelectMessage] = useState(0);
@@ -67,9 +69,12 @@ export default function SentMessageBox(props) {
         }
 				{
 					props.element.type !== 'text' ?
-					<div>
-            { props.element.name.split(".")[0] }
-            <p className='text-[10px] font-semibold'>{ props.fileSize(props.element.size) } &#183; { props.element.type.split("/")[1].toUpperCase() }</p>
+					<div className='grid grid-flow-col'>
+            <img src={fileIcon} alt="" className='w-8 m-1' />
+            <div>
+              { props.element.name.split(".")[0] }
+              <p className='text-[10px] font-semibold'>{ props.fileSize(props.element.size) } &#183; { props.element.type.split("/")[1].toUpperCase() }</p>
+            </div>
           </div>
 					: <p>{ props.element.collectedText }</p>
 				}

@@ -3,6 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { selectMessage, unselectMessage } from '../../features/select-message-slice/selectMessageSlice';
 import { unselectAllMessages } from '../../features/select-message-slice/selectMessageSlice';
 import { featuresToggle } from '../../features/toggle-slice/toggleSlice';
+import fileIcon from '../../img/file2.png';
+import downloadIcon from '../../img/download.png';
 
 export default function ReceivedMessageBox(props) {
   const [highlightSelectMessage, setHighlightSelectMessage] = useState(0);
@@ -70,16 +72,20 @@ export default function ReceivedMessageBox(props) {
           </a>
           : null
         }
+        
         {
 					props.element.type !== 'text' ?
-					<div>
-            { props.element.name.split(".")[0] }
-            <p className='text-[10px] font-semibold'>{ props.fileSize(props.element.size) } &#183; { props.element.type.split("/")[1].toUpperCase() }</p>
+					<div className='grid grid-flow-col'>
+            <img src={fileIcon} alt="" className='w-8 m-1' />
+            <div>
+              { props.element.name.split(".")[0] }
+              <p className='text-[10px] font-semibold'>{ props.fileSize(props.element.size) } &#183; { props.element.type.split("/")[1].toUpperCase() }</p>
+            </div>
           </div>
 					: <p>{ props.element.collectedText }</p>
 				}
         <span className = 'flex justify-end text-[10px] text-white'> { props.element.star ? <span>&#9733;  </span> : null } { props.currentTime(props.element.currentMsgTime) } </span>
-      </p>
+      </div>
     </section>
   )
 }
