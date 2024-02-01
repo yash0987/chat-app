@@ -56,8 +56,15 @@ export default function ReceivedMessageBox(props) {
     <section onMouseDown={ () => triggerHoldEvent() } onMouseUp={ () => stopHoldEvent() } onMouseLeave={ () => stopHoldEvent() } id={props.element.messageID} className = {`${ highlightSelectMessage && toggleFeaturesState ? `${theme.bg500} bg-opacity-20` : 'bg-none' } select-none rounded-md grid grid-flow-col justify-start my-1 p-1`} data-person='receiver'>
       { toggleFeaturesState ? <div className='m-2'>&#9552;</div> : null }
       <img src={props.element.senderPhotoURL} alt="" className='w-7 my-2 rounded-full' />
-      <p className = {`whitespace-pre-wrap break-words leading-5 max-w-lg mx-2 px-2 py-1 rounded-md text-white ${theme.bg500}`}>
+      <div className = {`group relative whitespace-pre-wrap break-words leading-5 max-w-lg mx-2 px-2 py-1 rounded-md text-white ${theme.bg500}`}>
         <p className={`text-xs ${theme.text200}`}>@{ props.element.senderName }</p>
+        {
+          props.element.type !== 'text' ? 
+          <button className='group-hover:visible invisible absolute -right-2 -top-2 w-8 shadow-md rounded-sm bg-gray-400 hover:bg-[#9299a4]'>
+            <img src={downloadIcon} alt="" className='' />
+          </button> : null
+        }
+
         { 
           props.element.replyToMessage ?
           <a href={`#${props.element.replyToMessage.repliedMessageID}`}>            
