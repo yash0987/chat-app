@@ -36,7 +36,7 @@ export default function UploadFiles(props) {
       });
     }
 	
-    const response = await fetch('http://localhost:5000/group/upload/files', {
+    const response = await fetch('http://localhost:5000/upload/files', {
       method: 'POST',
       credentials: 'include',
       headers: {

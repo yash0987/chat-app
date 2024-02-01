@@ -23,7 +23,7 @@ router.post('/wallpaper', upload.single('wallpaper'), (req, res, next) => {
     next();
 })
 
-router.post('/group/upload/files', upload.fields(fileFields), (req, res, next) => {
+router.post('/upload/files', upload.fields(fileFields), (req, res, next) => {
     console.log(req.body);
     res.json({ success: true, description: "File uploaded" });
     next();
