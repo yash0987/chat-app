@@ -48,7 +48,6 @@ export default function ChatSection(props) {
     const message = JSON.parse(event.data);
     console.log(message);
     console.log("I am receiving")
-    // if (message.type !== 'text') return ;
     dispatch(appendChat(message));
   }
 
