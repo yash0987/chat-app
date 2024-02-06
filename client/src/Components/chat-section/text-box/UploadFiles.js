@@ -17,9 +17,9 @@ export default function UploadFiles(props) {
     const files = e.target.files;
     const formdata = new FormData();
     let currentMsgTime = Date.now();
+    let epoch = currentMsgTime;
     for (let file of files) {
       formdata.append(name, file);
-      currentMsgTime += 1;
       messageData.push({
         messageID: user.googleID + currentMsgTime,
         name: file.name,
@@ -34,9 +34,11 @@ export default function UploadFiles(props) {
         star: false,
         action: 'send'
       });
+      console.log(user.googleID + currentMsgTime);
+      currentMsgTime += 1;
     }
 	
-    const response = await fetch('http://localhost:5000/upload/files', {
+    const response = await fetch(`http://localhost:5000/upload/files?epoch=${epoch}`, {
       method: 'POST',
       credentials: 'include',
       headers: {
@@ -51,7 +53,7 @@ export default function UploadFiles(props) {
     dispatch(appendChat(messageData));
     props.ws.send(JSON.stringify(messageData));
   }
-		
+	
   return (
     <section className='absolute bottom-14 left-10'>
       <div className='*:px-3 first:pt-3 last:pb-3 rounded bg-white text-gray-600'>
