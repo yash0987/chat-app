@@ -57,10 +57,10 @@ export default function SentMessageBox(props) {
     <section onMouseDown={ () => triggerHoldEvent() } onMouseUp={ () => stopHoldEvent() } onMouseLeave={ () => stopHoldEvent() } id={props.element.messageID} className = {`${ highlightSelectMessage && toggleFeaturesState ? `${theme.bg500} bg-opacity-20` : 'bg-none' } select-none rounded-md grid grid-flow-col justify-end my-1 p-1`} data-person='sender'>
       <div className = 'group relative whitespace-pre-wrap break-words leading-5 mx-2 px-2 py-1 max-w-lg rounded-md bg-gray-200 text-gray-600'>
         {
-          props.element.type !== 'text' ? 
-          <button className='group-hover:visible invisible absolute -right-2 -top-2 w-8 shadow-md rounded-sm bg-gray-400 hover:bg-[#9299a4]'>
+          props.element.type !== 'text' ?
+          <a href={`http://localhost:5000/download/file?filename=${props.element.name}&type=${props.element.type}&ID=${props.element.messageID}`} className='group-hover:visible invisible absolute -right-2 -top-2 w-8 shadow-md rounded-sm bg-gray-400 hover:bg-[#9299a4]'>
             <img src={downloadIcon} alt="" className='' />
-          </button> : null
+          </a> : null
         }
         
         {
