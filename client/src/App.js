@@ -5,10 +5,12 @@ import LoginPage from './components/LoginPage';
 import DefaultPage from './components/DefaultPage';
 import ChatSection from './components/chat-section/ChatSection';
 import CreateGroup from './components/CreateGroup';
+import ColorPalette from './components/sidebar/ColorPalette';
 import HomeLayout from './components/layout/HomeLayout';
 import ChatLayout from './components/layout/ChatLayout';
 import GroupLayout from './components/layout/GroupLayout';
 import RequestLayout from './components/layout/RequestLayout';
+import ThemeLayout from './components/layout/ThemeLayout';
 
 function App() {
   return (
@@ -26,6 +28,9 @@ function App() {
             <Route path='/groups/create' element={<CreateGroup />} />
           </Route>
           <Route path='/requests' element={<RequestLayout />} />
+          <Route path='/themes' element={<ThemeLayout />}>
+            <Route index element={<ColorPalette />} />
+          </Route>
         </Route>
       </Routes>
     </BrowserRouter>
