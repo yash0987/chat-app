@@ -6,6 +6,7 @@ import DefaultPage from './components/DefaultPage';
 import ChatSection from './components/chat-section/ChatSection';
 import CreateGroup from './components/CreateGroup';
 import ColorPalette from './components/sidebar/ColorPalette';
+import Wallpapers from './components/sidebar/Wallpapers';
 import HomeLayout from './components/layout/HomeLayout';
 import ChatLayout from './components/layout/ChatLayout';
 import GroupLayout from './components/layout/GroupLayout';
@@ -29,7 +30,8 @@ function App() {
           </Route>
           <Route path='/requests' element={<RequestLayout />} />
           <Route path='/themes' element={<ThemeLayout />}>
-            <Route index element={<ColorPalette />} />
+            <Route path='/themes' element={<ColorPalette />} />
+            <Route path='/themes/wallpaper' element={<Wallpapers />} />
           </Route>
         </Route>
       </Routes>
