@@ -39,7 +39,7 @@ export default function SearchSection() {
   }
 
   return (
-    <div className='absolute top-0  w-screen h-screen bg-black bg-opacity-20'>
+    <div className='absolute top-0 z-10 w-screen h-screen bg-black bg-opacity-20'>
       <div className={`w-1/2 p-3 origin-center translate-x-[50%] rounded-lg ${theme.bg50} border-[1px] ${theme.border500}`}>
         <label className={`col-span-4 flex rounded-md border-2 ${theme.border700} ${theme.bg50}`}>
           <img src={searchIcon} alt="" className={`w-8 rounded-l-md ${theme.bg100}`} />
