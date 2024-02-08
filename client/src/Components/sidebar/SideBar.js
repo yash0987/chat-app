@@ -38,7 +38,7 @@ export default function SideBar(props) {
           <img src={themes} alt="" className='mx-2 w-8' />
           <span className='m-1'>Themes</span>
         </Link>
-        <Link to={'/wallpapers'} className={`flex p-2 ml-3 rounded-l-full ${theme.hoverBg100}`}>
+        <Link to={'/themes/wallpaper'} className={`flex p-2 ml-3 rounded-l-full ${theme.hoverBg100}`}>
           <img src={wallpaper} alt="" className='mx-2 w-8' />
           <span className='m-1'>Wallpapers</span>
         </Link>
