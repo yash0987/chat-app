@@ -5,7 +5,7 @@ import menu from '../../img/menu.png';
 import emoji from '../../img/emoji.png';
 import plusIcon from '../../img/plus.png';
 
-export default function Themes(props) {
+export default function ThemesPreview(props) {
   const theme = useSelector(state => state.theme.value);
   const wallpaper = useSelector(state => state.wallpaper.value);
   
