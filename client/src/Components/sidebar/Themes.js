@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import backButton from '../../img/backButton.png';
 import menu from '../../img/menu.png';
 import emoji from '../../img/emoji.png';
-import sendMessageBtn from '../../img/sendMessageBtn.png';
+import plusIcon from '../../img/plus.png';
 
 export default function Themes(props) {
   const theme = useSelector(state => state.theme.value);
@@ -11,19 +11,19 @@ export default function Themes(props) {
   
   return (
     <section className='col-span-2 w-[64.15rem] h-[91vh] grid grid-cols-1'>
-      <div className={`place-self-center w-5/6 h-5/6 flex flex-col overflow-hidden rounded border-[1px] ${theme.border500} ${theme.bg50}`}>
-        <div className={`flex justify-between px-3 ${theme.bg400} text-white`}>
+      <div style={{backgroundImage: `url('${wallpaper}')`, backgroundSize: "cover", backgroundPosition: "center", backgroundRepeat: "no-repeat"}} className={`place-self-center w-5/6 h-5/6 flex flex-col overflow-hidden rounded border-[1px] ${theme.border500} ${theme.bg50}`}>
+        <div className={`px-8 py-1 relative flex justify-between ${theme.bg400} text-white`}>
           <div className='flex'>
-            <button><img src={ backButton } alt="" className='m-2 p-2 w-9 rounded-full' /></button>
-            <div className='flex'>
-              <img src="https://i.pinimg.com/custom_covers/222x/274508608476412825_1635270442.jpg" alt="" className='mx-4 my-2 w-12 rounded-full' />
-              <p className='my-4 font-semibold text-lg'>Cai lin</p>
+            <button><img src={ backButton } alt="" className='w-5 rounded-full' /></button>
+            <div className='grid grid-flow-col place-items-center'>
+              <img src="https://i.pinimg.com/custom_covers/222x/274508608476412825_1635270442.jpg" alt="" className='mx-3 w-8 rounded-full' />
+              <p className='font-semibold'>Cai lin</p>
             </div>
           </div>
-          <img src={ menu } alt="" className={`my-2 h-12 rounded-full`} />
+          <img src={ menu } alt="" className={`w-10 rounded-full ${theme.hoverBg400}`} />
         </div>
 
-        <div className='flex flex-col justify-end px-5 h-full overflow-y-scroll' style={{backgroundImage: `url('${wallpaper}')`, backgroundSize: "100%"}}>
+        <div className='flex flex-col justify-end px-5 h-full overflow-y-scroll'>
           <div className='select-none'>
             <div className='flex justify-start my-1 p-1 rounded-md text-white'>
               <p className={`px-2 py-1 rounded-md ${theme.bg500}`}>
@@ -48,12 +48,20 @@ export default function Themes(props) {
           </div>
         </div>
 
-        <div className='px-2 flex bg-white'>
-          <button><img src={emoji} alt="" className={`w-12 p-2 rounded-full ${theme.hoverBg200}`} /></button>
-          <div className='flex flex-col justify-end w-full h-10 m-4'>
-            <textarea cols="0" rows="0" placeholder='Type a message...' className={`py-2 resize-none focus:outline-none ${theme.placeholderText400}`}></textarea>
+        <div className='relative w-full grid place-items-center'>
+          <div className='mb-2 px-2 w-[94%] rounded-lg flex place-items-center bg-white'>
+            <div className='grid grid-flow-col'>
+              <button className={`rounded-full text-4xl text-white ${theme.bg200} ${theme.hoverBg300}`}>
+                <img src={plusIcon} alt="" className='w-8 p-1' />
+              </button>
+              <button className='mx-2'>
+                <img src={emoji} alt="" className={`w-9 p-1 rounded-full ${theme.hoverBg200}`} />
+              </button>
+            </div>
+            <div className='w-full'>
+              <textarea cols="0" rows="0" placeholder='Type a message...' className={`w-full mt-2 h-7 resize-none focus:outline-none ${theme.placeholderText400}`}></textarea>
+            </div>
           </div>
-          <button><img src={sendMessageBtn} alt="" className={`w-12 rounded-full ${theme.bg400} ${theme.hoverBg500}`} /></button>
         </div>
       </div>
     </section>
