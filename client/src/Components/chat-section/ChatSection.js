@@ -11,6 +11,7 @@ export default function ChatSection(props) {
   const chat = useSelector(state => state.chat);
   const user = useSelector(state => state.auth.value.user);
   const theme = useSelector(state => state.theme.value);
+  const wallpaper = useSelector(state => state.wallpaper.value);
   const chatInfo = useSelector(state => state.chatinfo.value);
   const dispatch = useDispatch();
   const [star, setStar] = useState(0);
@@ -80,7 +81,7 @@ export default function ChatSection(props) {
   }, [room]);
 
   return (
-    <section className={`w-[64.15rem] h-[91vh] flex flex-col overflow-hidden ${theme.bg50}`}>
+    <section style={{backgroundImage: `url('${wallpaper}')`, backgroundSize: "cover", backgroundPosition: "center", backgroundRepeat: "no-repeat"}} className={`w-[64.15rem] h-[91vh] flex flex-col overflow-hidden ${theme.bg50}`}>
       <ChatBar getChat={getChat} star={star} setStar={setStar} room={room} ws={ws} />
       <Messages star={star} setStar={setStar} elementArray={chat.value} googleID={user.googleID} />
       <TextBox ws={ws} />

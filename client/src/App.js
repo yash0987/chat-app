@@ -30,7 +30,7 @@ function App() {
           </Route>
           <Route path='/requests' element={<RequestLayout />} />
           <Route path='/themes' element={<ThemeLayout />}>
-            <Route index element={<ColorPalette />} />
+            <Route path='/themes' element={<ColorPalette />} />
             <Route path='/themes/wallpaper' element={<Wallpapers />} />
           </Route>
         </Route>
