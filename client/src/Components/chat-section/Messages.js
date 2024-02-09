@@ -7,7 +7,6 @@ import { featuresToggle } from '../../features/toggle-slice/toggleSlice';
 export default function Message(props) {
   const scroll = useRef(null);
   const selectedMessagesList = useSelector(state => state.selectmessage.value);
-  const wallpaper = useSelector(state => state.wallpaper.value);
   const dispatch = useDispatch();
 
   const weekDays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
@@ -50,7 +49,7 @@ export default function Message(props) {
 
   let keyValue = 0;
   return (
-    <div className='flex flex-col justify-end px-8 h-full overflow-y-scroll' style={{backgroundImage: `url('${wallpaper}')`, backgroundSize: "100%"}}>
+    <div className='flex flex-col justify-end px-8 h-full overflow-y-scroll'>
       <div className='overflow-y-scroll'>{
         props.elementArray.map((element) => {
           keyValue++;
