@@ -30,11 +30,7 @@ function App() {
           </Route>
           <Route path='/requests' element={<RequestLayout />} />
           <Route path='/themes' element={<ThemeLayout />}>
-<<<<<<< HEAD
-            <Route path='/themes' element={<ColorPalette />} />
-=======
             <Route index element={<ColorPalette />} />
->>>>>>> ae94edb5694eaf91b0dd72e6ec1607b2b318906e
             <Route path='/themes/wallpaper' element={<Wallpapers />} />
           </Route>
         </Route>
