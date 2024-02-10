@@ -52,8 +52,9 @@ export default function Wallpapers() {
   return (
     <section className='py-14 h-[91vh]'>
       {
-        wallpaper !== "" ? <img src={wallpaper} alt="" className={`w-4/5 h-2/5 rounded border-[1px] ${theme.border500}`} /> : 
-        <div className={`grid place-content-center w-4/5 h-2/5 rounded text-sm border-[1px] ${theme.border500} ${theme.text500} ${theme.bg50}`}>Default Wallpaper</div>
+        <div style={ wallpaper ? {backgroundImage: `url('${wallpaper}')`, backgroundSize: "cover", backgroundPosition: "center", backgroundRepeat: "no-repeat"} : null} className={`grid place-content-center w-4/5 h-[195.37px] rounded text-sm border-[1px] ${theme.border500} ${theme.text500} ${theme.bg50}`}>
+          { wallpaper ? null : "Default Wallpaper" }
+        </div>
       }
 
       <p className='mt-10 mb-2 text-slate-500 text-sm'>Choose wallpaper</p>
