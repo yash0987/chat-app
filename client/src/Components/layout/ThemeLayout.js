@@ -1,15 +1,15 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { Outlet } from 'react-router-dom';
-import Themes from '../sidebar/Themes';
+import ThemesPreview from '../sidebar/ThemesPreview';
 
 export default function ThemeLayout() {
-    const theme = useSelector(state => state.theme.value);
+  const theme = useSelector(state => state.theme.value);
 
-    return (
-      <div className={`grid grid-flow-col ${theme.bg100}`}>
-        <Themes />
-        <Outlet />
-      </div>
-    )
+  return (
+    <div className={`grid grid-flow-col ${theme.bg100}`}>
+      <ThemesPreview />
+      <Outlet />
+    </div>
+  )
 }
