@@ -22,11 +22,16 @@ export default function ColorPalette() {
   }
 
   return (
-    <section className='h-[91vh] grid place-content-center'>
-      <div className='grid grid-cols-3 grid-rows-4 place-items-center gap-10 p-20'>{
+    <section className='grid place-content-center'>
+      <div className='grid grid-cols-4 gap-2'>{
         colors.map((color, index) => {
-          return <div onClick={ () => selectTheColor(index)} className={`p-3 w-14 h-14 rounded-full bg-${color}-500`}>
-            { selectColor[index] ? <img src={tick} alt="" /> : null }
+          return <div className='bg-gray-200 rounded-2xl relative'>
+            { selectColor[index] ? <img src={tick} alt="" className='absolute right-0' /> : null }
+            <div onClick={ () => selectTheColor(index)} className={`grid grid-flow-col grid-rows-2 m-[6px] size-14 rounded-full overflow-hidden`}>
+              <div className={`col-span-2 bg-${color}-500`}></div>
+              <div className={`bg-${color}-100`}></div>
+              <div className={`bg-${color}-300`}></div>
+            </div>
           </div>
         })
       }</div>
