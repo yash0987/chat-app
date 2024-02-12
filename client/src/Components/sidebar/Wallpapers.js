@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { selectWallpaper } from '../../features/wallpaper-slice/wallpaperSlice';
 import upload from '../../img/upload.png';
 import wallpaper1 from '../../wallpaper/wallpaper1.jpg';
@@ -50,10 +51,10 @@ export default function Wallpapers() {
 
   return (
     <div className='grid grid-flow-row'>
-      <div className='flex mx-10 my-2 text-xl text-slate-500'>
+      <Link to={'/themes'} className='flex mx-10 my-2 text-xl text-slate-500'>
         &larr;
         <p className='px-2 py-1 rounded-full text-sm'> Return to themes</p>
-      </div>
+      </Link>
       <div className='grid grid-cols-2 justify-self-center gap-1 w-4/5 h-72 overflow-y-scroll'>
         <div onClick={() => dispatch(selectWallpaper(""))} className={`grid place-content-center rounded text-xs border-[1px] ${theme.border500} ${theme.text500} ${theme.bg50}`}>Default Wallpaper</div>
         {
