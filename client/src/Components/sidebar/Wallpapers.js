@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { selectWallpaper } from '../../features/wallpaper-slice/wallpaperSlice';
 import upload from '../../img/upload.png';
 import wallpaper1 from '../../wallpaper/wallpaper1.jpg';
@@ -16,9 +17,8 @@ import wallpaper10 from '../../wallpaper/wallpaper10.jpg';
 export default function Wallpapers() {
   const [photo, setPhoto] = useState({});
   const theme = useSelector(state => state.theme.value);
-  const wallpaper = useSelector(state => state.wallpaper.value);
-  const dispatch = useDispatch();
   const wallpapers = [ wallpaper1, wallpaper2, wallpaper3, wallpaper4, wallpaper5, wallpaper6, wallpaper7, wallpaper8, wallpaper9, wallpaper10 ];
+  const dispatch = useDispatch();
 
   function previewWallpaper(e) {
     const render = new FileReader();
@@ -30,7 +30,7 @@ export default function Wallpapers() {
     setPhoto(e.target.files[0]);
     console.log(photo);
   }
-
+  
   async function uploadImage() {
     const formdata = new FormData();
     formdata.append('wallpaper', photo);
@@ -50,14 +50,12 @@ export default function Wallpapers() {
   }
 
   return (
-    <section className='py-14 h-[91vh]'>
-      {
-        wallpaper !== "" ? <img src={wallpaper} alt="" className={`w-4/5 h-2/5 rounded border-[1px] ${theme.border500}`} /> : 
-        <div className={`grid place-content-center w-4/5 h-2/5 rounded text-sm border-[1px] ${theme.border500} ${theme.text500} ${theme.bg50}`}>Default Wallpaper</div>
-      }
-
-      <p className='mt-10 mb-2 text-slate-500 text-sm'>Choose wallpaper</p>
-      <div className='grid grid-cols-2 w-4/5 h-2/5 overflow-y-scroll gap-1'>
+    <div className='grid grid-flow-row'>
+      <Link to={'/themes'} className='flex mx-10 my-2 text-xl text-slate-500'>
+        &larr;
+        <p className='px-2 py-1 rounded-full text-sm'> Return to themes</p>
+      </Link>
+      <div className='grid grid-cols-2 justify-self-center gap-1 w-4/5 h-72 overflow-y-scroll'>
         <div onClick={() => dispatch(selectWallpaper(""))} className={`grid place-content-center rounded text-xs border-[1px] ${theme.border500} ${theme.text500} ${theme.bg50}`}>Default Wallpaper</div>
         {
           wallpapers.map((element) => {
@@ -72,6 +70,6 @@ export default function Wallpapers() {
       </div>
 
       <button onClick={() => uploadImage()} className={`mx-36 my-4 px-4 py-1 rounded-full border-[1px] ${theme.border500} ${theme.text500} ${theme.bg50} ${theme.hoverBg200}`}>Set Wallpaper</button>
-    </section>
+    </div>
   )
 }
