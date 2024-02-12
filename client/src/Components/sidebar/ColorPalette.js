@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 import tick from '../../img/tick.png';
 import wallpaper from '../../img/wallpaper.png';
 import lightIcon from '../../img/sun.png';
@@ -27,10 +28,10 @@ export default function ColorPalette() {
 
   return (
     <section className='grid place-content-center'>
-      <button className={`flex justify-center my-4 p-2 rounded text-gray-500 text-sm font-semibold ${theme.bg200}`}>
+      <Link to={'/themes/wallpaper'} className={`flex justify-center my-4 p-2 rounded text-gray-500 text-sm font-semibold ${theme.bg200}`}>
         <img src={wallpaper} alt="" className='w-6 mx-1' />
         Change wallpaper
-      </button>
+      </Link>
 		  <hr />
 		  <div className={`m-4 flex justify-center rounded-full text-sm border-[1px] ${theme.border400}`}>
 		    <button className={`flex rounded-full px-10 py-2 ${theme.hoverBg100}`}>
