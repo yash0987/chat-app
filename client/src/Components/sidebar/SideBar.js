@@ -4,9 +4,7 @@ import { useSelector } from 'react-redux';
 import profile from '../../img/profile.png';
 import star from '../../img/star.png';
 import themes from '../../img/theme.png';
-import wallpaper from '../../img/wallpaper.png';
 import Logout from './Logout';
-
 
 export default function SideBar(props) {
   const user = useSelector(state => state.auth.value.user);
@@ -36,11 +34,7 @@ export default function SideBar(props) {
 
         <Link to={'/themes'} className={`flex p-2 ml-3 rounded-l-full ${theme.hoverBg100}`}>
           <img src={themes} alt="" className='mx-2 w-8' />
-          <span className='m-1'>Themes</span>
-        </Link>
-        <Link to={'/themes/wallpaper'} className={`flex p-2 ml-3 rounded-l-full ${theme.hoverBg100}`}>
-          <img src={wallpaper} alt="" className='mx-2 w-8' />
-          <span className='m-1'>Wallpapers</span>
+          <span className='m-1'>Themes & Wallpapers</span>
         </Link>
 
         <hr className='my-3' />
