@@ -371,38 +371,6 @@ router.get('/starred/messages', (req, res) => {
     main().catch(console.error);
 })
 
-router.post('/group', (req, res) => {
-    const group = {
-        groupID: req.query.ID,
-        groupName: req.query.name,
-        groupPhotoURL: req.query.photoURL,
-    };
-
-    const groupMembers = JSON.parse(req.query.friends);
-    groupMembers.push(req.user.googleID);
-
-    async function main() {
-        try {
-            const cursor = await groupChatsCollection.findOne( { groupID: group.groupID } );
-            if (!cursor) {
-                await groupChatsCollection.insertOne( { groupID: group.groupID, chatMsg: [] } );
-                for (let i = 0; i < groupMembers.length; i++) {
-                    await userDetailsCollection.updateOne( { googleID: groupMembers[i] }, { $addToSet: { groups: group } } );
-                }
-
-                res.json( { success: "Group has been created" } );
-                return ;
-            }
-
-            res.json( { success: "Choose another ID" } );
-        } catch (e) {
-            console.error(e);
-        }
-    }
-
-    main().catch(console.error);
-});
-
 router.get('/groups/list', (req, res) => {
     async function main() {
         try {
