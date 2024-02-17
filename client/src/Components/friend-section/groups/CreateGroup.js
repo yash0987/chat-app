@@ -3,10 +3,12 @@ import { useSelector } from 'react-redux';
 import cameraIcon from '../../../img/camera.png';
 
 export default function CreateGroup(props) {
-  const [photo, setPhoto] = useState(cameraIcon);
+  const [photo, setPhoto] = useState("");
+  const [newGroup, setNewGroup] = useState({});
   const [friendList, setFriendList] = useState([]);
   const [selectedFriends, setSelectedFriends] = useState([]);
   const [searchFriendList, setSearchFriendList] = useState([]);
+  const [style, setStyle] = useState('');
   const [displayPanel, setDisplayPanel] = useState(true);
   const theme = useSelector(state => state.theme.value);
 
@@ -30,13 +32,46 @@ export default function CreateGroup(props) {
 
   }, [])
 
+  async function sendData() {
+    const formdata = new FormData();
+    formdata.append('groupPhoto', photo);
+    formdata.append('group', JSON.stringify({ ...newGroup, groupPhotoURL: "" }));
+    formdata.append('friends', JSON.stringify(selectedFriends.map(friend => friend.googleID)));
+
+    const response = await fetch('http://localhost:5000/group', {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        Accept: "application/json",
+        "Access-Control-Allow-Credentials": true
+      },
+      body: formdata
+    });
+    const data = await response.json();
+    console.log(data);
+
+    props.setGroups(prevState => [...prevState, newGroup]);
+    props.setEnableCreateGroupPanel(false);
+  }
+
   async function previewPhoto(e) {
     const file = e.target.files[0];
     const reader = new FileReader();
-    reader.readAsDataURL(file);
     reader.onload = (e) => {
-      setPhoto(e.target.result);
+      setNewGroup({ ...newGroup, groupPhotoURL: e.target.result });
     }
+    reader.readAsDataURL(file);
+    setPhoto(file);
+  }
+
+  function validateGroupID(groupid) {
+    for (let i = 0; i < groupid.length; i++) {
+      if (!((groupid[i] >= 'A' && groupid[i] <= 'Z') || (groupid[i] >= 'a' && groupid[i] <= 'z') || (groupid[i] >= '0' && groupid[i] <= '9'))) {
+        setStyle('text-red-500');
+        setTimeout(() => setStyle(''), 800);
+      }
+    }
+    setNewGroup({ ...newGroup, groupID: groupid });
   }
 
   function searchFriend(input) {
@@ -93,7 +128,7 @@ export default function CreateGroup(props) {
           </div>
           <hr className={`mb-2 ${theme.border300}`} />
           <div className='flex justify-end'>
-            <button onClick={() => setDisplayPanel(false)} disabled={selectedFriends.length <= 1} className={`px-4 py-1 rounded text-sm ${theme.text50} ${theme.bg400}`}>Next</button>
+            <button onClick={() => setDisplayPanel(false)} disabled={selectedFriends.length === 0} className={`px-4 py-1 rounded text-sm ${theme.text50} ${theme.bg400}`}>Next</button>
           </div>
         </div>
         :
@@ -102,22 +137,22 @@ export default function CreateGroup(props) {
           <h2 className={`text-xl font-bold place-self-center ${theme.text800}`}>Create Your Group</h2>
           <p className={`text-sm place-self-center`}>Give your new group a personality with a name and an icon. You can always change it later.</p>
           
-          <label style={{backgroundImage: `url('${photo}')`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat'}} className='my-4 size-16 relative place-self-center rounded-full border-2 border-dashed border-gray-500'>
+          <label style={{backgroundImage: `url('${newGroup.groupPhotoURL ? newGroup.groupPhotoURL : cameraIcon}')`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat'}} className='my-4 size-16 relative place-self-center rounded-full border-2 border-dashed border-gray-500'>
             <input onChange={(e) => previewPhoto(e)} type="file" name="" id="" accept='image/*' className='hidden w-0 h-0' />
           </label>
           
           <p className='my-1 font-semibold text-xs text-gray-600'>GROUP NAME</p>
-          <input type="text" name="" id="" className={`px-2 py-1 rounded focus:outline-none ${theme.bg200}`} />
+          <input onChange={(e) => setNewGroup({...newGroup, groupName: e.target.value.trim()})} type="text" name="" id="" className={`px-2 py-1 rounded focus:outline-none ${theme.bg200}`} />
           <p className='my-1 font-semibold text-xs text-gray-600'>GROUP ID</p>
-          <input type="text" name="" id="" className={`px-2 py-1 rounded focus:outline-none ${theme.bg200}`} />
-          <p className='my-1 text-xs'>
-            - Choose unique GROUP ID <br /> 
-            - ID should only contain A-Z, a-z and 0-9 characters.
-          </p>
+          <input onChange={(e) => validateGroupID(e.target.value)} type="text" name="" id="" className={`px-2 py-1 rounded focus:outline-none ${theme.bg200}`} />
+          <div className={`my-1 text-xs`}>
+            <p className={`transition-colors ease-linear duration-700`}>- Choose unique GROUP ID</p>
+            <p className={`${style} transition-colors ease-linear duration-700`}>- ID should only contain A-Z, a-z and 0-9 characters.</p>
+          </div>
 
           <div className='flex justify-between mt-5 text-sm'>
             <button onClick={() => setDisplayPanel(true)} className={`${theme.text700}`}>Back</button>
-            <button className={`px-4 py-1 rounded ${theme.text50} ${theme.bg400}`}>Create</button>
+            <button onClick={() => sendData()} className={`px-4 py-1 rounded ${theme.text50} ${theme.bg400}`}>Create</button>
           </div>
         </div>
       }

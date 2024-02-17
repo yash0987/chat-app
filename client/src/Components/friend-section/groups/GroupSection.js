@@ -50,7 +50,7 @@ export default function GroupSection(props) {
           </div>
         </div>
       </section>
-      { enableCreateGroupPanel ? <CreateGroup setEnableCreateGroupPanel={setEnableCreateGroupPanel} /> : null }
+      { enableCreateGroupPanel ? <CreateGroup setGroups={setGroups} setEnableCreateGroupPanel={setEnableCreateGroupPanel} /> : null }
     </>
   )
 }
