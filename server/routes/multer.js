@@ -47,9 +47,9 @@ router.post('/upload/files', upload.fields(fileFields), (req, res, next) => {
 router.get('/download/file', (req, res) => {
     async function main() {
         try {
-            const filetype = req.query.type.split('/')[1];
-            const filename = `${req.query.ID}.${filetype}`;
             const fileOriginalName = req.query.filename;
+            const filetype = path.extname(fileOriginalName);
+            const filename = `${req.query.ID}${filetype}`;
             res.download(`./uploads/${filename}`, fileOriginalName);
         } catch (e) {
             console.error(e);
