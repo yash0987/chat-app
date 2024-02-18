@@ -91,4 +91,11 @@ router.post('/group', upload.single('groupPhoto'), (req, res, next) => {
     main().catch(console.error);
 });
 
+router.get('/group/photo/:filename', (req, res) => {
+    const filename = req.params.filename;
+    res.sendFile(path.join(path.resolve('.'), `./uploads/${filename}`), (err) => {
+        if (err) console.log(err);
+    })
+})
+
 module.exports = router;
