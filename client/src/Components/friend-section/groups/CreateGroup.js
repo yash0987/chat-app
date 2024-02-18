@@ -8,7 +8,8 @@ export default function CreateGroup(props) {
   const [friendList, setFriendList] = useState([]);
   const [selectedFriends, setSelectedFriends] = useState([]);
   const [searchFriendList, setSearchFriendList] = useState([]);
-  const [style, setStyle] = useState('');
+  const [style1, setStyle1] = useState('');
+  const [style2, setStyle2] = useState('');
   const [displayPanel, setDisplayPanel] = useState(true);
   const theme = useSelector(state => state.theme.value);
 
@@ -50,6 +51,12 @@ export default function CreateGroup(props) {
     const data = await response.json();
     console.log(data);
 
+    if (data.success === 'Choose another ID') {
+      setStyle2('text-red-500');
+      setTimeout(() => setStyle2(''), 800);
+      return ;
+    }
+
     props.setGroups(prevState => [...prevState, newGroup]);
     props.setEnableCreateGroupPanel(false);
   }
@@ -67,8 +74,8 @@ export default function CreateGroup(props) {
   function validateGroupID(groupid) {
     for (let i = 0; i < groupid.length; i++) {
       if (!((groupid[i] >= 'A' && groupid[i] <= 'Z') || (groupid[i] >= 'a' && groupid[i] <= 'z') || (groupid[i] >= '0' && groupid[i] <= '9'))) {
-        setStyle('text-red-500');
-        setTimeout(() => setStyle(''), 800);
+        setStyle1('text-red-500');
+        setTimeout(() => setStyle1(''), 800);
       }
     }
     setNewGroup({ ...newGroup, groupID: groupid });
@@ -146,8 +153,8 @@ export default function CreateGroup(props) {
           <p className='my-1 font-semibold text-xs text-gray-600'>GROUP ID</p>
           <input onChange={(e) => validateGroupID(e.target.value)} type="text" name="" id="" className={`px-2 py-1 rounded focus:outline-none ${theme.bg200}`} />
           <div className={`my-1 text-xs`}>
-            <p className={`transition-colors ease-linear duration-700`}>- Choose unique GROUP ID</p>
-            <p className={`${style} transition-colors ease-linear duration-700`}>- ID should only contain A-Z, a-z and 0-9 characters.</p>
+            <p className={`${style2} transition-colors ease-linear duration-700`}>- Choose unique GROUP ID</p>
+            <p className={`${style1} transition-colors ease-linear duration-700`}>- ID should only contain A-Z, a-z and 0-9 characters.</p>
           </div>
 
           <div className='flex justify-between mt-5 text-sm'>
