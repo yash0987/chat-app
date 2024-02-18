@@ -24,8 +24,8 @@ export default function Friend(props) {
 
   return (
     <Link to={`/chats/@me/${props.friendInfo.googleID}`} onClick={() => openChat()} className={`flex justify-between mx-2 px-6 py-2 rounded-lg font-semibold ${theme.hoverBg100}`}>
-      <div className='flex'>
-        <img src={ props.friendInfo.photoURL } alt="" className='w-10 rounded-full' />
+      <div className='grid grid-flow-col'>
+        <img src={ props.friendInfo.photoURL } alt="" className='size-10 rounded-full object-cover' />
         <div className='mx-4'>
           <p>{ props.friendInfo.fullName }</p>
           <p className='text-[10px] text-gray-400'>{ props.friendInfo.googleID }</p>

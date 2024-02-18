@@ -37,13 +37,13 @@ export default function PersonDetails(props) {
   }
 
   return (
-    <div className='flex'>
+    <div className='grid grid-flow-col'>
       <button onClick={ () => resetChatOrCloseChat() }>
         <img src={ backButton } alt="" className='w-5 rounded-full' />
       </button>
       {
         !toggleFeaturesState && !displayStarredMessages ? <div className='grid grid-flow-col place-items-center'>
-          <img src={ newChat.photoURL } alt="" className='mx-3 w-8 rounded-full' />
+          <img src={ newChat.photoURL } alt="" className='mx-3 size-8 rounded-full object-cover' />
           <p className='font-semibold'>{ newChat.fullName }</p>
         </div> : null
       }
