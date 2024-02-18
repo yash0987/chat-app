@@ -4,7 +4,6 @@ import store from './app/store';
 import LoginPage from './components/LoginPage';
 import DefaultPage from './components/DefaultPage';
 import ChatSection from './components/chat-section/ChatSection';
-import CreateGroup from './components/CreateGroup';
 import ColorPalette from './components/sidebar/ColorPalette';
 import Wallpapers from './components/sidebar/Wallpapers';
 import HomeLayout from './components/layout/HomeLayout';
@@ -26,7 +25,6 @@ function App() {
           <Route path='/groups' element={<GroupLayout />}>
             <Route path='/groups' element={<DefaultPage />} />
             <Route path='/groups/:groupid' element={<ChatSection />} />
-            <Route path='/groups/create' element={<CreateGroup />} />
           </Route>
           <Route path='/requests' element={<RequestLayout />} />
           <Route path='/themes' element={<ThemeLayout />}>
