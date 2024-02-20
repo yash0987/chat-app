@@ -58,8 +58,8 @@ export default function Wallpapers() {
       <div className='grid grid-cols-2 justify-self-center gap-1 w-4/5 h-72 overflow-y-scroll'>
         <div onClick={() => dispatch(selectWallpaper(""))} className={`grid place-content-center rounded text-xs border-[1px] ${theme.border500} ${theme.text500} ${theme.bg50}`}>Default Wallpaper</div>
         {
-          wallpapers.map((element) => {
-            return <img onClick={() => dispatch(selectWallpaper(element))} src={element} alt="" className='rounded' />
+          wallpapers.map((element, index) => {
+            return <img key={index} onClick={() => dispatch(selectWallpaper(element))} src={element} alt="" className='rounded' />
           })
         }
         <label className='place-self-center'>

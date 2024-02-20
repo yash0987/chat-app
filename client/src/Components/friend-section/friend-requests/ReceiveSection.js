@@ -24,13 +24,11 @@ export default function ReceiveSection() {
     getData().then((data) => setReceiveRequest(data));
   }
 
-  let keyValue = 0;
-
   return (
     <div>
       {
-        receiveRequest ? receiveRequest.map((element) => {
-            return <Receive key={keyValue} friendInfo={element} receiveRequest={receiveRequest} setReceiveRequest={setReceiveRequest} />
+        receiveRequest ? receiveRequest.map((element, index) => {
+            return <Receive key={index} friendInfo={element} receiveRequest={receiveRequest} setReceiveRequest={setReceiveRequest} />
         }) : (getReceiveRequest())
       }
     </div>

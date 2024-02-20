@@ -47,16 +47,14 @@ export default function Message(props) {
     // eslint-disable-next-line
   }, [selectedMessagesList.length])
 
-  let keyValue = 0;
   return (
     <div className='flex flex-col justify-end px-8 h-full overflow-y-scroll'>
       <div className='overflow-y-scroll'>{
         props.elementArray.map((element) => {
-          keyValue++;
           if (element.senderID === props.googleID) {
-            return <SentMessageBox key={keyValue} star={props.star} setStar={props.setStar} currentTime={currentTime} fileSize={fileSize} element={element} />;
+            return <SentMessageBox key={element.messageID} star={props.star} setStar={props.setStar} currentTime={currentTime} fileSize={fileSize} element={element} />;
           }
-          return <ReceivedMessageBox key={keyValue} star={props.star} setStar={props.setStar} currentTime={currentTime} fileSize={fileSize} element={element} />;
+          return <ReceivedMessageBox key={element.messageID} star={props.star} setStar={props.setStar} currentTime={currentTime} fileSize={fileSize} element={element} />;
         })
       }
       <div ref={ scroll }></div>

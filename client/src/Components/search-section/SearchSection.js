@@ -46,7 +46,7 @@ export default function SearchSection() {
           <input type="text" onChange={ () => searchFriends() } ref={searchRef} id="searchBox" autoComplete='off' placeholder='Search new friends' className={`p-1 w-full rounded-r-md ${theme.bg100} focus:outline-none ${theme.placeholderText400}`} />
         </label>
         <div id="searchResult" className='mt-3 w-full max-h-80 overflow-y-scroll'>{
-          searchedUsers.map((person) => <SearchedPerson person={person} />)
+          searchedUsers.map((person) => <SearchedPerson key={person.googleID} person={person} />)
         }</div>
       </div>
     </div>

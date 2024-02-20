@@ -24,14 +24,11 @@ export default function SendSection() {
     getData().then((data) => setSendRequest(data));
   }
 
-  let keyValue = 0;
-
   return (
     <div>
       {
-        sendRequest ? sendRequest.map((element) => {
-          keyValue++;
-          return <Send key={keyValue} friendInfo={element} sendRequest={sendRequest} setSendRequest={setSendRequest} />
+        sendRequest ? sendRequest.map((element, index) => {
+          return <Send key={index} friendInfo={element} sendRequest={sendRequest} setSendRequest={setSendRequest} />
         }) : (getSendRequest())
       }
     </div>

@@ -109,8 +109,8 @@ export default function CreateGroup(props) {
           <input onChange={(e) => searchFriend(e.target.value)} type="text" name="" id="" className={`my-2 px-2 py-1 rounded border-b-[1px] focus:outline-none ${theme.placeholderText400} ${theme.bg200}`} placeholder='Search for friends' />
           <div className='flex flex-wrap max-h-32 overflow-y-scroll'>
             {
-              selectedFriends.map((friend) => {
-                return <div className={`grid grid-flow-col place-items-center m-1 text-xs rounded-full ${theme.bg300}`}>
+              selectedFriends.map((friend, index) => {
+                return <div key={index} className={`grid grid-flow-col place-items-center m-1 text-xs rounded-full ${theme.bg300}`}>
                   <img src={friend.photoURL} alt="" className='w-6 rounded-full' />
                   <p className='px-1'>{friend.fullName}</p>
                   <button className='pr-2' onClick={() => removeSelectedFriends(friend)}>&#10005;</button>
@@ -123,7 +123,7 @@ export default function CreateGroup(props) {
             {
               searchFriendList.length !== 0 ? 
               searchFriendList.map((friend) => {
-                return <div className={`grid grid-flow-col justify-between p-2 rounded-lg font-semibold ${theme.hoverBg50}`}>
+                return <div key={friend.googleID} className={`grid grid-flow-col justify-between p-2 rounded-lg font-semibold ${theme.hoverBg50}`}>
                   <div className='grid grid-flow-col items-center'>
                     <img src={ friend.photoURL } alt="" className='w-8 rounded-full' />
                     <p className='mx-3'>{ friend.fullName }</p>

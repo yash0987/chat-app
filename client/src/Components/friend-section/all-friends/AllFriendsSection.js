@@ -6,7 +6,6 @@ export default function AllFriendsSection(props) {
   const [friends, setFriends] = useState([]);
   const [searchFriendsList, setSearchFriendsList] = useState([]);
   const theme = useSelector(state => state.theme.value);
-  let keyValue = 0;
 
   useEffect(() => {
     async function getData() {
@@ -46,8 +45,7 @@ export default function AllFriendsSection(props) {
         <input onChange={(e) => searchFriends(e.target.value)} type="search" name="" id="" placeholder='Search friends' className={`my-4 mx-9 px-5 py-1 w-[85%] rounded-sm ${theme.bg50} border-[1px] border-b-[3px] ${theme.border500} font-normal focus:outline-none ${theme.placeholderText400}`} />
         {
           searchFriendsList ? searchFriendsList.map((element) => {
-            keyValue++;
-            return <Friend key={keyValue} friendInfo={element} />
+            return <Friend key={element.googleID} friendInfo={element} />
           }) : null
         }
         </div>

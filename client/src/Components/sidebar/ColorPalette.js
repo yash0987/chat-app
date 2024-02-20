@@ -45,7 +45,7 @@ export default function ColorPalette() {
 		  </div>
       <div className='grid grid-cols-4 gap-6'>{
         colors.map((color, index) => {
-          return <div className='bg-gray-200 rounded-2xl relative'>
+          return <div key={index} className='bg-gray-200 rounded-2xl relative'>
             { selectColor[index] ? <img src={tick} alt="" className='absolute right-0' /> : null }
             <div onClick={ () => selectTheColor(index)} className={`grid grid-flow-col grid-rows-2 m-[6px] size-14 rounded-full overflow-hidden`}>
               <div className={`col-span-2 bg-${color}-500`}></div>

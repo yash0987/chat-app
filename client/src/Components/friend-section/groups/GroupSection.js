@@ -8,7 +8,6 @@ export default function GroupSection(props) {
   const [searchGroupsList, setSearchGroupsList] = useState([]);
   const [enableCreateGroupPanel, setEnableCreateGroupPanel] = useState(false);
   const theme = useSelector(state => state.theme.value);
-  let keyValue = 0;
 
   useEffect(() => {
     async function getData() {
@@ -53,8 +52,7 @@ export default function GroupSection(props) {
             </button>
             {
               searchGroupsList ? searchGroupsList.map((element) => {
-                keyValue++;
-                return <Groups key={keyValue} groupInfo={element} />
+                return <Groups key={element.groupID} groupInfo={element} />
               }) : null
             }
           </div>
