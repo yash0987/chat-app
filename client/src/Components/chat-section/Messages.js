@@ -7,10 +7,12 @@ import { featuresToggle } from '../../features/toggle-slice/toggleSlice';
 export default function Message(props) {
   const scroll = useRef(null);
   const selectedMessagesList = useSelector(state => state.selectmessage.value);
+  const theme = useSelector(state => state.theme.value);
   const dispatch = useDispatch();
 
   const weekDays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  const months = [ 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December' ];
+  // const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
   function currentTime(timeEpoch) {
     const date = new Date(timeEpoch);
@@ -22,7 +24,7 @@ export default function Message(props) {
     hours = hours % 12;
     hours = hours ? hours : 12;
     minutes = minutes < 10 ? '0'+ minutes : minutes;
-    let strTime = `${weekDays[day]}, ${dd} ${months[mm]} ${yy} ${hours}:${minutes} ${ampm}`;
+    let strTime = `${weekDays[day]}, ${dd} ${months[mm].slice(0, 3)} ${yy} ${hours}:${minutes} ${ampm}`;
     return strTime;
   }
 
@@ -38,6 +40,20 @@ export default function Message(props) {
     return `${bytes.toFixed(1)} ${unitOfDigits[count]}`;
   }
 
+  function calculateDate(epoch) {
+    const date = new Date(epoch);
+    return `${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}`
+  }
+
+  function isNewDate(currentMsgTime, index) {
+    if (!index) return true;
+    const firstRawEpoch = new Date(currentMsgTime);
+    const secondRawEpoch = new Date(props.elementArray[index - 1].currentMsgTime);
+    const firstDateEpoch = new Date(firstRawEpoch.getFullYear(), firstRawEpoch.getMonth(), firstRawEpoch.getDate()).getTime();
+    const secondDateEpoch = new Date(secondRawEpoch.getFullYear(), secondRawEpoch.getMonth(), secondRawEpoch.getDate()).getTime();
+    return Math.abs(firstDateEpoch - secondDateEpoch) >= 86400000;
+  }
+
   useEffect(() => {
     scroll.current.scrollIntoView( { behavior: 'smooth' } );
   }, [props.elementArray.length])
@@ -50,11 +66,22 @@ export default function Message(props) {
   return (
     <div className='flex flex-col justify-end px-8 h-full overflow-y-scroll'>
       <div className='overflow-y-scroll'>{
-        props.elementArray.map((element) => {
-          if (element.senderID === props.googleID) {
-            return <SentMessageBox key={element.messageID} star={props.star} setStar={props.setStar} currentTime={currentTime} fileSize={fileSize} element={element} />;
-          }
-          return <ReceivedMessageBox key={element.messageID} star={props.star} setStar={props.setStar} currentTime={currentTime} fileSize={fileSize} element={element} />;
+        props.elementArray.map((element, index) => {
+          return <div>
+            {
+              isNewDate(element.currentMsgTime, index) ?
+              <div className='flex place-items-center'>
+                <hr className={`w-full ${theme.border400}`} />
+                <div className={`whitespace-nowrap px-1 text-xs font-semibold ${theme.text400}`}>{calculateDate(element.currentMsgTime)}</div>
+                <hr className={`w-full ${theme.border400}`} />
+              </div> : null
+            }
+            {
+              element.senderID === props.googleID ?
+              <SentMessageBox key={element.messageID} star={props.star} setStar={props.setStar} currentTime={currentTime} fileSize={fileSize} calculateDate={calculateDate} element={element} />
+              : <ReceivedMessageBox key={element.messageID} star={props.star} setStar={props.setStar} currentTime={currentTime} fileSize={fileSize} calculateDate={calculateDate} element={element} />
+            }
+          </div>
         })
       }
       <div ref={ scroll }></div>

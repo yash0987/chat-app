@@ -15,7 +15,7 @@ export default function PersonDetails(props) {
   const dispatch = useDispatch();
 
   function closeChat() {
-    ws.send(JSON.stringify({ action: 'leave', senderID: user.googleID, receiverID: newChat.ID }));
+    ws.send(JSON.stringify([{ action: 'leave', senderID: user.googleID, newChat: newChat }]));
     dispatch(setTogglesToDefault());
     dispatch(emptyChat());
   }
