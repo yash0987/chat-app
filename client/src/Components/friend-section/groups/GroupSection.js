@@ -1,15 +1,16 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux';
 import Groups from './Group';
 import CreateGroup from './CreateGroup';
 
 export default function GroupSection(props) {
-  const [groups, setGroups] = useState(null);
+  const [groups, setGroups] = useState([]);
+  const [searchGroupsList, setSearchGroupsList] = useState([]);
   const [enableCreateGroupPanel, setEnableCreateGroupPanel] = useState(false);
   const theme = useSelector(state => state.theme.value);
   let keyValue = 0;
 
-  function getGroups() {
+  useEffect(() => {
     async function getData() {
       const getGroupListRequestURI = 'http://localhost:5000/groups/list'
       const response = await fetch(getGroupListRequestURI, {
@@ -27,8 +28,17 @@ export default function GroupSection(props) {
     }
 
     getData().then((data) => {
+      setSearchGroupsList(data);
       setGroups(data);
     })
+  }, [])
+
+  function searchGroups(inputName) {
+    const searchgroupName = inputName.trim().toLowerCase();
+    setSearchGroupsList(groups.filter((groupInfo) => {
+      const groupName = groupInfo.groupName.toLowerCase();
+      return groupName.includes(searchgroupName);
+    }))
   }
 
   return (
@@ -36,16 +46,16 @@ export default function GroupSection(props) {
       <section className='grid grid-flow-col'>
         <div className={`h-[91vh] border-l-[1px] ${theme.borderL700} font-semibold ${theme.bg50}`}>
           <div className='min-w-[27rem]'>
-            <input type="search" name="" id="" placeholder='Search Groups' className={`my-4 mx-9 px-5 py-1 w-[85%] rounded-sm ${theme.bg50} border-[1px] border-b-[3px] ${theme.border500} font-normal focus:outline-none ${theme.placeholderText400}`} />
+            <input onChange={(e) => searchGroups(e.target.value)} type="search" name="" id="" placeholder='Search Groups' className={`my-4 mx-9 px-5 py-1 w-[85%] rounded-sm ${theme.bg50} border-[1px] border-b-[3px] ${theme.border500} font-normal focus:outline-none ${theme.placeholderText400}`} />
             <button onClick={() => setEnableCreateGroupPanel(true)} className={`p-1 w-full flex justify-center ${theme.text400} ${theme.hoverBg200}`}>
               <p className='p-2'>Create new group</p>
               <span className='text-3xl'>&#43;</span>
             </button>
             {
-              groups ? groups.map((element) => {
+              searchGroupsList ? searchGroupsList.map((element) => {
                 keyValue++;
                 return <Groups key={keyValue} groupInfo={element} />
-              }) : (getGroups())
+              }) : null
             }
           </div>
         </div>
