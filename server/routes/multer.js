@@ -62,16 +62,16 @@ router.get('/download/file', (req, res) => {
 router.post('/group', upload.single('groupPhoto'), (req, res, next) => {
     const group = JSON.parse(req.body.group);
     const groupMembers = JSON.parse(req.body.friends);
-    group.groupPhotoURL = `http://localhost:5000/group/photo/${req.file.filename}`;
+    group.photoURL = `http://localhost:5000/group/photo/${req.file.filename}`;
     groupMembers.push(req.user.googleID);
     console.log(groupMembers);
 
     async function main() {
         try {
             await client.connect();
-            const cursor = await client.db('chat-app').collection('groupChats').findOne( { groupID: group.groupID } );
+            const cursor = await client.db('chat-app').collection('groupChats').findOne( { groupID: group.id } );
             if (!cursor) {
-                await client.db('chat-app').collection('groupChats').insertOne( { groupID: group.groupID, chatMsg: [] } );
+                await client.db('chat-app').collection('groupChats').insertOne( { groupID: group.id, chatMsg: [] } );
                 for (let i = 0; i < groupMembers.length; i++) {
                     await client.db('chat-app').collection('userDetails').updateOne( { googleID: groupMembers[i] }, { $addToSet: { groups: group } } );
                 }

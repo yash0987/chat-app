@@ -46,48 +46,38 @@ router.get('/search/user', (req, res) => {
 })
 
 router.post('/add/friend', (req, res, next) => {
-    const friendData = {
-        googleID: req.query.ID,
-        fullName: req.query.fullName,
-        photoURL: req.query.photoURL
-    };
-
+    const personData = JSON.parse(req.query.person);
     const userData = {
-        googleID: req.user.googleID,
-        fullName: `${req.user.firstName} ${req.user.familyName}`,
+        id: req.user.googleID,
+        name: `${req.user.firstName} ${req.user.familyName}`,
         photoURL: req.user.photoURL
     };
 
     async function main() {
         try {
-            await userDetailsCollection.updateOne( { googleID: req.user.googleID }, { $addToSet: { sendRequests: friendData } } );
-            await userDetailsCollection.updateOne( { googleID: req.query.ID }, { $addToSet: { receiveRequests: userData } } );
+            await userDetailsCollection.updateOne( { googleID: userData.id }, { $addToSet: { sendRequests: personData } } );
+            await userDetailsCollection.updateOne( { googleID: personData.id }, { $addToSet: { receiveRequests: userData } } );
         } catch (e) {
             console.error(e);
         }
     }
 
     main().catch(console.error);
-    res.json( { success: `Friend request has send to ${friendData.fullName}` } );
+    res.json( { success: `Friend request has send to ${personData.name}` } );
 })
 
-router.delete('/cancelRequest', (req, res) => {
-    const friendData = {
-        googleID: req.query.ID,
-        fullName: req.query.fullName,
-        photoURL: req.query.photoURL
-    };
-
+router.put('/cancelRequest', (req, res) => {
+    const personData = JSON.parse(req.query.person);
     const userData = {
-        googleID: req.user.googleID,
-        fullName: `${req.user.firstName} ${req.user.familyName}`,
+        id: req.user.googleID,
+        name: `${req.user.firstName} ${req.user.familyName}`,
         photoURL: req.user.photoURL
     };
 
     async function main() {
         try {
-            await userDetailsCollection.updateOne( { googleID: req.user.googleID }, { $pull: { sendRequests: friendData } } );
-            await userDetailsCollection.updateOne( { googleID: req.query.ID }, { $pull: { receiveRequests: userData } } );
+            await userDetailsCollection.updateOne( { googleID: userData.id }, { $pull: { sendRequests: personData } } );
+            await userDetailsCollection.updateOne( { googleID: personData.id }, { $pull: { receiveRequests: userData } } );
         } catch (e) {
             console.error(e);
         }
@@ -98,27 +88,22 @@ router.delete('/cancelRequest', (req, res) => {
 });
 
 router.put('/acceptRequest', (req, res) => {
-    const friendData = {
-        googleID: req.query.ID,
-        fullName: req.query.fullName,
-        photoURL: req.query.photoURL
-    };
-
+    const personData = JSON.parse(req.query.person);
     const userData = {
-        googleID: req.user.googleID,
-        fullName: `${req.user.firstName} ${req.user.familyName}`,
+        id: req.user.googleID,
+        name: `${req.user.firstName} ${req.user.familyName}`,
         photoURL: req.user.photoURL
     };
 
-    const IDarray = [req.user.googleID, req.query.ID].sort();
+    const IDarray = [userData.id, personData.id].sort();
     const room = IDarray[0] + IDarray[1];
 
     async function main() {
         try {
-            await userDetailsCollection.updateOne( { googleID: req.user.googleID }, { $addToSet: { friends: friendData } } );
-            await userDetailsCollection.updateOne( { googleID: req.user.googleID }, { $pull: { receiveRequests: friendData } } );
-            await userDetailsCollection.updateOne( { googleID: req.query.ID }, { $addToSet: { friends: userData } } );
-            await userDetailsCollection.updateOne( { googleID: req.query.ID }, { $pull: { sendRequests: userData } } );
+            await userDetailsCollection.updateOne( { googleID: userData.id }, { $addToSet: { friends: personData } } );
+            await userDetailsCollection.updateOne( { googleID: userData.id }, { $pull: { receiveRequests: personData } } );
+            await userDetailsCollection.updateOne( { googleID: personData.id }, { $addToSet: { friends: userData } } );
+            await userDetailsCollection.updateOne( { googleID: personData.id }, { $pull: { sendRequests: userData } } );
             await personalChatsCollection.insertOne( { chatID: room, chatMsg: [] } );
         } catch (e) {
             console.error(e);
@@ -129,23 +114,18 @@ router.put('/acceptRequest', (req, res) => {
     res.json( { success: 'Friend request is accepted' } );
 })
 
-router.delete('/declineRequest', (req, res) => {
-    const friendData = {
-        googleID: req.query.ID,
-        fullName: req.query.fullName,
-        photoURL: req.query.photoURL
-    };
-
+router.put('/declineRequest', (req, res) => {
+    const personData = JSON.parse(req.query.person);
     const userData = {
-        googleID: req.user.googleID,
-        fullName: `${req.user.firstName} ${req.user.familyName}`,
+        id: req.user.googleID,
+        name: `${req.user.firstName} ${req.user.familyName}`,
         photoURL: req.user.photoURL
     };
 
     async function main() {
         try {
-            await userDetailsCollection.updateOne( { googleID: req.user.googleID }, { $pull: { receiveRequests: friendData } } );
-            await userDetailsCollection.updateOne( { googleID: req.query.ID }, { $pull: { sendRequests: userData } } );
+            await userDetailsCollection.updateOne( { googleID: userData.id }, { $pull: { receiveRequests: personData } } );
+            await userDetailsCollection.updateOne( { googleID: personData.id }, { $pull: { sendRequests: userData } } );
         } catch (e) {
             console.error(e);
         }
