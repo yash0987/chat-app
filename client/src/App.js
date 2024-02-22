@@ -1,16 +1,16 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import store from './app/store';
-import LoginPage from './components/LoginPage';
-import DefaultPage from './components/DefaultPage';
-import ChatSection from './components/chat-section/ChatSection';
+import LoginPage from './views/loginpage/LoginPage';
+import DefaultPage from './views/DefaultPage';
+import ChatSection from './views/chats/ChatSection';
 import ColorPalette from './components/sidebar/ColorPalette';
 import Wallpapers from './components/sidebar/Wallpapers';
-import HomeLayout from './components/layout/HomeLayout';
-import ChatLayout from './components/layout/ChatLayout';
-import GroupLayout from './components/layout/GroupLayout';
-import RequestLayout from './components/layout/RequestLayout';
-import ThemeLayout from './components/layout/ThemeLayout';
+import HomeLayout from './layouts/HomeLayout';
+import ChatLayout from './layouts/ChatLayout';
+import GroupLayout from './layouts/GroupLayout';
+import RequestLayout from './layouts/RequestLayout';
+import ThemeLayout from './layouts/ThemeLayout';
 
 function App() {
   return (

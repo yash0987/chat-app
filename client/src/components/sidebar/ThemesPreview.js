@@ -1,9 +1,9 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import backButton from '../../img/backButton.png';
-import menu from '../../img/menu.png';
-import emoji from '../../img/emoji.png';
-import plusIcon from '../../img/plus.png';
+import backButton from '../../assets/backButton.png';
+import menu from '../../assets/menu.png';
+import emoji from '../../assets/emoji.png';
+import plusIcon from '../../assets/plus.png';
 
 export default function ThemesPreview(props) {
   const theme = useSelector(state => state.theme.value);

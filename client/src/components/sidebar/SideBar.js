@@ -1,9 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import profile from '../../img/profile.png';
-import star from '../../img/star.png';
-import themes from '../../img/theme.png';
+import profile from '../../assets/profile.png';
+import star from '../../assets/star.png';
+import themes from '../../assets/theme.png';
 import Logout from './Logout';
 
 export default function SideBar(props) {

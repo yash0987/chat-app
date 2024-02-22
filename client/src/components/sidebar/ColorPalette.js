@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import tick from '../../img/tick.png';
-import wallpaper from '../../img/wallpaper.png';
-import lightIcon from '../../img/sun.png';
-import darkIcon from '../../img/moon.png';
+import tick from '../../assets/tick.png';
+import wallpaper from '../../assets/wallpaper.png';
+import lightIcon from '../../assets/sun.png';
+import darkIcon from '../../assets/moon.png';
 import { selectTheme } from '../../features/theme-slice/themeSlice';
-import { themes } from './ThemesColors';
+import { themes } from './../../data/ThemesColors';
 
 export default function ColorPalette() {
   const theme = useSelector(state => state.theme.value);

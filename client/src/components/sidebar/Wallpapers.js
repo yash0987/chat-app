@@ -2,17 +2,17 @@ import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { selectWallpaper } from '../../features/wallpaper-slice/wallpaperSlice';
-import upload from '../../img/upload.png';
-import wallpaper1 from '../../wallpaper/wallpaper1.jpg';
-import wallpaper2 from '../../wallpaper/wallpaper2.jpg';
-import wallpaper3 from '../../wallpaper/wallpaper3.jpg';
-import wallpaper4 from '../../wallpaper/wallpaper4.jpg';
-import wallpaper5 from '../../wallpaper/wallpaper5.jpg';
-import wallpaper6 from '../../wallpaper/wallpaper6.jpg';
-import wallpaper7 from '../../wallpaper/wallpaper7.jpg';
-import wallpaper8 from '../../wallpaper/wallpaper8.jpg';
-import wallpaper9 from '../../wallpaper/wallpaper9.jpg';
-import wallpaper10 from '../../wallpaper/wallpaper10.jpg';
+import upload from '../../assets/upload.png';
+import wallpaper9 from '../../assets/wallpaper/wallpaper9.jpg';
+import wallpaper1 from '../../assets/wallpaper/wallpaper1.jpg';
+import wallpaper2 from '../../assets/wallpaper/wallpaper2.jpg';
+import wallpaper3 from '../../assets/wallpaper/wallpaper3.jpg';
+import wallpaper4 from '../../assets/wallpaper/wallpaper4.jpg';
+import wallpaper5 from '../../assets/wallpaper/wallpaper5.jpg';
+import wallpaper6 from '../../assets/wallpaper/wallpaper6.jpg';
+import wallpaper7 from '../../assets/wallpaper/wallpaper7.jpg';
+import wallpaper8 from '../../assets/wallpaper/wallpaper8.jpg';
+import wallpaper10 from '../../assets/wallpaper/wallpaper10.jpg';
 
 export default function Wallpapers() {
   const [photo, setPhoto] = useState({});

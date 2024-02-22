@@ -1,5 +1,5 @@
 import React from 'react';
-import logout from '../../img/logout.png';
+import logout from '../../assets/logout.png';
 import { useSelector } from 'react-redux';
 
 
