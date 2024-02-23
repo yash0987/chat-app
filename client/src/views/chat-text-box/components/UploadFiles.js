@@ -1,10 +1,10 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import documentIcon from '../../../../assets/document.png';
-import photoIcon from '../../../../assets/photos.png';
-import pollIcon from '../../../../assets/poll.png';
-import audioIcon from '../../../../assets/headphone.png';
-import { appendChat } from '../../../../features/chat-slice/chatSlice';
+import documentIcon from '../../../assets/document.png';
+import photoIcon from '../../../assets/photos.png';
+import pollIcon from '../../../assets/poll.png';
+import audioIcon from '../../../assets/headphone.png';
+import { appendChat } from '../../../features/chat-slice/chatSlice';
 
 export default function UploadFiles(props) {
   const user = useSelector(state => state.auth.value.user);

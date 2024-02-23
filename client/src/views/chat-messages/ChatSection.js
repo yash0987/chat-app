@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { prependChat, appendChat } from '../../features/chat-slice/chatSlice';
-import ChatBar from './components/chat-bar/ChatBar';
-import Messages from './components/Messages';
-import Textbox from './components/text-box/Textbox';
+import ChatBar from '../chat-bar/ChatBar';
+import Messages from '../chat-messages/components/Messages';
+import Textbox from '../chat-text-box/Textbox';
 import DeleteForMeModal from '../../components/modal/DeleteForMeModal';
-import { ws } from './websocket';
+import { ws } from './../../utils/websocket';
 
 export default function ChatSection(props) {
   const chat = useSelector(state => state.chat);

@@ -1,9 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import searchIcon from '../../assets/searchBlack.png';
-import SearchedPerson from './SearchedPerson';
+import searchIcon from '../../../assets/searchBlack.png';
+import SearchResultBox from './SearchResultBox';
 
-export default function SearchSection() {
+export default function Searchbar() {
   const [searchedUsers, setSearchedUsers] = useState([]);
   const searchRef = useRef(null);
   const theme = useSelector(state => state.theme.value);
@@ -46,7 +46,7 @@ export default function SearchSection() {
           <input type="text" onChange={ () => searchFriends() } ref={searchRef} id="searchBox" autoComplete='off' placeholder='Search new friends' className={`p-1 w-full rounded-r-md ${theme.bg100} focus:outline-none ${theme.placeholderText400}`} />
         </label>
         <div id="searchResult" className='mt-3 w-full max-h-80 overflow-y-scroll'>{
-          searchedUsers.map((person) => <SearchedPerson key={person.googleID} person={person} />)
+          searchedUsers.map((person) => <SearchResultBox key={person.googleID} person={person} />)
         }</div>
       </div>
     </div>

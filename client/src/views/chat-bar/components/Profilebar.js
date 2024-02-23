@@ -1,10 +1,10 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { emptyChat, updateChat } from '../../../../features/chat-slice/chatSlice';
-import { unselectAllMessages } from '../../../../features/select-message-slice/selectMessageSlice';
-import { setTogglesToDefault } from '../../../../features/toggle-slice/toggleSlice';
-import backButton from '../../../../assets/backButton.png';
-import { ws } from '../../websocket';
+import { emptyChat, updateChat } from '../../../features/chat-slice/chatSlice';
+import { unselectAllMessages } from '../../../features/select-message-slice/selectMessageSlice';
+import { setTogglesToDefault } from '../../../features/toggle-slice/toggleSlice';
+import backButton from '../../../assets/backButton.png';
+import { ws } from '../../../utils/websocket';
 
 export default function Profilebar(props) {
   const user = useSelector(state => state.auth.value.user);

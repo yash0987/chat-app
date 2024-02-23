@@ -1,8 +1,8 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { updateChat } from '../../../../features/chat-slice/chatSlice';
-import { unselectAllMessages } from '../../../../features/select-message-slice/selectMessageSlice';
-import unstar from '../../../../assets/unstar.png';
+import { updateChat } from '../../../features/chat-slice/chatSlice';
+import { unselectAllMessages } from '../../../features/select-message-slice/selectMessageSlice';
+import unstar from '../../../assets/unstar.png';
 
 export default function Star(props) {
   const chat = useSelector(state => state.chat.value);

@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import profile from '../../assets/profile.png';
 import star from '../../assets/star.png';
 import themes from '../../assets/theme.png';
-import Logout from './Logout';
+import Logout from './components/Logout';
 
 export default function SideBar(props) {
   const user = useSelector(state => state.auth.value.user);

@@ -1,10 +1,10 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { showDeleteModal } from '../../../../features/modal-slice/modalSlice';
+import { showDeleteModal } from '../../../features/modal-slice/modalSlice';
 import Star from './Star';
 import Copy from './Copy';
-import trash from '../../../../assets/trash.png';
-import forward from '../../../../assets/forward.png';
+import trash from '../../../assets/trash.png';
+import forward from '../../../assets/forward.png';
 import Reply from './Reply';
 
 export default function Features(props) {

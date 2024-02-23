@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 
-export default function SearchedPerson(props) {
+export default function SearchResultBox(props) {
   const user = useSelector(state => state.auth.value.user);
   const theme = useSelector(state => state.theme.value);
   

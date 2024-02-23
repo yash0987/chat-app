@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector, useDispatch} from 'react-redux';
-import copy from '../../../../assets/copy.png';
-import { unselectAllMessages } from '../../../../features/select-message-slice/selectMessageSlice';
+import copy from '../../../assets/copy.png';
+import { unselectAllMessages } from '../../../features/select-message-slice/selectMessageSlice';
 
 export default function Copy() {
   const selectedMessagesList = useSelector(state => state.selectmessage.value);

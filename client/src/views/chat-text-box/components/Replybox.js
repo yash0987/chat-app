@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { replyMessageToggle } from '../../../../features/toggle-slice/toggleSlice';
+import { replyMessageToggle } from '../../../features/toggle-slice/toggleSlice';
 
 export default function Replybox() {
   const showReplyMessage = useSelector(state => state.toggle.value.replyMessage);

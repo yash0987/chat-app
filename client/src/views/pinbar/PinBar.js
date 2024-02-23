@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
-import personIcon from '../assets/personw.png';
-import groupIcon from '../assets/groupw.png';
-import inboxIcon from '../assets/inbox.png';
+import personIcon from '../../assets/personw.png';
+import groupIcon from '../../assets/groupw.png';
+import inboxIcon from '../../assets/inbox.png';
 
 export default function PinBar() {
   const theme = useSelector(state => state.theme.value);
