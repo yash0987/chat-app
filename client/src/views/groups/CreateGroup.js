@@ -1,36 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import cameraIcon from 'assets/camera.png';
+import useFetch from 'hooks/useFetch';
 
 export default function CreateGroup(props) {
   const [photo, setPhoto] = useState("");
   const [newGroup, setNewGroup] = useState({});
-  const [friendList, setFriendList] = useState([]);
   const [selectedFriends, setSelectedFriends] = useState([]);
   const [searchFriendList, setSearchFriendList] = useState([]);
   const [style1, setStyle1] = useState('');
   const [style2, setStyle2] = useState('');
   const [displayPanel, setDisplayPanel] = useState(true);
   const theme = useSelector(state => state.theme.value);
+  const friendList = useFetch({ url: 'http://localhost:5000/friends/list' })[0];
 
   useEffect(() => {
-    async function getFriendList() {
-      const response = await fetch('http://localhost:5000/friends/list', {
-        method: 'GET',
-        credentials: 'include',
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Credentials": true
-        }
-      });
-      const data = await response.json();
-      setSearchFriendList(data);
-      setFriendList(data);
-    }
-
-    getFriendList();
-  }, [])
+    setSearchFriendList(friendList)
+    // eslint-disable-next-line
+  }, [friendList]);
 
   async function sendData() {
     const formdata = new FormData();
@@ -119,7 +106,7 @@ export default function CreateGroup(props) {
           <hr className={`mt-2 ${theme.border300}`} />
           <div className='max-h-48 overflow-y-scroll'>
             {
-              searchFriendList.length !== 0 ? 
+              searchFriendList.length ?
               searchFriendList.map((friend) => {
                 return <div key={friend.id} className={`grid grid-flow-col justify-between p-2 rounded-lg font-semibold ${theme.hoverBg50}`}>
                   <div className='grid grid-flow-col items-center'>

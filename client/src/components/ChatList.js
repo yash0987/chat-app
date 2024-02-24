@@ -2,34 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import CreateGroup from 'views/groups/CreateGroup';
 import Chatbox from 'components/Chatbox';
+import useFetch from 'hooks/useFetch';
 
 export default function ChatList(props) {
-  const [chats, setChats] = useState([]);
   const [searchChatList, setSearchChatList] = useState([]);
   const [enableCreateGroupPanel, setEnableCreateGroupPanel] = useState(false);
   const theme = useSelector(state => state.theme.value);
-  
-  useEffect(() => {
-    async function getData() {
-      const response = await fetch(props.chatListRequestURI, {
-        method: 'GET',
-        credentials: 'include',
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Credentials": true
-        }
-      });
-
-      const data = await response.json();
-      return data;
-    }
-
-    getData().then((data) => {
-      setChats(data);
-    })
-    // eslint-disable-next-line
-  }, [])
+  const [chats, setChats] = useFetch({ url: props.chatListRequestURI });
 
   useEffect(() => {
     setSearchChatList(chats);
