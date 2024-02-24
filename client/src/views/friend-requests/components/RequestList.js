@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import RequestBox from './RequestBox';
+import RequestBox from 'views/friend-requests/components/RequestBox';
 
 export default function RequestsList(props) {
   const [requestsList, setRequestsList] = useState([]);

@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { featuresToggle } from '../../../features/toggle-slice/toggleSlice';
-import Messagebox from './Messagebox';
+import { featuresToggle } from 'features/toggle-slice/toggleSlice';
+import Messagebox from 'views/chat-messages/components/Messagebox';
 
 export default function Message(props) {
   const scroll = useRef(null);

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import Chatbox from './Chatbox';
-import CreateGroup from '../views/groups/CreateGroup';
+import CreateGroup from 'views/groups/CreateGroup';
+import Chatbox from 'components/Chatbox';
 
 export default function ChatList(props) {
   const [chats, setChats] = useState([]);

@@ -1,8 +1,8 @@
 import React, { useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import menu from '../../../assets/menu.png';
-import { updateChat } from '../../../features/chat-slice/chatSlice';
-import { starMessagesToggle } from '../../../features/toggle-slice/toggleSlice';
+import { updateChat } from 'features/chat-slice/chatSlice';
+import { starMessagesToggle } from 'features/toggle-slice/toggleSlice';
+import menu from 'assets/menu.png';
 
 export default function DropBox(props) {
   const dropboxRef = useRef(null);

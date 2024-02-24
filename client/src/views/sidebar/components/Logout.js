@@ -1,6 +1,6 @@
 import React from 'react';
-import logout from '../../../assets/logout.png';
 import { useSelector } from 'react-redux';
+import logout from 'assets/logout.png';
 
 
 export default function Logout() {

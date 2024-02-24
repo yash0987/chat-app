@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import RequestBox from './components/RequestBox';
+import RequestBox from 'views/friend-requests/components/RequestBox';
 
 export default function FriendRequests() {
   const [requestBlock, setRequestBlock] = useState('receive');

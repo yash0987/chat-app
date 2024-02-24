@@ -1,8 +1,8 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { updateChat } from '../../features/chat-slice/chatSlice';
-import { showDeleteModal } from '../../features/modal-slice/modalSlice';
-import { unselectAllMessages } from '../../features/select-message-slice/selectMessageSlice';
+import { updateChat } from 'features/chat-slice/chatSlice';
+import { showDeleteModal } from 'features/modal-slice/modalSlice';
+import { unselectAllMessages } from 'features/select-message-slice/selectMessageSlice';
 
 export default function DeleteForMeModal(props) {
   const chat = useSelector(state => state.chat.value);

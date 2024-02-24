@@ -1,11 +1,11 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { showDeleteModal } from '../../../features/modal-slice/modalSlice';
-import Star from './Star';
-import Copy from './Copy';
-import trash from '../../../assets/trash.png';
-import forward from '../../../assets/forward.png';
-import Reply from './Reply';
+import { showDeleteModal } from 'features/modal-slice/modalSlice';
+import Star from 'views/chat-bar/components/Star';
+import Copy from 'views/chat-bar/components/Copy';
+import Reply from 'views/chat-bar/components/Reply';
+import trash from 'assets/trash.png';
+import forward from 'assets/forward.png';
 
 export default function Features(props) {
   const selectedMessagesList = useSelector(state => state.selectmessage.value);

@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectMessage, unselectAllMessages, unselectMessage } from '../../../features/select-message-slice/selectMessageSlice';
-import { featuresToggle } from '../../../features/toggle-slice/toggleSlice';
-import fileIcon1 from '../../../assets/file1.png';
-import fileIcon2 from '../../../assets/file2.png';
-import downloadIcon from '../../../assets/download.png';
+import { selectMessage, unselectAllMessages, unselectMessage } from 'features/select-message-slice/selectMessageSlice';
+import { featuresToggle } from 'features/toggle-slice/toggleSlice';
+import fileIcon1 from 'assets/file1.png';
+import fileIcon2 from 'assets/file2.png';
+import downloadIcon from 'assets/download.png';
 
 export default function Messagebox(props) {
   const [highlightSelectMessage, setHighlightSelectMessage] = useState(0);

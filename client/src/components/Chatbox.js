@@ -1,10 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { emptyChat } from '../features/chat-slice/chatSlice';
-import { unselectAllMessages } from '../features/select-message-slice/selectMessageSlice';
-import { replyMessageToggle, starMessagesToggle } from '../features/toggle-slice/toggleSlice';
-import { startNewChat } from '../features/chatinfo-slice/chatInfoSlice';
+import { startNewChat } from 'features/chatinfo-slice/chatInfoSlice';
+import { emptyChat } from 'features/chat-slice/chatSlice';
+import { unselectAllMessages } from 'features/select-message-slice/selectMessageSlice';
+import { replyMessageToggle, starMessagesToggle } from 'features/toggle-slice/toggleSlice';
 
 export default function Chatbox(props) {
   const theme = useSelector(state => state.theme.value);

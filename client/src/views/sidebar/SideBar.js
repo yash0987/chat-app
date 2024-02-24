@@ -1,10 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import profile from '../../assets/profile.png';
-import star from '../../assets/star.png';
-import themes from '../../assets/theme.png';
-import Logout from './components/Logout';
+import Logout from 'views/sidebar/components/Logout';
+import profile from 'assets/profile.png';
+import star from 'assets/star.png';
+import themes from 'assets/theme.png';
 
 export default function SideBar(props) {
   const user = useSelector(state => state.auth.value.user);

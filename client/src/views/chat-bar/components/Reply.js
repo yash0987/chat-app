@@ -1,9 +1,9 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import replyIcon from '../../../assets/reply.png';
-import { replyMessageToggle } from '../../../features/toggle-slice/toggleSlice';
-import { reply } from '../../../features/reply-slice/replySlice';
-import { unselectAllMessages } from '../../../features/select-message-slice/selectMessageSlice';
+import { replyMessageToggle } from 'features/toggle-slice/toggleSlice';
+import { reply } from 'features/reply-slice/replySlice';
+import { unselectAllMessages } from 'features/select-message-slice/selectMessageSlice';
+import replyIcon from 'assets/reply.png';
 
 export default function Reply() {
   const selectedMessagesList = useSelector(state => state.selectmessage.value);

@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import EmojiPicker from 'emoji-picker-react';
-import { appendChat } from '../../features/chat-slice/chatSlice';
-import plusIcon from '../../assets/plus.png';
-import emoji from '../../assets/emoji.png';
-import AlertBar from '../../components/AlertBar';
-import Replybox from './components/Replybox';
-import UploadFiles from './components/UploadFiles';
+import { appendChat } from 'features/chat-slice/chatSlice';
+import Replybox from 'views/chat-text-box/components/Replybox';
+import UploadFiles from 'views/chat-text-box/components/UploadFiles';
+import AlertBar from 'components/AlertBar';
+import plusIcon from 'assets/plus.png';
+import emoji from 'assets/emoji.png';
 
 export default function Textbox(props) {
   const [displayEmojiPanel, setDisplayEmojiPanel] = useState(0);

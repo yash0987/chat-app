@@ -1,5 +1,5 @@
 import React from 'react';
-import downloadIcon from '../../../assets/download.png';
+import downloadIcon from 'assets/download.png';
 
 export default function DownloadButton(props) {
   return (

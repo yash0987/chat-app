@@ -1,5 +1,5 @@
 import React from 'react';
-import ChatList from '../../components/ChatList';
+import ChatList from 'components/ChatList';
 
 export default function GroupsSection() {
   return (

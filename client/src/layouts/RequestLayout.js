@@ -1,7 +1,7 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import FriendRequests from '../views/friend-requests/FriendRequests';
+import FriendRequests from 'views/friend-requests/FriendRequests';
 
 export default function RequestLayout() {
   const theme = useSelector(state => state.theme.value);

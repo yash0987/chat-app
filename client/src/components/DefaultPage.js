@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import wumpus1 from '../assets/wumpus1.gif';
-import wumpus2 from '../assets/wumpus2.gif';
-import wumpus3 from '../assets/wumpus3.gif';
-import wumpus4 from '../assets/wumpus4.gif';
-import wumpus5 from '../assets/wumpus5.gif';
-import wumpus6 from '../assets/wumpus6.gif';
+import wumpus1 from 'assets/wumpus1.gif';
+import wumpus2 from 'assets/wumpus2.gif';
+import wumpus3 from 'assets/wumpus3.gif';
+import wumpus4 from 'assets/wumpus4.gif';
+import wumpus5 from 'assets/wumpus5.gif';
+import wumpus6 from 'assets/wumpus6.gif';
 export default function DefaultPage() {
   const theme = useSelector(state => state.theme.value);
   const wumpus = [ wumpus1, wumpus2, wumpus3, wumpus4, wumpus5, wumpus6 ];

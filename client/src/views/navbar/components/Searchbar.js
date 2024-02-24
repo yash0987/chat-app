@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import searchIcon from '../../../assets/searchBlack.png';
-import SearchResultBox from './SearchResultBox';
+import SearchResultBox from 'views/navbar/components/SearchResultBox';
+import searchIcon from 'assets/searchBlack.png';
 
 export default function Searchbar() {
   const [searchedUsers, setSearchedUsers] = useState([]);

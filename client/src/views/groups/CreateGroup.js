@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import cameraIcon from '../../assets/camera.png';
+import cameraIcon from 'assets/camera.png';
 
 export default function CreateGroup(props) {
   const [photo, setPhoto] = useState("");

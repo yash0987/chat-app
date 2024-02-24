@@ -1,8 +1,8 @@
 import React, { useState, useRef } from 'react';
 import { useSelector } from 'react-redux';
-import Searchbar from './components/Searchbar';
-import searchLogo from '../../assets/search.png';
-import settingLogo from '../../assets/setting.png';
+import Searchbar from 'views/navbar/components/Searchbar';
+import searchLogo from 'assets/search.png';
+import settingLogo from 'assets/setting.png';
 
 export default function Navbar(props) {
   const user = useSelector(state => state.auth.value.user);
