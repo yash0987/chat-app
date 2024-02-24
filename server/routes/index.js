@@ -277,12 +277,11 @@ router.get('/chat/data', (req, res) => {
     main().catch(console.error);
 })
 
-router.delete('/delete/messages', (req, res) => {
+router.delete('/delete/messages/:room', (req, res) => {
     const selectedMessages = JSON.parse(req.query.selectedMessages);
     async function main() {
         try {
-            const cursor = req.query.isGroup ? await groupChatsCollection.findOne( { groupID: req.query.ID } ) :
-            await personalChatsCollection.findOne( { chatID: req.query.ID } );
+            const cursor = await personalChatsCollection.findOne( { chatID: req.params.room } );
 
             let updatedMessagesArray = cursor.chatMsg;
             selectedMessages.forEach((elementToRemove) => {
@@ -292,7 +291,7 @@ router.delete('/delete/messages', (req, res) => {
                 })
             });
 
-            await personalChatsCollection.updateOne( { chatID: req.query.ID }, { $set: { chatMsg: updatedMessagesArray } } );
+            await personalChatsCollection.updateOne( { chatID: req.params.room }, { $set: { chatMsg: updatedMessagesArray } } );
             res.json({ success: 'messages has been deleted' });
         } catch (e) {
             console.error(e);
@@ -302,11 +301,11 @@ router.delete('/delete/messages', (req, res) => {
     main().catch(console.error);
 })
 
-router.put('/starAndunstar/messages', (req, res) => {
+router.put('/starAndunstar/messages/:room', (req, res) => {
     const selectedMessages = JSON.parse(req.query.selectedMessages);
     async function main() {
         try {
-            const cursor = await personalChatsCollection.findOne( { chatID: req.query.ID } );
+            const cursor = await personalChatsCollection.findOne( { chatID: req.params.room } );
 
             let updatedMessagesArray = cursor.chatMsg;
             selectedMessages.forEach((elementToUpdate) => {
@@ -321,7 +320,7 @@ router.put('/starAndunstar/messages', (req, res) => {
                 })
             })
             
-            await personalChatsCollection.updateOne( { chatID: req.query.ID }, { $set: { chatMsg: updatedMessagesArray } } );
+            await personalChatsCollection.updateOne( { chatID: req.params.room }, { $set: { chatMsg: updatedMessagesArray } } );
             res.json({ success: 'messages has been starred' });
         } catch (e) {
             console.error(e);
@@ -398,11 +397,11 @@ router.get('/group/data', (req, res) => {
     main().catch(console.error);
 })
 
-router.delete('/group/delete/messages', (req, res) => {
+router.delete('/group/delete/messages/:room', (req, res) => {
     const selectedMessages = JSON.parse(req.query.selectedMessages);
     async function main() {
         try {
-            const cursor = await groupChatsCollection.findOne( { groupID: req.query.ID } );
+            const cursor = await groupChatsCollection.findOne( { groupID: req.params.room } );
 
             let updatedMessagesArray = cursor.chatMsg;
             selectedMessages.forEach((elementToRemove) => {
@@ -412,7 +411,7 @@ router.delete('/group/delete/messages', (req, res) => {
                 })
             });
 
-            await groupChatsCollection.updateOne( { groupID: req.query.ID }, { $set: { chatMsg: updatedMessagesArray } } );
+            await groupChatsCollection.updateOne( { groupID: req.params.room }, { $set: { chatMsg: updatedMessagesArray } } );
             res.json({ success: 'messages has been deleted' });
         } catch (e) {
             console.error(e);
@@ -422,11 +421,11 @@ router.delete('/group/delete/messages', (req, res) => {
     main().catch(console.error);
 })
 
-router.put('/group/starAndunstar/messages', (req, res) => {
+router.put('/group/starAndunstar/messages/:room', (req, res) => {
     const selectedMessages = JSON.parse(req.query.selectedMessages);
     async function main() {
         try {
-            const cursor = await groupChatsCollection.findOne( { groupID: req.query.ID } );
+            const cursor = await groupChatsCollection.findOne( { groupID: req.params.room } );
 
             let updatedMessagesArray = cursor.chatMsg;
             selectedMessages.forEach((elementToUpdate) => {
@@ -441,7 +440,7 @@ router.put('/group/starAndunstar/messages', (req, res) => {
                 })
             })
             
-            await groupChatsCollection.updateOne( { groupID: req.query.ID }, { $set: { chatMsg: updatedMessagesArray } } );
+            await groupChatsCollection.updateOne( { groupID: req.params.room }, { $set: { chatMsg: updatedMessagesArray } } );
             res.json({ success: 'messages has been starred' });
         } catch (e) {
             console.error(e);
