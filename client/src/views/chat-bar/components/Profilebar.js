@@ -4,6 +4,7 @@ import { emptyChat, updateChat } from 'features/chat-slice/chatSlice';
 import { unselectAllMessages } from 'features/select-message-slice/selectMessageSlice';
 import { setTogglesToDefault } from 'features/toggle-slice/toggleSlice';
 import { ws } from 'utils/websocket';
+import useFetchChats from 'hooks/useFetchChats';
 import backButton from 'assets/backButton.png';
 
 export default function Profilebar(props) {
@@ -13,6 +14,10 @@ export default function Profilebar(props) {
   const selectedMessagesList = useSelector(state => state.selectmessage.value);
   const newChat = useSelector(state => state.chatinfo.value.newChat);
   const dispatch = useDispatch();
+
+  const getChatRequestURI = newChat.isGroup ?
+  `http://localhost:5000/group/data?ID=${props.room}` : `http://localhost:5000/chat/data?ID=${props.room}`;
+  const getChats = useFetchChats({ url: getChatRequestURI, callback: updateChat });
 
   function closeChat() {
     ws.send(JSON.stringify([{ action: 'leave', senderID: user.googleID, newChat: newChat }]));
@@ -26,9 +31,7 @@ export default function Profilebar(props) {
     }
     else if (toggleFeaturesState || displayStarredMessages) {
       if (displayStarredMessages) {
-        props.getChat().then((data) => {
-          dispatch(updateChat(data));
-        })
+        getChats();
         dispatch(setTogglesToDefault());
       }
       dispatch(unselectAllMessages());

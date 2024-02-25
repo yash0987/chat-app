@@ -11,7 +11,7 @@ export default function ChatBar(props) {
   
   return (
     <section className={`px-8 py-1 relative flex justify-between ${toggleFeaturesState || displayStarredMessages ? `${theme.bg500} saturate-[.80]` : `${theme.bg400}`} text-white`}>
-      <Profilebar getChat={props.getChat} ws={props.ws} />
+      <Profilebar ws={props.ws} />
       <Features star={props.star} setStar={props.setStar} room={props.room} />
       <DropBox room={props.room} />
     </section>
