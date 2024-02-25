@@ -2,6 +2,7 @@ import React, { useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateChat } from 'features/chat-slice/chatSlice';
 import { starMessagesToggle } from 'features/toggle-slice/toggleSlice';
+import { fetchRequest } from 'utils/fetchRequest';
 import menu from 'assets/menu.png';
 
 export default function DropBox(props) {
@@ -13,19 +14,11 @@ export default function DropBox(props) {
   const dispatch = useDispatch();
 
   async function getStarredMessages() {
-    const getStarredMessagesRequestURI = isGroup ? `http://localhost:5000/group/starred/messages?ID=${props.room}` :
+    const getStarredMessagesRequestURI = isGroup ?
+    `http://localhost:5000/group/starred/messages?ID=${props.room}` :
     `http://localhost:5000/starred/messages?ID=${props.room}`;
-    const response = await fetch(getStarredMessagesRequestURI, {
-      method: 'GET',
-      credentials: "include",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Credentials": true
-      }
-    })
 
-    const data = await response.json();
+    const data = await fetchRequest({ url: getStarredMessagesRequestURI, method: 'GET'});
     dispatch(updateChat(data));
     dispatch(starMessagesToggle(true));
     console.log(data);

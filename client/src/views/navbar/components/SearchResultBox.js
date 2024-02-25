@@ -1,5 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
+import { fetchRequest } from 'utils/fetchRequest';
 
 export default function SearchResultBox(props) {
   const user = useSelector(state => state.auth.value.user);
@@ -14,22 +15,13 @@ export default function SearchResultBox(props) {
       console.log(`You cannot send request to yourself`);
       return ;
     }
-    else if (user.friends.findIndex(element => element.googleID === id) > -1 || user.sendRequests.findIndex(element => element.googleID === id) > -1) {
+    else if (user.friends.findIndex(element => element.id === id) > -1 || user.sendRequests.findIndex(element => element.id === id) > -1) {
       console.log(`${name} is already friend`);
       return ;
     }
     
     const addFriendRequestURI = `http://localhost:5000/add/friend?person=${JSON.stringify({id, name, photoURL})}`;
-    const response = await fetch(addFriendRequestURI, {
-      method: 'POST',
-      credentials: 'include',
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Credentials": true
-      },
-    });
-    const data = await response.json();
+    const data = await fetchRequest({ url: addFriendRequestURI, method: 'POST' });
     console.log(data);
   }
 

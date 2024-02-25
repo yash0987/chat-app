@@ -51,38 +51,10 @@ export default function ChatSection(props) {
     console.log("I am receiving")
     dispatch(appendChat(message));
   }
-
-  async function getChat() {
-    const getChatRequestURI = chatInfo.newChat.isGroup ? `http://localhost:5000/group/data?ID=${room}` :
-    `http://localhost:5000/chat/data?ID=${room}`;
-    const response = await fetch(getChatRequestURI, {
-      method: 'GET',
-      credentials: 'include',
-      headers: {
-        Accept: "application/json",
-        "Content-type": "application/json",
-        "Access-Control-Allow-Credentials": true
-      },
-    });
-
-    const data = await response.json();
-    return data;
-  }
-
-  function reloadchat() {
-    getChat().then((data) => {
-      dispatch(prependChat(data));
-    })
-  }
   
-  useEffect(() => {
-    reloadchat();
-    // eslint-disable-next-line
-  }, [room]);
-
   return (
     <section style={{backgroundImage: `url('${wallpaper}')`, backgroundSize: "cover", backgroundPosition: "center", backgroundRepeat: "no-repeat"}} className={`w-[64.15rem] h-[91vh] flex flex-col overflow-hidden ${theme.bg50}`}>
-      <ChatBar getChat={getChat} star={star} setStar={setStar} room={room} ws={ws} />
+      <ChatBar star={star} setStar={setStar} room={room} ws={ws} />
       <Messages star={star} setStar={setStar} elementArray={chat.value} googleID={user.googleID} />
       <Textbox ws={ws} />
       <DeleteForMeModal room={room} />

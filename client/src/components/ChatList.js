@@ -14,7 +14,6 @@ export default function ChatList(props) {
     setSearchChatList(chats);
   }, [chats])
   
-
   function searchChats(inputName) {
     const searchChatName = inputName.trim().toLowerCase();
     setSearchChatList(chats.filter((chat) => {

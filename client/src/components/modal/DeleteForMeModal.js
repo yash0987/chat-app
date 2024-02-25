@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { updateChat } from 'features/chat-slice/chatSlice';
 import { showDeleteModal } from 'features/modal-slice/modalSlice';
 import { unselectAllMessages } from 'features/select-message-slice/selectMessageSlice';
+import { fetchRequest } from 'utils/fetchRequest';
 
 export default function DeleteForMeModal(props) {
   const chat = useSelector(state => state.chat.value);
@@ -23,19 +24,11 @@ export default function DeleteForMeModal(props) {
     dispatch(unselectAllMessages());
     dispatch(showDeleteModal(false));
 
-    const deleteMessageRequestURI = isGroup ? `http://localhost:5000/group/delete/messages?selectedMessages=${JSON.stringify(selectedMessagesList)}&ID=${props.room}` :
-    `http://localhost:5000/delete/messages?selectedMessages=${JSON.stringify(selectedMessagesList)}&ID=${props.room}`;
-    const response = await fetch(deleteMessageRequestURI, {
-      method: 'DELETE',
-      credentials: "include",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Credentials": true
-      }
-    });
-
-    const data = await response.json();
+    const deleteMessageRequestURI = isGroup ? 
+    `http://localhost:5000/group/delete/messages/${props.room}?selectedMessages=${JSON.stringify(selectedMessagesList)}` :
+    `http://localhost:5000/delete/messages/${props.room}?selectedMessages=${JSON.stringify(selectedMessagesList)}`;
+    
+    const data = await fetchRequest({ url: deleteMessageRequestURI , method: 'DELETE' });
     console.log(data);
   }
 

@@ -1,5 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
+import { fetchRequest } from 'utils/fetchRequest';
 
 export default function RequestBox(props) {
   const theme = useSelector(state => state.theme.value);
@@ -7,20 +8,9 @@ export default function RequestBox(props) {
   const acceptFriendRequestURI = `http://localhost:5000/acceptRequest?person=${JSON.stringify(props.person)}`;
   const cancelFriendRequestURI = `http://localhost:5000/cancelRequest?person=${JSON.stringify(props.person)}`;
 
-  async function handleFriendRequest(uri) {
+  async function handleFriendRequest(url) {
     props.setRequestsList(prevState => prevState.filter((person) => person.id !== props.person.id));
-
-    const response = await fetch(uri, {
-      method: 'PUT',
-      credentials: 'include',
-      headers: {
-        Accept: "application/json",
-        "Content-type": "application/json",
-        "Access-Control-Allow-Credentials": true
-      }
-    });
-    
-    const data = await response.json();
+    const data = await fetchRequest({ url: url , method: 'PUT' });
     console.log(data);
   }
   

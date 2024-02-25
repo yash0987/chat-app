@@ -2,6 +2,7 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateChat } from 'features/chat-slice/chatSlice';
 import { unselectAllMessages } from 'features/select-message-slice/selectMessageSlice';
+import { fetchRequest } from 'utils/fetchRequest';
 import unstar from 'assets/unstar.png';
 
 export default function Star(props) {
@@ -23,19 +24,11 @@ export default function Star(props) {
     })
     dispatch(updateChat(updatedMessageArray));
 
-    const starAndUnstarMessageRequestURI = isGroup ? 
-    `http://localhost:5000/group/starAndUnstar/messages?selectedMessages=${JSON.stringify(selectedMessagesList)}&starStatus=${props.star > 0}&ID=${props.room}` :
-    `http://localhost:5000/starAndUnstar/messages?selectedMessages=${JSON.stringify(selectedMessagesList)}&starStatus=${props.star > 0}&ID=${props.room}`;
-    const response = await fetch(starAndUnstarMessageRequestURI, {
-      method: 'PUT',
-      credentials: "include",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Credentials": true
-      }
-    });
-    const data = await response.json();
+    const starMessageRequestURI = isGroup ? 
+    `http://localhost:5000/group/starAndUnstar/messages/${props.room}?selectedMessages=${JSON.stringify(selectedMessagesList)}&starStatus=${props.star > 0}` :
+    `http://localhost:5000/starAndUnstar/messages/${props.room}?selectedMessages=${JSON.stringify(selectedMessagesList)}&starStatus=${props.star > 0}`;
+    
+    const data = await fetchRequest({ url: starMessageRequestURI, method: 'PUT' });
     console.log(data);
     dispatch(unselectAllMessages());
     props.setStar(0);

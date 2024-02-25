@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import SearchResultBox from 'views/navbar/components/SearchResultBox';
 import searchIcon from 'assets/searchBlack.png';
+import { fetchRequest } from 'utils/fetchRequest';
 
 export default function Searchbar() {
   const [searchedUsers, setSearchedUsers] = useState([]);
@@ -14,17 +15,7 @@ export default function Searchbar() {
 
   async function usersRecord(searchData) {
     const searchUserRequestURI = `http://localhost:5000/search/user?search=${searchData}`;
-    const response = await fetch(searchUserRequestURI, {
-      method: 'GET',
-      credentials: 'include',
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Credentials": true
-      }
-    })
-    
-    const data = await response.json();
+    const data = await fetchRequest({ url: searchUserRequestURI, method: 'GET' });
     setSearchedUsers(data.record);
   }
   
