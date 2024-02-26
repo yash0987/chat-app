@@ -21,7 +21,7 @@ export default function Textbox(props) {
 
   useEffect(() => {
     messageBoxRef.current.focus();
-  }, []);
+  }, [displayEmojiPanel]);
 
   function displayMessage() {
     const collectedText = messageBoxRef.current.value;
@@ -65,6 +65,7 @@ export default function Textbox(props) {
     let text = messageBoxRef.current.value;
     text += emoji;
     messageBoxRef.current.value = text;
+    messageBoxRef.current.focus();
   }
 
   window.onkeydown = (event) => {
@@ -87,7 +88,13 @@ export default function Textbox(props) {
         <button onClick={() => setDisplayEmojiPanel(displayEmojiPanel ^ 1)} className='mx-2'><img src={emoji} alt="" className={`w-9 p-1 rounded-full ${theme.hoverBg200}`} /></button>
         <textarea cols="0" rows="0" ref={messageBoxRef} placeholder='Type a message...' className={`w-full mt-2 h-8 resize-none focus:outline-none ${theme.placeholderText400}`}></textarea>
       </div>
-      { displayEmojiPanel ? <EmojiPicker width={1024} height={350} previewConfig={{showPreview: false}} skinTonePickerLocation="SEARCH" onEmojiClick={selectEmoji} /> : null }
+      { 
+        displayEmojiPanel ? 
+        <div className='absolute bottom-14'>
+          <EmojiPicker width={1024} height={350} previewConfig={{showPreview: false}} skinTonePickerLocation="SEARCH" onEmojiClick={selectEmoji} />
+        </div> : null
+      }
+        
     </div>
   )
 }
