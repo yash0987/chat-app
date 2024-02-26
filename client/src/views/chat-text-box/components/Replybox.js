@@ -9,7 +9,7 @@ export default function Replybox() {
 
   return (
     showReplyMessage ?
-    <div className='w-[94%] rounded-lg bg-white p-2'>
+    <div className='w-[94%] p-2 rounded-lg bg-white absolute bottom-14'>
       <div className='border-l-4 border-pink-500 bg-gray-100 w-full p-2 rounded'>
         <div className='flex justify-between'>     
           <p className='text-pink-500 '>{ reply.replyToPerson }</p>

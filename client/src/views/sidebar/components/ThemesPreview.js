@@ -10,7 +10,7 @@ export default function ThemesPreview(props) {
   const wallpaper = useSelector(state => state.wallpaper.value);
   
   return (
-    <section className='w-[64.15rem] h-full grid grid-cols-1'>
+    <section className={`h-[93vh] grid ${theme.bg100}`}>
       <div style={{backgroundImage: `url('${wallpaper}')`, backgroundSize: "cover", backgroundPosition: "center", backgroundRepeat: "no-repeat"}} className={`place-self-center w-5/6 h-5/6 flex flex-col overflow-hidden rounded border-[1px] ${theme.border500} ${theme.bg50}`}>
         <div className={`px-8 py-1 relative flex justify-between ${theme.bg400} text-white`}>
           <div className='flex'>

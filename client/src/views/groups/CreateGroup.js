@@ -84,7 +84,7 @@ export default function CreateGroup(props) {
   }
 
   return (
-    <section className='grid grid-flow-row place-content-center w-screen h-screen absolute top-0 left-0 bg-black bg-opacity-40'>
+    <section className='grid grid-flow-row place-content-center w-screen h-screen absolute top-0 left-0 z-10 bg-black bg-opacity-40'>
       {
         displayPanel ?
         <div className={`grid grid-flow-row relative px-3 py-5 w-[27rem] rounded ${theme.bg100}`}>

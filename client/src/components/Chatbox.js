@@ -24,7 +24,7 @@ export default function Chatbox(props) {
   }
 
   return (
-    <Link to={props.route} onClick={() => openChat()} className={`flex justify-between mx-2 px-6 py-2 rounded-lg font-semibold ${theme.hoverBg100}`}>
+    <Link to={props.route} onClick={() => openChat()} className={`flex justify-between mx-2 px-6 py-2 rounded-lg font-semibold ${theme.hoverBg200}`}>
       <div className='grid grid-flow-col'>
         <img src={ props.chat.photoURL } alt="" className='size-10 rounded-full object-cover' />
         <div className='mx-4'>

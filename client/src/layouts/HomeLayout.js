@@ -8,7 +8,6 @@ import PinBar from 'views/pinbar/PinBar';
 
 export default function HomeLayout() {
   const [settingToggle, setSettingToggle] = useState(false);
-  const theme = useSelector(state => state.theme.value);
   const auth = useSelector((state) => state.auth.value);
   const dispatch = useDispatch();
 
@@ -50,11 +49,11 @@ export default function HomeLayout() {
 
   return (
     auth.authenticated ?
-    (<div className={`w-screen h-screen ${theme.bg100}`}>
+    (<div className='overflow-hidden'>
       <Navbar setSettingToggle={setSettingToggle} />
-      <div className='grid grid-flow-col justify-end'>
-        <Outlet />
+      <div className='inline-grid grid-flow-col'>
         <PinBar />
+        <Outlet />
       </div>
       <SideBar settingToggle={settingToggle} setSettingToggle={setSettingToggle} />
     </div>) : null

@@ -21,7 +21,7 @@ export default function Navbar(props) {
   
   return (
     <>
-      <div ref={searchbar} className={`grid grid-cols-12 p-2 border-b-[1px] ${theme.borderB700} ${theme.bg100}`}>
+      <div ref={searchbar} className={`grid grid-cols-12 p-2 border-b-[1px] ${theme.borderB700} ${theme.bg200}`}>
         <p className={`place-self-center text-2xl ${theme.text400}`}>ChatMe</p>
         <div className='flex col-start-12 col-end-12 place-self-center'>
           <img onClick={() => setShowSearchBar(true)} src={searchLogo} alt="" className={`mx-1 w-8 rounded-full ${theme.hoverBg200}`} />

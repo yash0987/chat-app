@@ -51,11 +51,12 @@ export default function Wallpapers() {
 
   return (
     <div className='grid grid-flow-row'>
-      <Link to={'/themes'} className='flex mx-10 my-2 text-xl text-slate-500'>
+      <Link to={'/themes'} className='flex my-2 text-xl text-slate-500'>
         &larr;
         <p className='px-2 py-1 rounded-full text-sm'> Return to themes</p>
       </Link>
-      <div className='grid grid-cols-2 justify-self-center gap-1 w-4/5 h-72 overflow-y-scroll'>
+
+      <div className='grid grid-cols-2 justify-self-center gap-1 h-72 rounded overflow-y-scroll'>
         <div onClick={() => dispatch(selectWallpaper(""))} className={`grid place-content-center rounded text-xs border-[1px] ${theme.border500} ${theme.text500} ${theme.bg50}`}>Default Wallpaper</div>
         {
           wallpapers.map((element, index) => {
@@ -68,8 +69,8 @@ export default function Wallpapers() {
           <p className={`text-xs ${theme.text500}`}>Upload</p>
         </label>
       </div>
-
-      <button onClick={() => uploadImage()} className={`mx-36 my-4 px-4 py-1 rounded-full border-[1px] ${theme.border500} ${theme.text500} ${theme.bg50} ${theme.hoverBg200}`}>Set Wallpaper</button>
+      
+      <button onClick={() => uploadImage()} className={`my-4 px-4 py-1 rounded-full border-[1px] ${theme.border500} ${theme.text500} ${theme.bg50} ${theme.hoverBg200}`}>Set Wallpaper</button>
     </div>
   )
 }

@@ -35,7 +35,7 @@ export default function FriendRequests() {
   }) : null
 
   return (
-    <section>
+    <section className='h-[93vh]'>
       <div className='flex justify-center my-4'>
         <button onClick={() => setRequestBlock('receive')} id="receiveBtn" className={`${requestBlock === 'receive' ? `border-b-2 ${theme.border500} ${theme.text600}`: `${theme.text400}` } mx-1 py-2 w-44`}>Receive</button>
         <button onClick={() => setRequestBlock('send')} id="sendBtn" className={`${requestBlock === 'send' ? `border-b-2 ${theme.border500} ${theme.text600}`: `${theme.text400}` } mx-1 py-2 w-44`}>Send</button>
