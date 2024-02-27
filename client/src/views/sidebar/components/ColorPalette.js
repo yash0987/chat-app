@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { selectTheme } from 'features/theme-slice/themeSlice';
+import { setAuth } from 'features/auth-slice/authSlice';
+import { fetchRequest } from 'utils/fetchRequest';
 import { themes } from 'data/ThemesColors';
 import tick from 'assets/tick.png';
 import wallpaper from 'assets/wallpaper.png';
@@ -9,21 +11,26 @@ import lightIcon from 'assets/sun.png';
 import darkIcon from 'assets/moon.png';
 
 export default function ColorPalette() {
+  const auth = useSelector(state => state.auth.value);
   const theme = useSelector(state => state.theme.value);
   const dispatch = useDispatch();
   const colors = ['red', 'orange', 'yellow', 'lime', 'green', 'emerald', 'sky', 'blue', 'indigo', 'violet', 'fuchsia', 'pink'];
   const [selectColor, setSelectColor] = useState([false, false, false, false, false, false, false, false, false, false, false, false]);
 
-  function selectTheColor(index) {
+  async function selectTheColor(index) {
     console.log("I am coloring")
+    const url = `http://localhost:5000/theme?theme=${index}`;
+    const data = await fetchRequest({ url, method: 'PUT' });
+    console.log(data);
     setSelectColor(selectColor.map((element, i) => {
       if (i === index) {
         return true;
       }
       return false;
     }));
-
+    
     dispatch(selectTheme(themes[index]));
+    dispatch(setAuth({ ...auth, user: { ...auth.user, theme: index } }))
   }
 
   return (

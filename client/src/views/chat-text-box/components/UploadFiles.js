@@ -68,12 +68,12 @@ export default function UploadFiles(props) {
           <input onChange={(e) => uploadFile(e, e.target.name)} type="file" name="gallery" id="" multiple accept="image/*, video/*" className='hidden' />
         </label>
         <label className={`flex items-center ${theme.hoverBg100}`}>
-          <img src={pollIcon} className='w-8' alt="" />
+          <img src={audioIcon} className='w-8' alt="" />
           <p>Audio</p>
           <input onChange={(e) => uploadFile(e, e.target.name)} type="file" name="audio" id="" multiple accept="audio/*" className='hidden' />
         </label>
         <div className={`flex items-center ${theme.hoverBg100}`}>
-          <img src={audioIcon} className='w-8' alt="" />
+          <img src={pollIcon} className='w-8' alt="" />
           <p>Poll</p>
         </div>
       </div>

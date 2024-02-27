@@ -45,6 +45,20 @@ router.get('/search/user', (req, res) => {
     main().catch(console.error);
 })
 
+router.put('/theme', (req, res) => {
+    const color = parseInt(req.query.theme);
+    async function main() {
+        try {
+            await userDetailsCollection.updateOne( { googleID: req.user.googleID }, { $set: { theme: color } } );
+            res.json({ success: true, description: 'theme has been changed' });
+        } catch (e) {
+            console.error(e);
+        }
+    }
+
+    main().catch(console.error);
+})
+
 router.post('/add/friend', (req, res, next) => {
     const personData = JSON.parse(req.query.person);
     const userData = {
