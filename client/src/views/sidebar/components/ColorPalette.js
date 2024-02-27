@@ -15,7 +15,7 @@ export default function ColorPalette() {
   const theme = useSelector(state => state.theme.value);
   const dispatch = useDispatch();
   const colors = ['red', 'orange', 'yellow', 'lime', 'green', 'emerald', 'sky', 'blue', 'indigo', 'violet', 'fuchsia', 'pink'];
-  const [selectColor, setSelectColor] = useState([false, false, false, false, false, false, false, false, false, false, false, false]);
+  const [selectColor, setSelectColor] = useState([...new Array(12).fill(false)].map((element, index) => index === auth.user.theme));
 
   async function selectTheColor(index) {
     console.log("I am coloring")
@@ -53,7 +53,7 @@ export default function ColorPalette() {
       <div className='grid grid-cols-4 gap-6'>{
         colors.map((color, index) => {
           return <div key={index} className='bg-gray-200 rounded-2xl relative'>
-            { selectColor[index] ? <img src={tick} alt="" className='absolute right-0' /> : null }
+            { selectColor[index] ? <img src={tick} alt="" className='absolute right-0 size-6 rounded-full bg-gray-800' /> : null }
             <div onClick={ () => selectTheColor(index)} className={`grid grid-flow-col grid-rows-2 m-[6px] size-14 rounded-full overflow-hidden`}>
               <div className={`col-span-2 bg-${color}-500`}></div>
               <div className={`bg-${color}-100`}></div>
