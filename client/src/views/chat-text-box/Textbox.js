@@ -76,7 +76,7 @@ export default function Textbox(props) {
       console.log("I am send message on click enter key");
       displayMessage();
     }
-  }
+  }  
 
   return (
     <div className='relative w-full grid place-items-center'>
@@ -88,10 +88,10 @@ export default function Textbox(props) {
         <button onClick={() => setDisplayEmojiPanel(displayEmojiPanel ^ 1)} className='mx-2'><img src={emoji} alt="" className={`w-9 p-1 rounded-full ${theme.hoverBg200}`} /></button>
         <textarea cols="0" rows="0" ref={messageBoxRef} placeholder='Type a message...' className={`w-full mt-2 h-8 resize-none focus:outline-none ${theme.placeholderText400}`}></textarea>
       </div>
-      { 
+      {
         displayEmojiPanel ? 
-        <div className='absolute bottom-14'>
-          <EmojiPicker width={1024} height={350} previewConfig={{showPreview: false}} skinTonePickerLocation="SEARCH" onEmojiClick={selectEmoji} />
+        <div className='absolute right-5 bottom-14'>
+          <EmojiPicker width={500} height={350} previewConfig={{showPreview: false}} skinTonePickerLocation="SEARCH" onEmojiClick={selectEmoji} />
         </div> : null
       }
         
