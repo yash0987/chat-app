@@ -1,13 +1,17 @@
 import React, { useState, useRef } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { showProfileToggle } from 'features/toggle-slice/toggleSlice';
 import Searchbar from 'views/navbar/components/Searchbar';
-import searchLogo from 'assets/search.png';
-import settingLogo from 'assets/setting.png';
+import searchIcon from 'assets/searchBlack.png';
+import settingIcon from 'assets/setting.png';
+import profileIcon from 'assets/profile-image.png'
 
 export default function Navbar(props) {
+  const [showSearchBar, setShowSearchBar] = useState(false);
   const user = useSelector(state => state.auth.value.user);
   const theme = useSelector(state => state.theme.value);
-  const [showSearchBar, setShowSearchBar] = useState(false);
+  const showProfile = useSelector(state => state.toggle.value.showProfile);
+  const dispatch = useDispatch();
   const searchbar = useRef();
 
   window.onclick = (event) => {
@@ -21,12 +25,13 @@ export default function Navbar(props) {
   
   return (
     <>
-      <div ref={searchbar} className={`grid grid-cols-12 p-2 border-b-[1px] ${theme.borderB700} ${theme.bg200}`}>
-        <p className={`place-self-center text-2xl ${theme.text400}`}>ChatMe</p>
-        <div className='flex col-start-12 col-end-12 place-self-center'>
-          <img onClick={() => setShowSearchBar(true)} src={searchLogo} alt="" className={`mx-1 w-8 rounded-full ${theme.hoverBg200}`} />
-          <img onClick={() => props.setSettingToggle(true)} src={settingLogo} alt="" className={`mx-1 w-8 rounded-full ${theme.hoverBg200}`} />
-          <img src={user.photoURL} alt="" className='mx-1 w-8 rounded-full' />
+      <div ref={searchbar} className={`grid grid-flow-col justify-between px-4 py-2 border-b-[1px] ${theme.borderB700} ${theme.bg200}`}>
+        <p className={`px-4 text-2xl ${theme.text400}`}>ChatMe</p>
+        <div className='grid grid-flow-col gap-2 place-items-center'>
+          <img onClick={() => dispatch(showProfileToggle(showProfile ^ 1))} src={profileIcon} alt="" className={`size-8 rounded-full ${theme.hoverBg300}`} />
+          <img onClick={() => setShowSearchBar(true)} src={searchIcon} alt="" className={`size-8 rounded-full ${theme.hoverBg300}`} />
+          <img onClick={() => props.setSettingToggle(true)} src={settingIcon} alt="" className={`size-8 rounded-full ${theme.hoverBg300}`} />
+          <img src={user.photoURL} alt="" className='size-8 rounded-full' />
         </div>
       </div>
       { showSearchBar ? <Searchbar /> : null }
