@@ -231,24 +231,15 @@ router.put('/unfriend/:ID', (req, res) => {
     res.json( { success: "Unfriend has been done" } );
 })
 
-router.get('/friend/groups/:ID', (req, res) => {
+router.get('/common/groups/:ID', (req, res) => {
+    console.log(req.params.ID);
     async function main() {
         try {
             const user = await userDetailsCollection.findOne( { googleID: req.user.googleID } );
             const friend = await userDetailsCollection.findOne( { googleID: req.params.ID } );
-            const arr1 = user.groups, arr2 = friend.groups;
-            const commonGroups = [];
-
-            for (let i = 0; i < arr1.length; i++) {
-                for (let j = 0; j < arr2.length; j++) {
-                    if (arr1[i].groupID === arr2[j].groupID) {
-                        commonGroups.push(arr1[i]);
-                    }
-                }
-            }
-
-            console.log(commonGroups);
-            res.json( { commonGroups } );
+            const userGroups = user.groups, friendGroups = friend.groups;
+            const commonGroups = userGroups.filter((group1) => friendGroups.some((group2) => group1.id === group2.id));
+            res.json(commonGroups);
         } catch (e) {
             console.error(e);
         }
