@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { featuresToggle } from 'features/toggle-slice/toggleSlice';
+import { dateFromEpoch } from 'utils/dateFromEpoch';
 import Messagebox from 'views/chat-messages/components/Messagebox';
 
 export default function Message(props) {
@@ -38,11 +39,6 @@ export default function Message(props) {
     return `${bytes.toFixed(1)} ${unitOfDigits[count]}`;
   }
 
-  function calculateDate(epoch) {
-    const date = new Date(epoch);
-    return `${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}`
-  }
-
   function isNewDate(currentMsgTime, index) {
     if (!index) return true;
     const firstRawEpoch = new Date(currentMsgTime);
@@ -65,7 +61,7 @@ export default function Message(props) {
     return isNewDate(messageTimeEpoch, index) ?
     <div className='flex place-items-center'>
       <hr className={`w-full ${theme.border400}`} />
-      <div className={`whitespace-nowrap px-1 text-xs font-semibold ${theme.text400}`}>{calculateDate(messageTimeEpoch)}</div>
+      <div className={`whitespace-nowrap px-1 text-xs font-semibold ${theme.text400}`}>{dateFromEpoch(messageTimeEpoch)}</div>
       <hr className={`w-full ${theme.border400}`} />
     </div> : null
   }
@@ -76,7 +72,7 @@ export default function Message(props) {
         props.elementArray.map((element, index) => {
           return <div>
             { dateBar(element.currentMsgTime , index) }
-            { <Messagebox key={element.messageID} star={props.star} setStar={props.setStar} currentTime={currentTime} fileSize={fileSize} calculateDate={calculateDate} element={element} /> }
+            { <Messagebox key={element.messageID} star={props.star} setStar={props.setStar} currentTime={currentTime} fileSize={fileSize} element={element} /> }
           </div>
         })
       }
