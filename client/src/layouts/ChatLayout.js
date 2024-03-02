@@ -2,7 +2,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { Outlet } from 'react-router-dom';
 import FriendsSection from 'views/friends/FriendsSection';
-import Profile from 'components/Profile';
+import Profile from 'components/ChatProfile';
 
 export default function ChatLayout() {
   const showProfile = useSelector(state => state.toggle.value.showProfile);

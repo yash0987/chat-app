@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import Chatbox from './Chatbox';
 import { fetchRequest } from 'utils/fetchRequest';
+import { dateFromEpoch } from 'utils/dateFromEpoch';
+import useFetch from 'hooks/useFetch';
+import Chatbox from './Chatbox';
 
-export default function Profile() {
+export default function ChatProfile() {
   const [chatList, setChatList] = useState([]);
   const theme = useSelector(state => state.theme.value);
   const newChat = useSelector(state => state.chatinfo.value.newChat);
   const [openList, setOpenList] = useState(false);
+  const chatDetailsURI = newChat.isGroup ? `http://localhost:5000/groupinfo/${newChat.ID}` : `http://localhost:5000/aboutme/${newChat.ID}`;
+  const chatDetails = useFetch({ url: chatDetailsURI, params: [newChat.ID] })[0];
   
   useEffect(() => {
     setChatList([]);
@@ -26,7 +30,6 @@ export default function Profile() {
     setOpenList(true);
   }
 
-
   return (
     <section>
       <div className={`h-[9rem] p-4 ${theme.bg300}`}>
@@ -38,10 +41,10 @@ export default function Profile() {
         <p className='font-semibold'>{ newChat.ID }</p>
         <hr className={`my-4 ${theme.border300}`} />
         <p className='font-semibold'>{ newChat.isGroup ? 'DESCRIPTION' : 'ABOUT ME'}</p>
-        <p>This group is for fun and code.</p>
+        <p>{ newChat.isGroup ? chatDetails.description : chatDetails.aboutMe }</p>
         <hr className={`my-4 ${theme.border300}`} />
         <p className='font-semibold'>CHATME MEMBER SINCE</p>
-        <p>date</p>
+        <p>{ dateFromEpoch(chatDetails.doj) }</p>
       </div>
 
       <div className={`m-4 p-2 text-sm font-semibold rounded-lg ${theme.bg50}`}>
