@@ -31,6 +31,8 @@ function (accessToken, refreshToken, profile, cb) {
         familyName: profile._json.family_name,
         photoURL: profile._json.picture,
         email: profile._json.email,
+        dateOfJoined: Date.now(),
+        aboutMe: "I am newbie",
         theme: '9',
         friends: [],
         receiveRequests: [],

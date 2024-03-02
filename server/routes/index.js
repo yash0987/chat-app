@@ -216,6 +216,20 @@ router.get('/friend/data/:ID', (req, res) => {
     main().catch(console.error);
 })
 
+router.get('/aboutme/:ID', (req, res) => {
+    const id = req.params.ID;
+    async function main() {
+        try {
+            const cursor = await userDetailsCollection.findOne({ googleID: req.params.ID });
+            res.json({ aboutMe: cursor.aboutMe, doj: cursor.doj });
+        } catch (e) {
+            console.error(e);
+        }
+    }
+
+    main().catch(console.error);
+})
+
 router.put('/unfriend/:ID', (req, res) => {
     console.log("unfriend")
     async function main() {
