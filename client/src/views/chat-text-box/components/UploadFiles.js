@@ -17,9 +17,9 @@ export default function UploadFiles(props) {
     const files = e.target.files;
     const formdata = new FormData();
     let currentMsgTime = Date.now();
-    let epoch = currentMsgTime;
     for (let file of files) {
-      formdata.append(name, file);
+      const filename = `${user.googleID + currentMsgTime}.${file.name.split('.').pop()}`;
+      formdata.append(name, file, filename);
       messageData.push({
         messageID: user.googleID + currentMsgTime,
         name: file.name,
@@ -38,7 +38,7 @@ export default function UploadFiles(props) {
       currentMsgTime += 1;
     }
 	
-    const response = await fetch(`http://localhost:5000/upload/files?epoch=${epoch}`, {
+    const response = await fetch(`http://localhost:5000/upload/files`, {
       method: 'POST',
       credentials: 'include',
       headers: {
