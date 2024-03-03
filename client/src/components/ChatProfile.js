@@ -18,14 +18,17 @@ export default function ChatProfile() {
     setOpenList(false);
   }, [newChat.ID]);
 
-  async function commonGroups() {
+  async function commonGroupsOrMembers() {
     if (openList) {
       setChatList([]);
       setOpenList(false);
       return ;
     }
-    const commonGroupsListRequestURI = `http://localhost:5000/common/groups/${newChat.ID}`;
+    const commonGroupsListRequestURI = newChat.isGroup ? 
+    `http://localhost:5000/group/members/${newChat.ID}`:
+    `http://localhost:5000/common/groups/${newChat.ID}`; 
     const data = await fetchRequest({ url: commonGroupsListRequestURI, method: 'GET' });
+    console.log(data);
     setChatList(data);
     setOpenList(true);
   }
@@ -48,11 +51,7 @@ export default function ChatProfile() {
       </div>
 
       <div className={`m-4 p-2 text-sm font-semibold rounded-lg ${theme.bg50}`}>
-        {
-          newChat.isGroup ?
-          <button>Group Members</button> :
-          <button onClick={() => commonGroups()}>Common Groups</button>
-        }
+        <button onClick={() => commonGroupsOrMembers()}>{ newChat.isGroup ? 'Common Groups' : 'Group Members' }</button>
 
         {
           openList ?

@@ -23,7 +23,8 @@ export default function CreateGroup(props) {
     const formdata = new FormData();
     formdata.append('groupPhoto', photo);
     formdata.append('group', JSON.stringify({ ...newGroup, photoURL: "" }));
-    formdata.append('friends', JSON.stringify(selectedFriends.map(friend => friend.id)));
+    formdata.append('friends', JSON.stringify(selectedFriends));
+    console.log(selectedFriends);
 
     const response = await fetch('http://localhost:5000/group', {
       method: 'POST',
