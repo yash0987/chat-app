@@ -50,12 +50,12 @@ export default function ChatProfile() {
         <p>{ dateFromEpoch(chatDetails.doj) }</p>
       </div>
 
-      <div className={`m-4 p-2 text-sm font-semibold rounded-lg ${theme.bg50}`}>
-        <button onClick={() => commonGroupsOrMembers()}>{ newChat.isGroup ? 'Common Groups' : 'Group Members' }</button>
+      <div className={`m-4 py-2 text-sm font-semibold rounded-lg ${theme.bg50}`}>
+        <button onClick={() => commonGroupsOrMembers()} className='px-2'>{ newChat.isGroup ? 'Common Groups' : 'Group Members' }</button>
 
         {
           openList ?
-          <div className='m-2 max-h-56 overflow-y-scroll'>
+          <div className='my-2 max-h-56 overflow-y-scroll'>
             {
               chatList.map((element) => {
                 const route = newChat.isGroup ? `/groups/${element.id}` : `/chats/@me/${element.id}`;

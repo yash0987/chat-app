@@ -39,8 +39,8 @@ export default function ChatList(props) {
     <>
       <div className='grid grid-flow-col'>
         <div className={`h-[93vh] place-content-center font-semibold ${theme.bg100}`}>
-          <div className='min-w-[25rem] h-full overflow-x-hidden overflow-y-scroll'>
-            <input onChange={(e) => searchChats(e.target.value)} type="search" name="" id="" placeholder={props.isGroup ? 'Search Group' : 'Search Friend'} className={`my-4 mx-9 px-5 py-1 w-[83%] rounded-sm ${theme.bg50} border-[1px] border-b-[3px] ${theme.border500} font-normal focus:outline-none ${theme.placeholderText400}`} />
+          <div className='min-w-[23rem] h-full overflow-x-hidden overflow-y-scroll'>
+            <input onChange={(e) => searchChats(e.target.value)} type="search" name="" id="" placeholder={props.isGroup ? 'Search Group' : 'Search Friend'} className={`my-4 mx-4 px-5 py-1 w-[91%] rounded-sm ${theme.bg50} border-[1px] border-b-[3px] ${theme.border500} font-normal focus:outline-none ${theme.placeholderText400}`} />
             { createGroupButton }
             { chatList }
           </div>
