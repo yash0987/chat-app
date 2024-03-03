@@ -369,6 +369,19 @@ router.get('/starred/messages', (req, res) => {
     main().catch(console.error);
 })
 
+router.get('/groupinfo/:ID', (req, res) => {
+    async function main() {
+        try {
+            const cursor = await client.db('chat-app').collection('groupDetails').findOne( { id: req.params.ID } );
+            res.json({ description: cursor.description, doj: cursor.doj });
+        } catch (e) {
+            console.error(e);
+        }
+    }
+
+    main().catch(console.error);
+})
+
 router.get('/groups/list', (req, res) => {
     async function main() {
         try {

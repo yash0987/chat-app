@@ -52,7 +52,9 @@ router.post('/group', upload.single('groupPhoto'), (req, res, next) => {
     const group = JSON.parse(req.body.group);
     const groupMembers = JSON.parse(req.body.friends);
     group.photoURL = `http://localhost:5000/group/photo/${req.file.filename}`;
-    groupMembers.push(req.user.googleID);
+    group.doj = Date.now();
+    group.descrption = "";
+    groupMembers.push({ id: req.user.googleID, name: req.user.firstName + req.user.familyName, photoURL: req.user.photoURL});
     console.log(groupMembers);
 
     async function main() {
@@ -61,8 +63,9 @@ router.post('/group', upload.single('groupPhoto'), (req, res, next) => {
             const cursor = await client.db('chat-app').collection('groupChats').findOne( { groupID: group.id } );
             if (!cursor) {
                 await client.db('chat-app').collection('groupChats').insertOne( { groupID: group.id, chatMsg: [] } );
+                await client.db('chat-app').collection('groupDetails').insertOne( { ...group, members: groupMembers } );
                 for (let i = 0; i < groupMembers.length; i++) {
-                    await client.db('chat-app').collection('userDetails').updateOne( { googleID: groupMembers[i] }, { $addToSet: { groups: group } } );
+                    await client.db('chat-app').collection('userDetails').updateOne( { googleID: groupMembers[i].id }, { $addToSet: { groups: { id: group.id, name: group.name, photoURL: group.photoURL } } } );
                 }
 
                 res.json( { success: "Group has been created" } );
