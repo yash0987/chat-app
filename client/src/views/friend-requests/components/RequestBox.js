@@ -11,11 +11,14 @@ export default function RequestBox(props) {
   async function handleFriendRequest(url) {
     props.setRequestsList(prevState => prevState.filter((person) => person.id !== props.person.id));
     const data = await fetchRequest({ url: url , method: 'PUT' });
+    props.setRequestCount(prevState => {
+      return props.requestBlock === 'receive' ? [prevState[0] - 1, prevState[1]] : [prevState[0], prevState[1] - 1];
+    })
     console.log(data);
   }
   
   return (
-    <div className={`flex justify-between mx-2 px-6 py-2 rounded-lg font-semibold ${theme.hoverBg100}`}>
+    <div className={`flex justify-between mx-2 p-2 rounded-lg font-semibold ${theme.hoverBg100}`}>
       <div className='grid grid-flow-col'>
         <img src={ props.person.photoURL } alt="" className='size-10 rounded-full object-cover' />
         <div className='mx-4'>

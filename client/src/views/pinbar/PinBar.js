@@ -3,7 +3,6 @@ import { useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import personIcon from 'assets/personw.png';
 import groupIcon from 'assets/groupw.png';
-import inboxIcon from 'assets/inbox.png';
 
 export default function PinBar() {
   const theme = useSelector(state => state.theme.value);
@@ -23,10 +22,6 @@ export default function PinBar() {
       <div className='flex items-center justify-between group *:transition-all *:duration-200'>
         <div className={`${block === 2? `h-[2rem] ${theme.bg600}`:`h-[7px] ${theme.bg500}`} mr-2 w-[5px] rounded-r-md group-hover:h-[1rem]`}></div>
         <NavLink to={'/groups'} onClick={() => setBlock(2)} className={({isActive}) => isActive ? style.activeBtn : style.inactiveBtn}><img src={groupIcon} alt="" /></NavLink>
-      </div>
-      <div className='flex items-center justify-between group *:transition-all *:duration-200'>
-        <div className={`${block === 3? `h-[2rem] ${theme.bg600}`:`h-[7px] ${theme.bg500}`} mr-2 w-[5px] rounded-r-md group-hover:h-[1rem]`}></div>
-        <NavLink to={'/requests'} onClick={() => setBlock(3)} className={({isActive}) => isActive ? style.activeBtn : style.inactiveBtn}><img src={inboxIcon} alt="" /></NavLink>
       </div>
     </div>
   )
