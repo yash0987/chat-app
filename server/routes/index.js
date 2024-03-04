@@ -181,7 +181,7 @@ router.get('/friends/request/send', (req, res) => {
     async function main() {
         try {
             const cursor = await userDetailsCollection.findOne( { googleID: req.user.googleID } );
-            res.json(cursor.sendRequests);
+            res.json({ reqList: cursor.sendRequests, reqCount: [cursor.receiveRequests.length, cursor.sendRequests.length] });
         } catch (e) {
             console.error(e);
         }
@@ -194,7 +194,7 @@ router.get('/friends/request/receive', (req, res) => {
     async function main() {
         try {
             const cursor = await userDetailsCollection.findOne( { googleID: req.user.googleID } );
-            res.json(cursor.receiveRequests);
+            res.json({ reqList: cursor.receiveRequests, reqCount: [cursor.receiveRequests.length, cursor.sendRequests.length] });
         } catch (e) {
             console.error(e);
         }
