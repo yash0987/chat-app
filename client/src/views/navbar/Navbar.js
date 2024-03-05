@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { showProfileToggle } from 'features/toggle-slice/toggleSlice';
 import Searchbar from 'views/navbar/components/Searchbar';
-import RequestsList from 'views/friend-requests/FriendRequests';
+import FriendRequests from 'views/friend-requests/FriendRequests';
 import searchIcon from 'assets/searchBlack.png';
 import settingIcon from 'assets/setting.png';
 import profileIcon from 'assets/profile-image.png';
@@ -46,7 +46,7 @@ export default function Navbar(props) {
           <img onClick={() => props.setSettingToggle(true)} src={settingIcon} alt="" className={`size-8 rounded-full ${theme.hoverBg300}`} />
           <img src={user.photoURL} alt="" className='size-8 rounded-full' />
         </div>
-      { showRequestSection ? <RequestsList /> : null }
+      { showRequestSection ? <FriendRequests /> : null }
       </div>
       { showSearchBar ? <Searchbar /> : null }
     </>

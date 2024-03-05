@@ -44,7 +44,7 @@ export default function FriendRequests() {
     </div>
 
   return (
-    <section className={`w-[30rem] absolute top-10 right-20 rounded-lg border-[1px] ${theme.border300} ${theme.bg50}`}>
+    <section className={`w-[30rem] absolute top-10 right-20 z-10 rounded-lg border-[1px] ${theme.border300} ${theme.bg50}`}>
       <div className={`p-3 rounded-t-lg ${theme.bg100}`}>
         <div className='grid grid-flow-col place-content-start'>
           <img src={inboxIcon} alt="" className='size-8 inline-block' />

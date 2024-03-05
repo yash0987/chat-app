@@ -12,7 +12,7 @@ export default function SideBar(props) {
 
   return (
     props.settingToggle ? 
-    <div onClick={() => props.setSettingToggle(false)} className='absolute w-screen h-screen top-0 flex justify-end bg-black bg-opacity-20 text-gray-500 overflow-hidden'>
+    <div onClick={() => props.setSettingToggle(false)} className='absolute w-screen h-screen top-0 z-20 flex justify-end bg-black bg-opacity-20 text-gray-500 overflow-hidden'>
       <ul className='w-1/5 bg-white'>
         <li className='flex justify-between m-2'>
           <span className={`mx-4 my-1 ${theme.text600}`}>{ user.firstName + " " + user.familyName }</span>
