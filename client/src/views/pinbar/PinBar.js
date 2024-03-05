@@ -14,12 +14,12 @@ export default function PinBar() {
   }
 
   return (
-    <div className={`grid grid-flow-row grid-rows-10 pr-3 ${theme.bg200}`}>
-      <div className='flex items-center justify-between group *:transition-all *:duration-200'>
+    <div className={`pr-3 ${theme.bg200}`}>
+      <div className='flex items-center justify-between group *:transition-all *:duration-200 my-2'>
         <div className={`${block === 1? `h-[2rem] ${theme.bg600}`:`h-[7px] ${theme.bg500}`} mr-2 w-[5px] rounded-r-md group-hover:h-[1rem]`}></div>
         <NavLink to={'/chats/@me'} onClick={() => setBlock(1)} className={({isActive}) => isActive ? style.activeBtn : style.inactiveBtn}><img src={personIcon} alt=""  /></NavLink>
       </div>
-      <div className='flex items-center justify-between group *:transition-all *:duration-200'>
+      <div className='flex items-center justify-between group *:transition-all *:duration-200 my-2'>
         <div className={`${block === 2? `h-[2rem] ${theme.bg600}`:`h-[7px] ${theme.bg500}`} mr-2 w-[5px] rounded-r-md group-hover:h-[1rem]`}></div>
         <NavLink to={'/groups'} onClick={() => setBlock(2)} className={({isActive}) => isActive ? style.activeBtn : style.inactiveBtn}><img src={groupIcon} alt="" /></NavLink>
       </div>

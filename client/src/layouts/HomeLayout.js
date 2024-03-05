@@ -11,6 +11,7 @@ import PinBar from 'views/pinbar/PinBar';
 export default function HomeLayout() {
   const [settingToggle, setSettingToggle] = useState(false);
   const auth = useSelector((state) => state.auth.value);
+  const theme = useSelector(state => state.theme.value);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -52,9 +53,9 @@ export default function HomeLayout() {
 
   return (
     auth.authenticated ?
-    (<div className='overflow-hidden'>
+    (<div className={`flex flex-col h-screen ${theme.bg100}`}>
       <Navbar setSettingToggle={setSettingToggle} />
-      <div className='inline-grid grid-flow-col'>
+      <div className='flex-1 inline-grid grid-flow-col'>
         <PinBar />
         <Outlet />
       </div>

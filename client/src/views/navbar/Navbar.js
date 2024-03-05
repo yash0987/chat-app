@@ -37,7 +37,7 @@ export default function Navbar(props) {
   
   return (
     <>
-      <div ref={searchbar} className={`grid grid-flow-col justify-between relative px-4 py-2 border-b-[1px] ${theme.borderB700} ${theme.bg200}`}>
+      <div ref={searchbar} className={`grid grid-flow-col justify-between relative px-4 py-1 border-b-[1px] ${theme.borderB700} ${theme.bg200}`}>
         <p className={`px-4 text-2xl ${theme.text400}`}>ChatMe</p>
         <div className='grid grid-flow-col gap-2 place-items-center'>
           { Object.keys(params).length ? <img onClick={() => dispatch(showProfileToggle(showProfile ^ 1))} src={profileIcon} alt="" className={`size-8 rounded-full ${theme.hoverBg300}`} /> : null }

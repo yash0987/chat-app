@@ -67,7 +67,7 @@ export default function Message(props) {
   }
 
   return (
-    <div className='flex flex-col justify-end px-8 h-[79vh] overflow-y-scroll'>
+    <div className='flex flex-col justify-end px-8 h-[80vh] overflow-y-scroll'>
       <div className='overflow-y-scroll'>{
         props.elementArray.map((element, index) => {
           return <div>

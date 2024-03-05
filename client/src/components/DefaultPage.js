@@ -20,7 +20,7 @@ export default function DefaultPage() {
   console.log("rendering");
 
   return (
-    <div className={`h-[93vh] grid place-items-center py-40 ${theme.text700} ${theme.bg50}`}>
+    <div className={`grid place-items-center py-40 ${theme.text700} ${theme.bg50}`}>
       <img src={wumpus[random]} alt="" className='w-1/4' />
       <p>No one's around to play with Wumpus.</p>
     </div>

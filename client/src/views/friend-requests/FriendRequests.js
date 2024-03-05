@@ -52,11 +52,11 @@ export default function FriendRequests() {
         </div>
 
         <div className='font-semibold'>
-          <button onClick={() => setRequestBlock('receive')} id="receiveBtn" className={`m-2 px-2 rounded ${theme.text600} ${theme.bg200}`}>
+          <button onClick={() => setRequestBlock('receive')} id="receiveBtn" className={`m-2 px-2 rounded ${theme.text600} ${requestBlock === 'receive' ? theme.bg200 : null } ${theme.hoverBg300}`}>
             Receive
             { requestCount[0] ? <p className={`inline-block ml-2 px-1 leading-[18px] text-sm rounded-full ${theme.bg300}`}>{ requestCount[0] }</p> : null }
           </button>
-          <button onClick={() => setRequestBlock('send')} id="sendBtn" className={`m-2 px-2 rounded ${theme.text600} ${theme.bg200}`}>
+          <button onClick={() => setRequestBlock('send')} id="sendBtn" className={`m-2 px-2 rounded ${theme.text600} ${requestBlock === 'send' ? theme.bg200 : null } ${theme.hoverBg300}`}>
             Send
             { requestCount[1] ? <p className={`inline-block ml-2 px-1 leading-[18px] text-sm rounded-full ${theme.bg300}`}>{ requestCount[1] }</p> : null }
           </button>
