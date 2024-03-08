@@ -9,7 +9,6 @@ import Wallpapers from './views/sidebar/components/Wallpapers';
 import HomeLayout from './layouts/HomeLayout';
 import ChatLayout from './layouts/ChatLayout';
 import GroupLayout from './layouts/GroupLayout';
-import RequestLayout from './layouts/RequestLayout';
 import ThemeLayout from './layouts/ThemeLayout';
 
 function App() {
@@ -26,7 +25,6 @@ function App() {
             <Route path='/groups' element={<DefaultPage />} />
             <Route path='/groups/:groupid' element={<ChatSection />} />
           </Route>
-          <Route path='/requests' element={<RequestLayout />} />
           <Route path='/themes' element={<ThemeLayout />}>
             <Route path='/themes' element={<ColorPalette />} />
             <Route path='/themes/wallpaper' element={<Wallpapers />} />
