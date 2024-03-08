@@ -1,7 +1,5 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import logout from 'assets/logout.png';
-
 
 export default function Logout() {
   const theme = useSelector(state => state.theme.value);
@@ -12,9 +10,6 @@ export default function Logout() {
   }
   
   return (
-    <li onClick={() => logoutFromGoogle()} className={`flex p-2 ml-3 rounded-l-full ${theme.hoverBg100}`}>
-      <img src={logout} alt="" className='mx-2 w-8' />
-      <span className='m-1'>Log out</span>
-    </li>
+    <li onClick={() => logoutFromGoogle()} className={`px-2 py-1 rounded ${theme.hoverBg200}`}>Log out</li>
   )
 }
