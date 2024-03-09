@@ -51,7 +51,7 @@ export default function ChatProfile() {
       </div>
 
       <div className={`m-4 py-2 text-sm font-semibold rounded-lg ${theme.bg50}`}>
-        <button onClick={() => commonGroupsOrMembers()} className='px-2'>{ newChat.isGroup ? 'Common Groups' : 'Group Members' }</button>
+        <button onClick={() => commonGroupsOrMembers()} className='px-2'>{ newChat.isGroup ? 'Group Members' : 'Common Groups' }</button>
 
         {
           openList ?
