@@ -9,7 +9,7 @@ export default function Tooltip({ text="Tooltip Text", position="right", style={
   }
 
   return (
-    <span className={`hidden group-hover:inline-block z-20 px-2 py-1 rounded font-semibold ${style.bg} ${style.text} ${positionStyle[position]} absolute after:content-[""] after:absolute after:border-4 `}>
+    <span className={`hidden group-hover:inline-flex justify-center z-20 px-2 py-1 rounded whitespace-nowrap font-semibold ${style.bg} ${style.text} ${positionStyle[position]} absolute after:content-[""] after:absolute after:border-4 `}>
       { text }
     </span>
   )
