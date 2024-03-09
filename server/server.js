@@ -147,9 +147,19 @@ wss.on('connection', (ws) => {
             roomID = IDarray[0] + IDarray[1];
         }
 
-        if (action === 'join') join(senderID, newChat, roomID, ws);
-        else if (action === 'leave') leave(ws);
-        else if (action === 'send') send(data, senderID, isGroup, roomID);
+        switch (action) {
+            case 'join':
+                join(senderID, newChat, roomID, ws);
+                break;
+            case 'leave':
+                leave(ws);
+                break;
+            case 'send':
+                send(data, senderID, isGroup, roomID);
+                break;
+            default:
+                break;
+        }
     }
 })
 
