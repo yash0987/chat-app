@@ -83,11 +83,40 @@ router.post('/group', upload.single('groupPhoto'), (req, res, next) => {
     main().catch(console.error);
 });
 
+router.put('/update/profile', upload.single('profilePhoto'), (req, res) => {
+    const changeDetails = { 
+        name: req.body.name,
+        aboutMe: req.body.aboutMe
+    };
+    console.log(req.file)
+
+    if (req.file) changeDetails.photoURL = `http://localhost:5000/group/photo/${req.file.filename}`;
+
+    async function main() {
+        try {
+            await client.db('chat-app').collection('userDetails').updateOne( { googleID: req.user.googleID }, { $set: changeDetails });
+            res.json({ success: true, description: 'Profile has been updated' });
+        } catch (e) {
+            console.error(e);
+        }
+    }
+
+    main().catch(console.error);
+})
+
 router.get('/group/photo/:filename', (req, res) => {
     const filename = req.params.filename;
     res.sendFile(path.join(path.resolve('.'), `./uploads/${filename}`), (err) => {
         if (err) console.log(err);
     })
+})
+
+router.get('/wallpaper/:filename', (req, res) => {
+    console.log(req.params.filename);
+    const filename = req.params.filename;
+    res.sendFile(path.join(path.resolve('.'), `./uploads/${filename}`, (err) => {
+        if (err) console.log(err);
+    }))
 })
 
 module.exports = router;
