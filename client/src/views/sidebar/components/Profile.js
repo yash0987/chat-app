@@ -1,10 +1,48 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
+import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { setUser } from 'features/auth-slice/authSlice';
 import { dateFromEpoch } from 'utils/dateFromEpoch';
 
 export default function Profile(props) {
+  const [photo, setPhoto] = useState({});
   const theme = useSelector(state => state.theme.value);
   const user = useSelector(state => state.auth.value.user);
+  const dispatch = useDispatch();
+
+  async function saveProfileChanges() {
+    const formdata = new FormData();
+    formdata.append('name', user.name.trim());
+    formdata.append('aboutMe', user.aboutMe.trim());
+    if (Object.keys(photo).length) formdata.append('profilePhoto', photo, `P-${user.googleID}.${photo.name.split('.').pop()}`);
+
+    const response = await fetch('http://localhost:5000/update/profile', {
+      method: 'PUT',
+      credentials: 'include',
+      headers: {
+        Accept: "application/json",
+        "Access-Control-Allow-Credentials": true
+      },
+      body: formdata
+    });
+
+    const data = await response.json();
+    console.log(data);
+  }
+
+  function updateProfile(name, value) {
+    if (name === 'photoURL') {
+      console.log(value)
+      const reader = new FileReader();
+      reader.readAsDataURL(value);
+      reader.onload = (e) => {
+        setPhoto(value);
+        dispatch(setUser({ ...user, [name]: e.target.result }));
+      }
+      return ;
+    }
+
+    dispatch(setUser({ ...user, [name]: value }));
+  }
 
   return (
     <>
@@ -18,28 +56,31 @@ export default function Profile(props) {
       <div className='w-full flex'>
         <div className='w-1/2'>
           <p className='mb-1 font-bold text-xs'>DISPLAY NAME</p>
-          <input type="text" name="" id="" value={user.firstName + " " + user.familyName} className={`w-full px-2 py-1 focus:outline-none rounded ${theme.bg100}`} />
+          <input onChange={(e) => updateProfile(e.target.name, e.target.value)} type="text" name="name" id="" value={user.name} className={`w-full px-2 py-1 focus:outline-none rounded ${theme.bg100}`} />
           <hr className={`my-3 ${theme.border300}`} />
           <p className='mb-1 font-bold text-xs'>ABOUT ME</p>
-          <textarea name="" id="" cols="30" rows="5" className={`resize-none focus:outline-none w-full px-2 py-1 rounded ${theme.bg100}`}>{user.aboutMe}</textarea>
+          <textarea onChange={(e) => updateProfile(e.target.name, e.target.value)} name={'aboutMe'} id="" cols="30" rows="5" className={`resize-none focus:outline-none w-full px-2 py-1 rounded ${theme.bg100}`}>{user.aboutMe}</textarea>
           <hr className={`my-3 ${theme.border300}`} />
           <p className='mb-1 font-bold text-xs'>PHOTO</p>
-          <label className={`px-4 py-1 rounded text-xs ${theme.bg100} ${theme.hoverBg200}`}>Change Photo<input type="file" name="" id="" className='w-0 h-0 hidden' /></label>
+          <label className={`px-4 py-1 rounded text-xs ${theme.bg100} ${theme.hoverBg200}`}>Change Photo<input onChange={(e) => updateProfile(e.target.name, e.target.files[0])} type="file" name="photoURL" id="" className='w-0 h-0 hidden' /></label>
         </div>
         
-        <div className={`w-1/2 ml-8 rounded overflow-hidden shadow shadow-gray-400 ${theme.bg100}`}>
-          <div className={`h-[9rem] p-4 ${theme.bg300}`}>
-            <img src={user.photoURL} alt="" className='relative -bottom-16 size-24 rounded-full object-cover' />
-          </div>
-          <div className={`m-4 mt-14 p-2 text-xs rounded-lg ${theme.bg50}`}>
-            <p className='text-lg font-bold'>{ user.firstName + " " + user.familyName }</p>
-            <p className='font-semibold'>{ user.googleID }</p>
-            <hr className={`my-4 ${theme.border300}`} />
-            <p className='font-semibold'>{ user.isGroup ? 'DESCRIPTION' : 'ABOUT ME'}</p>
-            <p>{ user.isGroup ? user.description : user.aboutMe }</p>
-            <hr className={`my-4 ${theme.border300}`} />
-            <p className='font-semibold'>CHATME MEMBER SINCE</p>
-            <p>{ dateFromEpoch(user.doj) }</p>
+        <div className='w-1/2 ml-8'>
+          <p className='mb-1 font-bold text-xs'>PREVIEW</p>
+          <div className={`rounded overflow-hidden shadow shadow-gray-400 ${theme.bg100}`}>
+            <div className={`h-[9rem] p-4 ${theme.bg300}`}>
+              <img src={user.photoURL} alt="" className='relative -bottom-16 size-24 rounded-full object-cover' />
+            </div>
+            <div className={`m-4 mt-14 p-2 text-xs rounded-lg ${theme.bg50}`}>
+              <p className='text-lg font-bold'>{ user.name }</p>
+              <p className='font-semibold'>{ user.googleID }</p>
+              <hr className={`my-4 ${theme.border300}`} />
+              <p className='font-semibold'>{ 'ABOUT ME'}</p>
+              <p>{ user.isGroup ? user.description : user.aboutMe }</p>
+              <hr className={`my-4 ${theme.border300}`} />
+              <p className='font-semibold'>CHATME MEMBER SINCE</p>
+              <p>{ dateFromEpoch(user.doj) }</p>
+            </div>
           </div>
         </div>
       </div>
@@ -48,7 +89,7 @@ export default function Profile(props) {
         <p className='mt-1 px-4'>Careful - You have unsaved changes!</p>
         <div>
           <button className={`px-3`}>Reset</button>
-          <button className={`mx-2 px-3 py-1 rounded text-white ${theme.bg400} ${theme.hoverBg500}`}>Save Changes</button>
+          <button onClick={() => saveProfileChanges()} className={`mx-2 px-3 py-1 rounded text-white ${theme.bg400} ${theme.hoverBg500}`}>Save Changes</button>
         </div>
       </div>
     </>

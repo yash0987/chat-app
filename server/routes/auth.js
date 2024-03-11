@@ -27,8 +27,7 @@ passport.use(new GoogleStrategy({
 function (accessToken, refreshToken, profile, cb) {
     const defaultUser = {
         googleID: profile.id,
-        firstName: profile._json.given_name,
-        familyName: profile._json.family_name,
+        name: profile._json.name,
         photoURL: profile._json.picture,
         email: profile._json.email,
         dateOfJoined: Date.now(),
