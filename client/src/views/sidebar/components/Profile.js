@@ -7,6 +7,7 @@ export default function Profile(props) {
   const theme = useSelector(state => state.theme.value);
   const user = useSelector(state => state.auth.value.user);
   const [photo, setPhoto] = useState({});
+  const [profileEditStatus, setProfileEditStatus] = useState(false);
   const [profileDetails, setProfileDetails] = useState({ name: user.name, aboutMe: user.aboutMe, photoURL: user.photoURL });
   const dispatch = useDispatch();
 
@@ -27,6 +28,7 @@ export default function Profile(props) {
     });
 
     const data = await response.json();
+    setProfileEditStatus(false);
     dispatch(setUser({ ...user, ...profileDetails }));
     console.log(data);
   }
@@ -40,13 +42,17 @@ export default function Profile(props) {
         setPhoto(value);
         setProfileDetails({ ...profileDetails, photoURL: e.target.result });
       }
+      setProfileEditStatus(true);
       return ;
     }
+
+    setProfileEditStatus(true);
     setProfileDetails({ ...profileDetails, [name]: value });
   }
 
   function resetChanges() {
     setProfileDetails({ name: user.name, aboutMe: user.aboutMe, photoURL: user.photoURL });
+    setProfileEditStatus(false);
   }
 
   return (
@@ -90,7 +96,7 @@ export default function Profile(props) {
         </div>
       </div>
 
-      <div className={`absolute bottom-10 p-2 w-11/12 flex justify-between text-sm font-semibold rounded-lg ${theme.bg200}`}>
+      <div className={`absolute p-2 w-11/12 flex justify-between text-sm font-semibold rounded-lg transition-all ${profileEditStatus ? 'visible bottom-10' : 'invisible -bottom-10'} ${theme.bg200}`}>
         <p className='mt-1 px-4'>Careful - You have unsaved changes!</p>
         <div>
           <button onClick={() => resetChanges()} className={`px-3`}>Reset</button>
