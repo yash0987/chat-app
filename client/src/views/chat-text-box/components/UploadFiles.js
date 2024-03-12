@@ -28,7 +28,7 @@ export default function UploadFiles(props) {
         size: file.size,
         type: file.type,
         senderID: user.googleID,
-        senderName: user.firstName + " " + user.familyName,
+        senderName: user.name,
         senderPhotoURL: user.photoURL,
         newChat,
         star: false,

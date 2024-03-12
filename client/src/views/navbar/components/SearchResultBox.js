@@ -8,7 +8,7 @@ export default function SearchResultBox(props) {
   
   async function AddFriend() {
     const id = props.person.googleID;
-    const name = props.person.firstName + " " + props.person.familyName;
+    const name = props.person.name;
     const photoURL = props.person.photoURL;
   
     if (user.googleID === id) {
@@ -30,7 +30,7 @@ export default function SearchResultBox(props) {
       <div className='flex'>
         <img src={ props.person.photoURL } alt="" className='w-11 rounded-full' />
         <div className='mx-4'>
-          <p>{ props.person.firstName + " " + props.person.familyName }</p>
+          <p>{ props.person.name }</p>
           <p className='text-[10px] text-gray-400'>{ props.person.googleID }</p>
         </div>
       </div>
