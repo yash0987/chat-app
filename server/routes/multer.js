@@ -104,6 +104,37 @@ router.put('/update/profile', upload.single('profilePhoto'), (req, res) => {
     main().catch(console.error);
 })
 
+router.put('/group/update/profile', upload.single('profilePhoto'), (req, res) => {
+    const changeDetails = {
+        id: req.body.id,
+        name: req.body.name,
+        description: req.body.description,
+        photoURL: req.body.photoURL
+    };
+    console.log(req.file)
+
+    if (req.file) changeDetails.photoURL = `http://localhost:5000/group/photo/${req.file.filename}`;
+
+    async function main() {
+        try {
+            await client.db('chat-app').collection('groupDetails').updateOne( { id: req.body.id }, { $set: changeDetails });
+            const groupToUpdate = await client.db('chat-app').collection('groupDetails').findOne( { id: req.body.id } );
+            if (groupToUpdate.id === changeDetails.id || groupToUpdate.name === changeDetails.name || groupToUpdate.photoURL === changeDetails.photoURL) {
+                groupToUpdate.members.forEach(async (member) => {
+                    delete changeDetails.description;
+                    await client.db('chat-app').collection('userDetails').updateOne( { googleID: member.id, "groups.id": req.body.id }, { $set: { "groups.$": changeDetails } } );
+                });
+            }
+            
+            res.json({ success: true, description: 'Group profile has been updated' });
+        } catch (e) {
+            console.error(e);
+        }
+    }
+
+    main().catch(console.error);
+})
+
 router.get('/group/photo/:filename', (req, res) => {
     const filename = req.params.filename;
     res.sendFile(path.join(path.resolve('.'), `./uploads/${filename}`), (err) => {
