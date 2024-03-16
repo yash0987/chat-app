@@ -10,6 +10,7 @@ export default function SelectionBox(props) {
   async function selectGroup(group) {
     const data = await fetchRequest({ url: `http://localhost:5000/groupinfo/${group.id}`, method: 'GET' });
     props.setProfileDetails({ ...group, description: data.description, doj: data.doj });
+    props.setOldProfileDetails({ ...group, description: data.description, doj: data.doj });
     props.setEditThisProfile(true);
     setToggleSelect(prevState => prevState ^ 1);
   }
@@ -33,7 +34,7 @@ export default function SelectionBox(props) {
             </div>
           })
         } </div> : null
-    }
+      }
     <p className='text-xs py-2'>Note: Only Admin can edit group profile details</p>
     </div>
   )
