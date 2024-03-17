@@ -55,8 +55,6 @@ function (accessToken, refreshToken, profile, cb) {
         } catch (e) {
             console.error(e);
             return cb(e, null);
-        } finally {
-            await client.close();
         }
     }
 
@@ -79,8 +77,6 @@ passport.deserializeUser((user, cb) => {
         } catch (e) {
             console.error(e);
             return cb(e, null);
-        } finally {
-            await client.close();
         }
     }
 
