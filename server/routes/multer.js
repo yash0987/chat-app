@@ -84,9 +84,10 @@ router.post('/group', upload.single('groupPhoto'), (req, res, next) => {
 });
 
 router.put('/update/profile', upload.single('profilePhoto'), (req, res) => {
-    const changeDetails = { 
+    const changeDetails = {
         name: req.body.name,
-        aboutMe: req.body.aboutMe
+        aboutMe: req.body.aboutMe,
+        photoURL: req.body.photoURL
     };
     console.log(req.file)
 
@@ -94,7 +95,17 @@ router.put('/update/profile', upload.single('profilePhoto'), (req, res) => {
 
     async function main() {
         try {
-            await client.db('chat-app').collection('userDetails').updateOne( { googleID: req.user.googleID }, { $set: changeDetails });
+            await client.db('chat-app').collection('userDetails').updateOne( { googleID: req.user.googleID }, { $set: changeDetails } );
+            const userToUpdate = await client.db('chat-app').collection('userDetails').findOne( { googleID: req.user.googleID } );
+            delete changeDetails.aboutMe;
+            userToUpdate.groups.forEach(async (group) => {
+                await client.db('chat-app').collection('groupDetails').updateOne( { id: group.id, "members.id": req.user.googleID }, { $set: { "groups.$": changeDetails } } );
+            })
+            
+            userToUpdate.friends.forEach(async (friend) => {
+                await client.db('chat-app').collection('userDetails').updateOne( { googleID: friend.id, "friends.id": req.user.googleID }, { $set: { "friends.$": { ...changeDetails, id: req.body.id } } } );
+            })
+
             res.json({ success: true, description: 'Profile has been updated' });
         } catch (e) {
             console.error(e);
@@ -117,7 +128,7 @@ router.put('/group/update/profile', upload.single('profilePhoto'), (req, res) =>
 
     async function main() {
         try {
-            await client.db('chat-app').collection('groupDetails').updateOne( { id: req.body.id }, { $set: changeDetails });
+            await client.db('chat-app').collection('groupDetails').updateOne( { id: req.body.id }, { $set: changeDetails } );
             const groupToUpdate = await client.db('chat-app').collection('groupDetails').findOne( { id: req.body.id } );
             if (groupToUpdate.id === changeDetails.id || groupToUpdate.name === changeDetails.name || groupToUpdate.photoURL === changeDetails.photoURL) {
                 groupToUpdate.members.forEach(async (member) => {
