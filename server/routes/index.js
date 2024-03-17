@@ -29,7 +29,7 @@ router.get('/search/user', (req, res) => {
         try {
             const cursor = await userDetailsCollection.find({}).toArray();
             let record = cursor.filter((element) => {
-                const userFullName = (element.firstName + " " + element.familyName).toLowerCase();
+                const userFullName = element.name.toLowerCase();
                 if (userFullName.includes(searchUser)) {
                     return element;
                 }
@@ -63,7 +63,7 @@ router.post('/add/friend', (req, res, next) => {
     const personData = JSON.parse(req.query.person);
     const userData = {
         id: req.user.googleID,
-        name: `${req.user.firstName} ${req.user.familyName}`,
+        name: req.user.name,
         photoURL: req.user.photoURL
     };
 
@@ -84,7 +84,7 @@ router.put('/cancelRequest', (req, res) => {
     const personData = JSON.parse(req.query.person);
     const userData = {
         id: req.user.googleID,
-        name: `${req.user.firstName} ${req.user.familyName}`,
+        name: req.user.name,
         photoURL: req.user.photoURL
     };
 
@@ -105,7 +105,7 @@ router.put('/acceptRequest', (req, res) => {
     const personData = JSON.parse(req.query.person);
     const userData = {
         id: req.user.googleID,
-        name: `${req.user.firstName} ${req.user.familyName}`,
+        name: req.user.name,
         photoURL: req.user.photoURL
     };
 
@@ -132,7 +132,7 @@ router.put('/declineRequest', (req, res) => {
     const personData = JSON.parse(req.query.person);
     const userData = {
         id: req.user.googleID,
-        name: `${req.user.firstName} ${req.user.familyName}`,
+        name: req.user.name,
         photoURL: req.user.photoURL
     };
 

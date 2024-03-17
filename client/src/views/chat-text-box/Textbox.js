@@ -33,7 +33,7 @@ export default function Textbox(props) {
       collectedText,
       currentMsgTime,
       senderID: user.googleID,
-      senderName: user.firstName + " " + user.familyName,
+      senderName: user.name,
       senderPhotoURL: user.photoURL,
       newChat,
       star: false,
