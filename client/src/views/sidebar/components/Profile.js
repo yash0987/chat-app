@@ -73,6 +73,7 @@ export default function Profile() {
   
   function selectUserProfileForEdit() {
     setProfileDetails({ id: user.googleID, name: user.name, aboutMe: user.aboutMe, photoURL: user.photoURL });
+    setOldProfileDetails({ id: user.googleID, name: user.name, aboutMe: user.aboutMe, photoURL: user.photoURL });
     setProfileSwitch(false);
     setEditThisProfile(true);
   }
