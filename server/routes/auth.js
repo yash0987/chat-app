@@ -43,14 +43,10 @@ function (accessToken, refreshToken, profile, cb) {
         try {
             await client.connect();
             let user = await client.db('chat-app').collection('userDetails').findOne( { email: defaultUser.email } );
-            if (user) {
-                await client.db('chat-app').collection('userDetails').updateOne( { email: defaultUser.email }, { $set: { firstName: defaultUser.firstName, familyName: defaultUser.familyName, photoURL: defaultUser.photoURL } }, { upsert: true } );
-            }
-            else {
+            if (!user) {
                 await client.db('chat-app').collection('userDetails').insertOne( defaultUser );
+                user = defaultUser;
             }
-
-            user = await client.db('chat-app').collection('userDetails').findOne( { email: defaultUser.email } );
             return cb(null, user);
         } catch (e) {
             console.error(e);
