@@ -12,16 +12,31 @@ export const authSlice = createSlice({
         setUser: (state, action) => {
             state.value.user = action.payload;
         },
-        setUserGroups: (state, action) => {
+        updateUserGroups: (state, action) => {
             state.value.user.groups = state.value.user.groups.map((group) => {
                 if (group.id === action.payload.id) {
                     return action.payload;
                 }
                 return group;
             })
+        },
+        setUserFriends: (state, action) => {
+            state.value.user.friends = [...state.value.user.friends, action.payload];
+        },
+        setUserGroups: (state, action) => {
+            state.value.user.groups = [...state.value.user.groups, action.payload];
+        },
+        setUserSendRequest: (state, action) => {
+            state.value.user.sendRequests = [...state.value.user.sendRequests, action.payload];
+        },
+        removeReceiveRequest: (state, action) => {
+            state.value.user.receiveRequests = state.value.user.receiveRequests.filter((request) => request.id !== action.payload.id);
+        },
+        removeSendRequest: (state, action) => {
+            state.value.user.sendRequests = state.value.user.sendRequests.filter((request) => request.id !== action.payload.id);
         }
     }
 })
 
-export const { setAuth, setUser, setUserGroups } = authSlice.actions;
+export const { setAuth, setUser, updateUserGroups, setUserGroups, setUserFriends, setUserSendRequest, removeReceiveRequest, removeSendRequest } = authSlice.actions;
 export default authSlice.reducer;
