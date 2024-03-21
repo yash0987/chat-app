@@ -8,8 +8,8 @@ export default function Profile(props) {
   const theme = useSelector(state => state.theme.value);
   const user = useSelector(state => state.auth.value.user);
   const [photo, setPhoto] = useState({});
-  const [profileDetails, setProfileDetails] = useState({ id: user.googleID, name: user.name, aboutMe: user.aboutMe, photoURL: user.photoURL });
-  const [oldProfileDetails, setOldProfileDetails] = useState({ id: user.googleID, name: user.name, aboutMe: user.aboutMe, photoURL: user.photoURL });
+  const [profileDetails, setProfileDetails] = useState({ id: user.googleID, name: user.name, aboutMe: user.aboutMe, photoURL: user.photoURL, doj: user.doj });
+  const [oldProfileDetails, setOldProfileDetails] = useState({ id: user.googleID, name: user.name, aboutMe: user.aboutMe, photoURL: user.photoURL, doj: user.doj });
   const [profileSwitch, setProfileSwitch] = useState(false);
   const [editThisProfile, setEditThisProfile] = useState(true);
   const dispatch = useDispatch();
@@ -71,8 +71,8 @@ export default function Profile(props) {
   }
   
   function selectUserProfileForEdit() {
-    setProfileDetails({ id: user.googleID, name: user.name, aboutMe: user.aboutMe, photoURL: user.photoURL });
-    setOldProfileDetails({ id: user.googleID, name: user.name, aboutMe: user.aboutMe, photoURL: user.photoURL });
+    setProfileDetails({ id: user.googleID, name: user.name, aboutMe: user.aboutMe, photoURL: user.photoURL, doj: user.doj });
+    setOldProfileDetails({ id: user.googleID, name: user.name, aboutMe: user.aboutMe, photoURL: user.photoURL, doj: user.doj });
     setProfileSwitch(false);
     setEditThisProfile(true);
   }
