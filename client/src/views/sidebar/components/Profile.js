@@ -4,11 +4,10 @@ import { setUser, setUserGroups } from 'features/auth-slice/authSlice';
 import { dateFromEpoch } from 'utils/dateFromEpoch';
 import SelectionBox from './SelectionBox';
 
-export default function Profile() {
+export default function Profile(props) {
   const theme = useSelector(state => state.theme.value);
   const user = useSelector(state => state.auth.value.user);
   const [photo, setPhoto] = useState({});
-  const [profileEditStatus, setProfileEditStatus] = useState(false);
   const [profileDetails, setProfileDetails] = useState({ id: user.googleID, name: user.name, aboutMe: user.aboutMe, photoURL: user.photoURL });
   const [oldProfileDetails, setOldProfileDetails] = useState({ id: user.googleID, name: user.name, aboutMe: user.aboutMe, photoURL: user.photoURL });
   const [profileSwitch, setProfileSwitch] = useState(false);
@@ -37,7 +36,7 @@ export default function Profile() {
     });
 
     const data = await response.json();
-    setProfileEditStatus(false);
+    props.setProfileEditStatus(false);
     profileSwitch ? 
     dispatch(setUserGroups({ id: profileDetails.id, name: profileDetails.name, photoURL: profileDetails.photoURL }))
     : dispatch(setUser({ ...user, ...profileDetails }));
@@ -53,17 +52,17 @@ export default function Profile() {
         setPhoto(value);
         setProfileDetails({ ...profileDetails, photoURL: e.target.result });
       }
-      setProfileEditStatus(true);
+      props.setProfileEditStatus(true);
       return ;
     }
 
-    setProfileEditStatus(true);
+    props.setProfileEditStatus(true);
     setProfileDetails({ ...profileDetails, [name]: value });
   }
   
   function resetChanges() {
     setProfileDetails(oldProfileDetails);
-    setProfileEditStatus(false);
+    props.setProfileEditStatus(false);
   }
   
   function selectGroupProfileForEdit() {
@@ -82,12 +81,12 @@ export default function Profile() {
     <>
       <p className='text-xl font-semibold'>Profiles</p>
       <div>
-        <button onClick={() => selectUserProfileForEdit()} className={`py-4 mr-10 border-b-2 border-transparent hover:border-gray-600 hover:text-slate-600 text-sm ${theme.text600} font-semibold`}>User Profile</button>
-        <button onClick={() => selectGroupProfileForEdit()} className={`py-4 mr-10 border-b-2 border-transparent hover:border-gray-600 hover:text-slate-600 text-sm ${theme.text600} font-semibold`}>Group Profiles</button>
+        <button disabled={props.profileEditStatus} onClick={() => selectUserProfileForEdit()} className={`py-4 mr-10 border-b-2 border-transparent hover:border-gray-600 hover:text-slate-600 text-sm ${theme.text600} font-semibold`}>User Profile</button>
+        <button disabled={props.profileEditStatus} onClick={() => selectGroupProfileForEdit()} className={`py-4 mr-10 border-b-2 border-transparent hover:border-gray-600 hover:text-slate-600 text-sm ${theme.text600} font-semibold`}>Group Profiles</button>
       </div>
       <hr className={`mb-3 ${theme.border300}`} />
 
-      { profileSwitch ? <SelectionBox profileDetails={profileDetails} setProfileDetails={setProfileDetails} setEditThisProfile={setEditThisProfile} setOldProfileDetails={setOldProfileDetails} /> : null }
+      { profileSwitch ? <SelectionBox profileEditStatus={props.profileEditStatus} profileDetails={profileDetails} setProfileDetails={setProfileDetails} setEditThisProfile={setEditThisProfile} setOldProfileDetails={setOldProfileDetails} /> : null }
 
       <div className={`w-full flex ${ editThisProfile ? 'visible' : 'invisible' }`}>
         <div className='w-1/2'>
@@ -121,7 +120,7 @@ export default function Profile() {
         </div>
       </div>
 
-      <div className={`absolute p-2 w-11/12 flex justify-between text-sm font-semibold rounded-lg transition-all ${profileEditStatus ? 'visible bottom-10' : 'invisible -bottom-10'} ${theme.bg200}`}>
+      <div className={`absolute p-2 w-11/12 flex justify-between text-sm font-semibold rounded-lg transition-all ${props.profileEditStatus ? 'visible bottom-10' : 'invisible -bottom-10'} ${theme.bg200}`}>
         <p className='mt-1 px-4'>Careful - You have unsaved changes!</p>
         <div>
           <button onClick={() => resetChanges()} className={`px-3`}>Reset</button>
