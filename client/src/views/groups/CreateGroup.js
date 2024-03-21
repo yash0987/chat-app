@@ -23,7 +23,7 @@ export default function CreateGroup(props) {
 
   async function sendData() {
     const formdata = new FormData();
-    formdata.append('groupPhoto', photo);
+    formdata.append('groupPhoto', photo, `P-${newGroup.id}.${photo.name.split('.').pop()}`);
     formdata.append('group', JSON.stringify({ ...newGroup, photoURL: "" }));
     formdata.append('friends', JSON.stringify(selectedFriends));
     console.log(selectedFriends);
