@@ -1,10 +1,11 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import ChatList from 'components/ChatList';
 
 export default function FriendsSection() {
+  const friends = useSelector(state => state.auth.value.user.friends);
+
   return (
-    <section>
-      <ChatList chatListRequestURI={'http://localhost:5000/friends/list'} isGroup={false} />
-    </section>
+    <ChatList chats={friends} isGroup={false} />
   )
 }

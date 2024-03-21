@@ -1,10 +1,12 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { setUserSendRequest } from 'features/auth-slice/authSlice';
 import { fetchRequest } from 'utils/fetchRequest';
 
 export default function SearchResultBox(props) {
   const user = useSelector(state => state.auth.value.user);
   const theme = useSelector(state => state.theme.value);
+  const dispatch = useDispatch();
   
   async function AddFriend() {
     const id = props.person.googleID;
@@ -23,6 +25,7 @@ export default function SearchResultBox(props) {
     const addFriendRequestURI = `http://localhost:5000/add/friend?person=${JSON.stringify({id, name, photoURL})}`;
     const data = await fetchRequest({ url: addFriendRequestURI, method: 'POST' });
     console.log(data);
+    dispatch(setUserSendRequest({id, name, photoURL}));
   }
 
   return (

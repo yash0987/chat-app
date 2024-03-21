@@ -8,31 +8,14 @@ export default function FriendRequests() {
   const [requestBlock, setRequestBlock] = useState('receive');
   const [requestsList, setRequestsList] = useState([]);
   const [requestCount, setRequestCount] = useState([0, 0]);
+  const user = useSelector(state => state.auth.value.user);
   const theme = useSelector(state => state.theme.value);
 
   useEffect(() => {
-    async function getData() {
-      const receivedRequestURI = 'http://localhost:5000/friends/request/receive';
-      const sentRequestURI = 'http://localhost:5000/friends/request/send';
-      const requestListURI = requestBlock === 'receive' ? receivedRequestURI : sentRequestURI;
-      const response = await fetch(requestListURI, {
-        method: 'GET',
-        credentials: 'include',
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Credentials": true
-        }
-      });
-
-      const data = await response.json();
-      setRequestCount(data.reqCount);
-      return data;
-    }
-
-    getData().then((data) => setRequestsList(data.reqList));
+    setRequestCount([user.receiveRequests.length, user.sendRequests.length]);
+    setRequestsList(requestBlock === 'receive' ? user.receiveRequests : user.sendRequests);
     // eslint-disable-next-line
-  }, [requestBlock])
+  }, [requestBlock, user.sendRequests.length, user.receiveRequests.length])
 
   const friendsRequestsList = requestsList.length ? requestsList.map((person) => {
       return <RequestBox key={person.id} person={person} requestBlock={requestBlock} requestsList={requestsList} setRequestsList={setRequestsList} setRequestCount={setRequestCount} />

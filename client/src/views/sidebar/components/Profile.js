@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setUser, setUserGroups } from 'features/auth-slice/authSlice';
+import { setUser, updateUserGroups } from 'features/auth-slice/authSlice';
 import { dateFromEpoch } from 'utils/dateFromEpoch';
 import SelectionBox from './SelectionBox';
 
@@ -38,7 +38,7 @@ export default function Profile(props) {
     const data = await response.json();
     props.setProfileEditStatus(false);
     profileSwitch ? 
-    dispatch(setUserGroups({ id: profileDetails.id, name: profileDetails.name, photoURL: profileDetails.photoURL }))
+    dispatch(updateUserGroups({ id: profileDetails.id, name: profileDetails.name, photoURL: profileDetails.photoURL }))
     : dispatch(setUser({ ...user, ...profileDetails }));
     console.log(data);
   }

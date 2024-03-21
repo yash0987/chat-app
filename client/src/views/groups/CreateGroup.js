@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { setUserGroups } from 'features/auth-slice/authSlice';
 import cameraIcon from 'assets/camera.png';
 import useFetch from 'hooks/useFetch';
 
@@ -12,6 +13,7 @@ export default function CreateGroup(props) {
   const [style2, setStyle2] = useState('');
   const [displayPanel, setDisplayPanel] = useState(true);
   const theme = useSelector(state => state.theme.value);
+  const dispatch = useDispatch();
   const friendList = useFetch({ url: 'http://localhost:5000/friends/list' })[0];
 
   useEffect(() => {
@@ -43,8 +45,8 @@ export default function CreateGroup(props) {
       return ;
     }
 
-    props.setChats(prevState => [...prevState, newGroup]);
     props.setEnableCreateGroupPanel(false);
+    dispatch(setUserGroups(newGroup));
   }
 
   async function previewPhoto(e) {

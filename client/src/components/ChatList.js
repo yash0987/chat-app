@@ -2,13 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import CreateGroup from 'views/groups/CreateGroup';
 import Chatbox from 'components/Chatbox';
-import useFetch from 'hooks/useFetch';
 
 export default function ChatList(props) {
   const [searchChatList, setSearchChatList] = useState([]);
   const [enableCreateGroupPanel, setEnableCreateGroupPanel] = useState(false);
   const theme = useSelector(state => state.theme.value);
-  const [chats, setChats] = useFetch({ url: props.chatListRequestURI });
+  const chats = props.chats;
 
   useEffect(() => {
     setSearchChatList(chats);
@@ -36,7 +35,7 @@ export default function ChatList(props) {
     }) : null;
 
   return (
-    <>
+    <section>
       <div className={`font-semibold ${theme.bg100}`}>
         <div className='min-w-[23rem] h-[93vh] overflow-x-hidden overflow-y-scroll'>
           <input onChange={(e) => searchChats(e.target.value)} type="search" name="" id="" placeholder={props.isGroup ? 'Search Group' : 'Search Friend'} className={`my-4 mx-4 px-5 py-1 w-[91%] rounded-sm ${theme.bg50} border-[1px] border-b-[3px] ${theme.border500} font-normal focus:outline-none ${theme.placeholderText400}`} />
@@ -44,7 +43,7 @@ export default function ChatList(props) {
           { chatList }
         </div>
       </div>
-      { enableCreateGroupPanel ? <CreateGroup setChats={setChats} setEnableCreateGroupPanel={setEnableCreateGroupPanel} /> : null }
-    </>
+      { enableCreateGroupPanel ? <CreateGroup setEnableCreateGroupPanel={setEnableCreateGroupPanel} /> : null }
+    </section>
   )
 }
