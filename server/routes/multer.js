@@ -54,7 +54,7 @@ router.post('/group', upload.single('groupPhoto'), (req, res, next) => {
     group.photoURL = `http://localhost:5000/group/photo/${req.file.filename}`;
     group.doj = Date.now();
     group.descrption = "";
-    groupMembers.push({ id: req.user.googleID, name: req.user.firstName + req.user.familyName, photoURL: req.user.photoURL});
+    groupMembers.push({ id: req.user.googleID, name: req.user.name, photoURL: req.user.photoURL});
     console.log(groupMembers);
 
     async function main() {
