@@ -5,7 +5,7 @@ const GoogleStrategy = require('passport-google-oauth20').Strategy;
 
 const router = express.Router();
 
-const uri = 'mongodb://127.0.0.1:27017/';
+const uri = 'mongodb://root:password@mongo:27017/';
 const client = new MongoClient(uri);
 
 // router.use('/', (req, res, next) => {

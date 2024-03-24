@@ -13,7 +13,7 @@ const filesRouter = require('./routes/multer');
 
 const app = express();
 const server = http.createServer(app);
-const uri = 'mongodb://127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+1.6.2';
+const uri = 'mongodb://root:password@mongo:27017/';
 const client = new MongoClient(uri);
 const wss = new WebSocketServer({ server });
 
@@ -23,7 +23,7 @@ app.use(
         secret: "keyboard cat",
         resave: false,
         saveUninitialized: false,
-        store: MongoStore.create({ mongoUrl: 'mongodb://127.0.0.1:27017/', dbName: 'chat-app', ttl: 7 * 24 * 60 * 60 })
+        store: MongoStore.create({ mongoUrl: 'mongodb://root:password@mongo:27017/', dbName: 'chat-app', ttl: 7 * 24 * 60 * 60 })
     })
 );
 app.use(passport.initialize());

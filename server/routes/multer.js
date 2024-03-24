@@ -6,7 +6,7 @@ const multer = require('multer');
 const { MongoClient } = require('mongodb');
 
 const router = express.Router();
-const uri = 'mongodb://127.0.0.1:27017/';
+const uri = 'mongodb://root:password@mongo:27017/';
 const client = new MongoClient(uri);
 
 const storage = multer.diskStorage({
