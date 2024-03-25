@@ -58,7 +58,7 @@ export default function Navbar(props) {
             <img onClick={() => props.setSettingToggle(true)} src={settingIcon} alt="" className={`size-8 rounded-full ${theme.hoverBg300}`} />
             <Tooltip text={'Setting'} position={'bottom'} />
           </div>
-          <img src={user.photoURL} alt="" className='size-8 rounded-full' />
+          <img src={user.photoURL} alt="" className='size-8 rounded-full object-cover' />
         </div>
       { showRequestSection ? <FriendRequests /> : null }
       </div>
