@@ -18,7 +18,13 @@ export default function Profile(props) {
     const formdata = new FormData();
     formdata.append('id', profileDetails.id); 
     formdata.append('name', profileDetails.name.trim());
-    formdata.append('photoURL', profileDetails.photoURL);
+    if (profileDetails.photoURL.slice(0, 4) === 'http') formdata.append('photoURL', profileDetails.photoURL);
+    else {
+      let fileextension = profileDetails.photoURL.slice(11, 16).split(';')[0];
+      if (fileextension === 'jpeg') fileextension = 'jpg';
+      console.log(fileextension);
+      formdata.append('photoURL', `http://localhost:5000/group/photo/P-${profileDetails.id}.${fileextension}`);
+    }
     profileSwitch ?
     formdata.append('description', profileDetails.description.trim()) :
     formdata.append('aboutMe', profileDetails.aboutMe.trim());
