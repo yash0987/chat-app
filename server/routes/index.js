@@ -221,11 +221,11 @@ router.get('/friend/data/:ID', (req, res) => {
     main().catch(console.error);
 })
 
-router.get('/aboutme', (req, res) => {
-    const id = req.body.id;
+router.get('/aboutme/:id', (req, res) => {
+    const id = req.params.id;
     async function main() {
         try {
-            const cursor = await userDetailsCollection.findOne({ googleID: req.body.id });
+            const cursor = await userDetailsCollection.findOne({ googleID: req.params.id });
             res.json({ aboutMe: cursor.aboutMe, doj: cursor.doj });
         } catch (e) {
             console.error(e);
@@ -250,12 +250,12 @@ router.put('/unfriend', (req, res) => {
     res.json( { success: "Unfriend has been done" } );
 })
 
-router.get('/common/groups', (req, res) => {
-    console.log(req.body.id);
+router.get('/common/groups/:id', (req, res) => {
+    console.log(req.params.id);
     async function main() {
         try {
             const user = await userDetailsCollection.findOne( { googleID: req.user.googleID } );
-            const friend = await userDetailsCollection.findOne( { googleID: req.body.id } );
+            const friend = await userDetailsCollection.findOne( { googleID: req.params.id } );
             const userGroups = user.groups, friendGroups = friend.groups;
             const commonGroups = userGroups.filter((group1) => friendGroups.some((group2) => group1.id === group2.id));
             res.json(commonGroups);
@@ -267,10 +267,10 @@ router.get('/common/groups', (req, res) => {
     main().catch(console.error);
 })
 
-router.get('/chat/data', (req, res) => {
+router.get('/chat/data/:room', (req, res) => {
     async function main() {
         try {
-            const cursor = await personalChatsCollection.findOne( { chatID: req.body.id } );
+            const cursor = await personalChatsCollection.findOne( { chatID: req.params.room } );
 
             let chatMsg = cursor.chatMsg.filter((element) => element.deleteMsg.indexOf(req.user.googleID) === -1);
             chatMsg = chatMsg.map((element) => {
@@ -325,8 +325,9 @@ router.delete('/delete/messages', (req, res) => {
     main().catch(console.error);
 })
 
-router.put('/starAndunstar/messages/:room', (req, res) => {
-    const selectedMessages = JSON.parse(req.body.selectedMessages);
+router.put('/starAndUnstar/messages', (req, res) => {
+    const selectedMessages = req.body.selectedMessages;
+    console.log(req.body)
     async function main() {
         try {
             const cursor = await personalChatsCollection.findOne( { chatID: req.body.room } );
@@ -334,10 +335,10 @@ router.put('/starAndunstar/messages/:room', (req, res) => {
             let updatedMessagesArray = cursor.chatMsg;
             selectedMessages.forEach((elementToUpdate) => {
                 updatedMessagesArray.map((element) => {
-                    if (element.messageID === elementToUpdate && req.body.starStatus === 'true') {
+                    if (element.messageID === elementToUpdate && req.body.starStatus === true) {
                         if (element.star.indexOf(req.user.googleID) === -1) element.star.push(req.user.googleID);
                     }
-                    else if (element.messageID === elementToUpdate && req.body.starStatus !== 'true') {
+                    else if (element.messageID === elementToUpdate && req.body.starStatus !== true) {
                         element.star  = element.star.filter((ID) => ID !== req.user.googleID);
                     }
                     return element;
@@ -354,10 +355,10 @@ router.put('/starAndunstar/messages/:room', (req, res) => {
     main().catch(console.error);
 })
 
-router.get('/starred/messages', (req, res) => {
+router.get('/starred/messages/:id', (req, res) => {
     async function main() {
         try {
-            const cursor = await personalChatsCollection.findOne( { chatID: req.body.id } );
+            const cursor = await personalChatsCollection.findOne( { chatID: req.params.id } );
             let chatMsg = cursor.chatMsg;
             const starMessagesArray = chatMsg.filter((element) =>
                 element.deleteMsg.indexOf(req.user.googleID) === -1 && element.star.indexOf(req.user.googleID) !== -1
@@ -374,10 +375,10 @@ router.get('/starred/messages', (req, res) => {
     main().catch(console.error);
 })
 
-router.get('/groupinfo/', (req, res) => {
+router.get('/groupinfo/:id', (req, res) => {
     async function main() {
         try {
-            const cursor = await client.db('chat-app').collection('groupDetails').findOne( { id: req.body.id } );
+            const cursor = await client.db('chat-app').collection('groupDetails').findOne( { id: req.params.id } );
             res.json({ description: cursor.description, doj: cursor.doj });
         } catch (e) {
             console.error(e);
@@ -387,10 +388,10 @@ router.get('/groupinfo/', (req, res) => {
     main().catch(console.error);
 })
 
-router.get('/group/members/:ID', (req, res) => {
+router.get('/group/members/:id', (req, res) => {
     async function main() {
         try {
-            const cursor = await client.db('chat-app').collection('groupDetails').findOne( { id: req.body.id } );
+            const cursor = await client.db('chat-app').collection('groupDetails').findOne( { id: req.params.id } );
             res.json(cursor.members);
         } catch (e) {
             console.error(e);
@@ -413,10 +414,10 @@ router.get('/groups/list', (req, res) => {
     main().catch(console.error);
 })
 
-router.get('/group/data', (req, res) => {
+router.get('/group/data/:room', (req, res) => {
     async function main() {
         try {
-            const cursor = await groupChatsCollection.findOne( { groupID: req.body.id } );
+            const cursor = await groupChatsCollection.findOne( { groupID: req.params.room } );
 
             let chatMsg = cursor.chatMsg.filter((element) => element.deleteMsg.indexOf(req.user.googleID) === -1);
             chatMsg = chatMsg.map((element) => {
@@ -447,8 +448,8 @@ router.get('/group/data', (req, res) => {
     main().catch(console.error);
 })
 
-router.delete('/group/delete/messages/:room', (req, res) => {
-    const selectedMessages = JSON.parse(req.body.selectedMessages);
+router.delete('/group/delete/messages', (req, res) => {
+    const selectedMessages = req.body.selectedMessages;
     async function main() {
         try {
             const cursor = await groupChatsCollection.findOne( { groupID: req.body.room } );
@@ -471,8 +472,8 @@ router.delete('/group/delete/messages/:room', (req, res) => {
     main().catch(console.error);
 })
 
-router.put('/group/starAndunstar/messages/:room', (req, res) => {
-    const selectedMessages = JSON.parse(req.body.selectedMessages);
+router.put('/group/starAndUnstar/messages', (req, res) => {
+    const selectedMessages = req.body.selectedMessages;
     async function main() {
         try {
             const cursor = await groupChatsCollection.findOne( { groupID: req.body.room } );
@@ -480,10 +481,10 @@ router.put('/group/starAndunstar/messages/:room', (req, res) => {
             let updatedMessagesArray = cursor.chatMsg;
             selectedMessages.forEach((elementToUpdate) => {
                 updatedMessagesArray.map((element) => {
-                    if (element.messageID === elementToUpdate && req.body.starStatus === 'true') {
+                    if (element.messageID === elementToUpdate && req.body.starStatus === true) {
                         if (element.star.indexOf(req.user.googleID) === -1) element.star.push(req.user.googleID);
                     }
-                    else if (element.messageID === elementToUpdate && req.body.starStatus !== 'true') {
+                    else if (element.messageID === elementToUpdate && req.body.starStatus !== true) {
                         element.star  = element.star.filter((ID) => ID !== req.user.googleID);
                     }
                     return element;
@@ -500,10 +501,10 @@ router.put('/group/starAndunstar/messages/:room', (req, res) => {
     main().catch(console.error);
 })
 
-router.get('/group/starred/messages', (req, res) => {
+router.get('/group/starred/messages/:id', (req, res) => {
     async function main() {
         try {
-            const cursor = await groupChatsCollection.findOne( { groupID: req.body.id } );
+            const cursor = await groupChatsCollection.findOne( { groupID: req.params.id } );
             let chatMsg = cursor.chatMsg;
             const starMessagesArray = chatMsg.filter((element) =>
                 element.deleteMsg.indexOf(req.user.googleID) === -1 && element.star.indexOf(req.user.googleID) !== -1
