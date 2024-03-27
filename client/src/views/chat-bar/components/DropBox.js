@@ -15,8 +15,8 @@ export default function DropBox(props) {
 
   async function getStarredMessages() {
     const getStarredMessagesRequestURI = isGroup ?
-    `http://localhost:5000/group/starred/messages?ID=${props.room}` :
-    `http://localhost:5000/starred/messages?ID=${props.room}`;
+    `http://localhost:5000/group/starred/messages/${props.room}` :
+    `http://localhost:5000/starred/messages/${props.room}`;
 
     const data = await fetchRequest({ url: getStarredMessagesRequestURI, method: 'GET'});
     dispatch(updateChat(data));

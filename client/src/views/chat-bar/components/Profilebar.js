@@ -16,7 +16,7 @@ export default function Profilebar(props) {
   const dispatch = useDispatch();
 
   const getChatRequestURI = newChat.isGroup ?
-  `http://localhost:5000/group/data?ID=${props.room}` : `http://localhost:5000/chat/data?ID=${props.room}`;
+  `http://localhost:5000/group/data/${props.room}` : `http://localhost:5000/chat/data/${props.room}`;
   const getChats = useFetchChats({ url: getChatRequestURI, callback: updateChat });
 
   function closeChat() {

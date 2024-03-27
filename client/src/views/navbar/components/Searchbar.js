@@ -13,9 +13,9 @@ export default function Searchbar() {
     searchRef.current.focus();
   }, []);
 
-  async function usersRecord(searchData) {
-    const searchUserRequestURI = `http://localhost:5000/search/user?search=${searchData}`;
-    const data = await fetchRequest({ url: searchUserRequestURI, method: 'GET' });
+  async function usersRecord(search) {
+    const searchUserRequestURI = `http://localhost:5000/search/user?search=${search}`;
+    const data = await fetchRequest({ url: searchUserRequestURI, method: 'GET', body: { search } });
     setSearchedUsers(data.record);
   }
   

@@ -19,8 +19,8 @@ export default function ColorPalette() {
 
   async function selectTheColor(index) {
     console.log("I am coloring")
-    const url = `http://localhost:5000/theme?theme=${index}`;
-    const data = await fetchRequest({ url, method: 'PUT' });
+    const url = 'http://localhost:5000/theme';
+    const data = await fetchRequest({ url, method: 'PUT', body: { theme: index } });
     console.log(data);
     setSelectColor(selectColor.map((element, i) => {
       if (i === index) {

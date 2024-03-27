@@ -25,10 +25,9 @@ export default function DeleteForMeModal(props) {
     dispatch(showDeleteModal(false));
 
     const deleteMessageRequestURI = isGroup ? 
-    `http://localhost:5000/group/delete/messages/${props.room}?selectedMessages=${JSON.stringify(selectedMessagesList)}` :
-    `http://localhost:5000/delete/messages/${props.room}?selectedMessages=${JSON.stringify(selectedMessagesList)}`;
+    'http://localhost:5000/group/delete/messages' : 'http://localhost:5000/delete/messages';
     
-    const data = await fetchRequest({ url: deleteMessageRequestURI , method: 'DELETE' });
+    const data = await fetchRequest({ url: deleteMessageRequestURI, method: 'DELETE', body: { selectedMessages: selectedMessagesList, room: props.room } });
     console.log(data);
   }
 

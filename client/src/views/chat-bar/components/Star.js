@@ -25,10 +25,9 @@ export default function Star(props) {
     dispatch(updateChat(updatedMessageArray));
 
     const starMessageRequestURI = isGroup ? 
-    `http://localhost:5000/group/starAndUnstar/messages/${props.room}?selectedMessages=${JSON.stringify(selectedMessagesList)}&starStatus=${props.star > 0}` :
-    `http://localhost:5000/starAndUnstar/messages/${props.room}?selectedMessages=${JSON.stringify(selectedMessagesList)}&starStatus=${props.star > 0}`;
+    'http://localhost:5000/group/starAndUnstar/messages' : 'http://localhost:5000/starAndUnstar/messages';
     
-    const data = await fetchRequest({ url: starMessageRequestURI, method: 'PUT' });
+    const data = await fetchRequest({ url: starMessageRequestURI, method: 'PUT', body: { selectedMessages: selectedMessagesList, room: props.room, starStatus: props.star > 0 } });
     console.log(data);
     dispatch(unselectAllMessages());
     props.setStar(0);

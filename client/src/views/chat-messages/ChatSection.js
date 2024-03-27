@@ -24,8 +24,7 @@ export default function ChatSection(props) {
   console.log(room);
 
   const getChatRequestURI = chatInfo.newChat.isGroup ?
-  `http://localhost:5000/group/data?ID=${room}` :
-  `http://localhost:5000/chat/data?ID=${room}`;
+  `http://localhost:5000/group/data/${room}` : `http://localhost:5000/chat/data/${room}`;
   const getChats = useFetchChats({ url: getChatRequestURI, callback: prependChat });
 
   useEffect(() => {

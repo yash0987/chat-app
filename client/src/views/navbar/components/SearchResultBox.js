@@ -22,8 +22,8 @@ export default function SearchResultBox(props) {
       return ;
     }
     
-    const addFriendRequestURI = `http://localhost:5000/add/friend?person=${JSON.stringify({id, name, photoURL})}`;
-    const data = await fetchRequest({ url: addFriendRequestURI, method: 'POST' });
+    const addFriendRequestURI = 'http://localhost:5000/add/friend';
+    const data = await fetchRequest({ url: addFriendRequestURI, method: 'POST', body: { person: { id, name, photoURL } } });
     console.log(data);
     dispatch(setUserSendRequest({id, name, photoURL}));
   }

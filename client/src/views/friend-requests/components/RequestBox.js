@@ -6,12 +6,12 @@ import { fetchRequest } from 'utils/fetchRequest';
 export default function RequestBox(props) {
   const theme = useSelector(state => state.theme.value);
   const dispatch = useDispatch();
-  const declineFriendRequestURI = `http://localhost:5000/declineRequest?person=${JSON.stringify(props.person)}`;
-  const acceptFriendRequestURI = `http://localhost:5000/acceptRequest?person=${JSON.stringify(props.person)}`;
-  const cancelFriendRequestURI = `http://localhost:5000/cancelRequest?person=${JSON.stringify(props.person)}`;
+  const declineFriendRequestURI = 'http://localhost:5000/declineRequest';
+  const acceptFriendRequestURI = 'http://localhost:5000/acceptRequest';
+  const cancelFriendRequestURI = 'http://localhost:5000/cancelRequest';
 
   async function handleFriendRequest(url, action) {
-    const data = await fetchRequest({ url: url , method: 'PUT' });
+    const data = await fetchRequest({ url: url , method: 'PUT', body: { person: props.person } });
     dispatch(removeReceiveRequest(props.person));
     dispatch(removeSendRequest(props.person));
     if (action === 'accept') dispatch(setUserFriends(props.person));
