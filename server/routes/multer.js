@@ -38,7 +38,7 @@ router.get('/download/file', (req, res) => {
         try {
             const fileOriginalName = req.query.filename;
             const filetype = path.extname(fileOriginalName);
-            const filename = `${req.query.ID}${filetype}`;
+            const filename = `${req.query.id}${filetype}`;
             res.download(`./uploads/${filename}`, fileOriginalName);
         } catch (e) {
             console.error(e);

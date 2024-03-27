@@ -30,7 +30,7 @@ function (accessToken, refreshToken, profile, cb) {
         name: profile._json.name,
         photoURL: profile._json.picture,
         email: profile._json.email,
-        dateOfJoined: Date.now(),
+        doj: Date.now(),
         aboutMe: "I am newbie",
         theme: '9',
         friends: [],
