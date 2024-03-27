@@ -99,7 +99,7 @@ router.put('/update/profile', upload.single('profilePhoto'), (req, res) => {
             const userToUpdate = await client.db('chat-app').collection('userDetails').findOne( { googleID: req.user.googleID } );
             delete changeDetails.aboutMe;
             userToUpdate.groups.forEach(async (group) => {
-                await client.db('chat-app').collection('groupDetails').updateOne( { id: group.id, "members.id": req.user.googleID }, { $set: { "groups.$": changeDetails } } );
+                await client.db('chat-app').collection('groupDetails').updateOne( { id: group.id, "members.id": req.user.googleID }, { $set: { "members.$": { ...changeDetails, id: req.body.id } } } );
             })
             
             userToUpdate.friends.forEach(async (friend) => {
