@@ -8,6 +8,7 @@ import { replyMessageToggle, starMessagesToggle } from 'features/toggle-slice/to
 
 export default function Chatbox(props) {
   const theme = useSelector(state => state.theme.value);
+  const newChat = useSelector(state => state.chatinfo.value.newChat);
   const dispatch = useDispatch();
 
   function openChat() {
@@ -15,6 +16,7 @@ export default function Chatbox(props) {
     const fullName = props.chat.name;
     const photoURL = props.chat.photoURL;
     const isGroup = props.chat.isGroup;
+    if (newChat.ID === ID) return ;
     console.log(ID, fullName, photoURL, isGroup);
     dispatch(startNewChat({ ID, fullName, photoURL, isGroup }));
     dispatch(unselectAllMessages());
