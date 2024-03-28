@@ -3,7 +3,6 @@ import { useSelector } from 'react-redux';
 import { fetchRequest } from 'utils/fetchRequest';
 import { dateFromEpoch } from 'utils/dateFromEpoch';
 import useFetch from 'hooks/useFetch';
-import Chatbox from './Chatbox';
 
 export default function ChatProfile() {
   const [chatList, setChatList] = useState([]);
@@ -57,10 +56,16 @@ export default function ChatProfile() {
           openList ?
           <div className='my-2 max-h-56 overflow-y-scroll'>
             {
-              chatList.map((element) => {
-                const route = newChat.isGroup ? `/groups/${element.id}` : `/chats/@me/${element.id}`;
-                const chatinfo = { ...element, isGroup: newChat.isGroup };
-                return <Chatbox key={element.id} chat={chatinfo} route={route} />
+              chatList.map((chat) => {
+                return <div key={chat.id} className={`flex justify-between mx-2 p-2 rounded-lg font-semibold ${theme.hoverBg200}`}>
+                <div className='grid grid-flow-col'>
+                  <img src={ chat.photoURL } alt="" className='size-10 rounded-full object-cover' />
+                  <div className='mx-4'>
+                    <p>{ chat.name }</p>
+                    <p className='text-[10px] text-gray-400'>{ chat.id }</p>
+                  </div>
+                </div>
+              </div>
               })
             }
           </div> : null
