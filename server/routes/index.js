@@ -1,6 +1,6 @@
 'use strict';
 const express = require('express');
-const { MongoClient } = require('mongodb');
+const { MongoClient, ObjectId } = require('mongodb');
 
 const router = express.Router();
 const uri = 'mongodb://root:password@mongo:27017/';
@@ -49,7 +49,7 @@ router.put('/theme', (req, res) => {
     const theme = req.body.theme;
     async function main() {
         try {
-            await userDetailsCollection.updateOne( { googleID: req.user.googleID }, { $set: { theme } } );
+            await userDetailsCollection.updateOne( { _id: new ObjectId(req.user._id) }, { $set: { theme } } );
             res.json({ success: true, description: 'theme has been changed' });
         } catch (e) {
             console.error(e);
@@ -60,17 +60,17 @@ router.put('/theme', (req, res) => {
 })
 
 router.post('/add/friend', (req, res, next) => {
-    const personData = req.body.person;
+    const personData = { ...req.body.person, _id: new ObjectId(person._id) };
     const userData = {
-        id: req.user.googleID,
+        _id: req.user._id,
         name: req.user.name,
         photoURL: req.user.photoURL
     };
 
     async function main() {
         try {
-            await userDetailsCollection.updateOne( { googleID: userData.id }, { $addToSet: { sendRequests: personData } } );
-            await userDetailsCollection.updateOne( { googleID: personData.id }, { $addToSet: { receiveRequests: userData } } );
+            await userDetailsCollection.updateOne( { _id: new ObjectId(userData._id) }, { $addToSet: { sendRequests: personData } } );
+            await userDetailsCollection.updateOne( { _id: new ObjectId(personData._id) }, { $addToSet: { receiveRequests: userData } } );
         } catch (e) {
             console.error(e);
         }
@@ -81,17 +81,19 @@ router.post('/add/friend', (req, res, next) => {
 })
 
 router.put('/cancelRequest', (req, res) => {
-    const personData = req.body.person;
+    const personData = { ...req.body.person, _id: new ObjectId(person._id) };
     const userData = {
-        id: req.user.googleID,
+        _id: req.user._id,
         name: req.user.name,
         photoURL: req.user.photoURL
     };
 
+    console.log(personData, userData);
+
     async function main() {
         try {
-            await userDetailsCollection.updateOne( { googleID: userData.id }, { $pull: { sendRequests: personData } } );
-            await userDetailsCollection.updateOne( { googleID: personData.id }, { $pull: { receiveRequests: userData } } );
+            await userDetailsCollection.updateOne( { _id: new ObjectId(userData._id) }, { $pull: { sendRequests: personData } } );
+            await userDetailsCollection.updateOne( { _id: new ObjectId(personData._id) }, { $pull: { receiveRequests: userData } } );
         } catch (e) {
             console.error(e);
         }
@@ -102,22 +104,22 @@ router.put('/cancelRequest', (req, res) => {
 });
 
 router.put('/acceptRequest', (req, res) => {
-    const personData = req.body.person;
+    const personData = { ...req.body.person, _id: new ObjectId(person._id) };
     const userData = {
-        id: req.user.googleID,
+        _id: req.user._id,
         name: req.user.name,
         photoURL: req.user.photoURL
     };
 
-    const IDarray = [userData.id, personData.id].sort();
+    const IDarray = [userData._id, personData._id].sort();
     const room = IDarray[0] + IDarray[1];
 
     async function main() {
         try {
-            await userDetailsCollection.updateOne( { googleID: userData.id }, { $addToSet: { friends: personData } } );
-            await userDetailsCollection.updateOne( { googleID: userData.id }, { $pull: { receiveRequests: personData } } );
-            await userDetailsCollection.updateOne( { googleID: personData.id }, { $addToSet: { friends: userData } } );
-            await userDetailsCollection.updateOne( { googleID: personData.id }, { $pull: { sendRequests: userData } } );
+            await userDetailsCollection.updateOne( { _id: new ObjectId(userData._id) }, { $addToSet: { friends: personData } } );
+            await userDetailsCollection.updateOne( { _id: new ObjectId(userData._id) }, { $pull: { receiveRequests: personData } } );
+            await userDetailsCollection.updateOne( { _id: new ObjectId(personData._id) }, { $addToSet: { friends: userData } } );
+            await userDetailsCollection.updateOne( { _id: new ObjectId(personData._id) }, { $pull: { sendRequests: userData } } );
             await personalChatsCollection.insertOne( { chatID: room, chatMsg: [] } );
         } catch (e) {
             console.error(e);
@@ -129,17 +131,19 @@ router.put('/acceptRequest', (req, res) => {
 })
 
 router.put('/declineRequest', (req, res) => {
-    const personData = req.body.person;
+    const personData = { ...req.body.person, _id: new ObjectId(person._id) };
     const userData = {
-        id: req.user.googleID,
+        _id: req.user._id,
         name: req.user.name,
         photoURL: req.user.photoURL
     };
 
+    console.log(personData, userData);
+
     async function main() {
         try {
-            await userDetailsCollection.updateOne( { googleID: userData.id }, { $pull: { receiveRequests: personData } } );
-            await userDetailsCollection.updateOne( { googleID: personData.id }, { $pull: { sendRequests: userData } } );
+            await userDetailsCollection.updateOne( { _id: new ObjectId(userData._id) }, { $pull: { receiveRequests: personData } } );
+            await userDetailsCollection.updateOne( { _id: new ObjectId(personData._id) }, { $pull: { sendRequests: userData } } );
         } catch (e) {
             console.error(e);
         }
@@ -221,11 +225,11 @@ router.get('/friend/data/:ID', (req, res) => {
     main().catch(console.error);
 })
 
-router.get('/aboutme/:id', (req, res) => {
-    const id = req.params.id;
+router.get('/aboutme/:_id', (req, res) => {
+    const _id = req.params._id;
     async function main() {
         try {
-            const cursor = await userDetailsCollection.findOne({ googleID: req.params.id });
+            const cursor = await userDetailsCollection.findOne({ _id: new ObjectId(_id) });
             res.json({ aboutMe: cursor.aboutMe, doj: cursor.doj });
         } catch (e) {
             console.error(e);
@@ -250,14 +254,13 @@ router.put('/unfriend', (req, res) => {
     res.json( { success: "Unfriend has been done" } );
 })
 
-router.get('/common/groups/:id', (req, res) => {
-    console.log(req.params.id);
+router.get('/common/groups/:_id', (req, res) => {
     async function main() {
         try {
-            const user = await userDetailsCollection.findOne( { googleID: req.user.googleID } );
-            const friend = await userDetailsCollection.findOne( { googleID: req.params.id } );
+            const user = await userDetailsCollection.findOne( { _id: new ObjectId(req.user._id) } );
+            const friend = await userDetailsCollection.findOne( { _id: new ObjectId(req.params._id) } );
             const userGroups = user.groups, friendGroups = friend.groups;
-            const commonGroups = userGroups.filter((group1) => friendGroups.some((group2) => group1.id === group2.id));
+            const commonGroups = userGroups.filter((group1) => friendGroups.some((group2) => group1._id === group2._id));
             res.json(commonGroups);
         } catch (e) {
             console.error(e);
@@ -271,10 +274,10 @@ router.get('/chat/data/:room', (req, res) => {
     async function main() {
         try {
             const cursor = await personalChatsCollection.findOne( { chatID: req.params.room } );
-
-            let chatMsg = cursor.chatMsg.filter((element) => element.deleteMsg.indexOf(req.user.googleID) === -1);
+            let chatMsg = cursor.chatMsg.filter((element) => element.deleteMsg.indexOf(req.user._id.toString()) === -1);
+            
             chatMsg = chatMsg.map((element) => {
-                const star = element.star.indexOf(req.user.googleID) !== -1;
+                const star = star.indexOf(req.user._id.toString()) !== -1;
                 return {
                     messageID: element.messageID,
                     collectedText: element.collectedText,
@@ -303,6 +306,7 @@ router.get('/chat/data/:room', (req, res) => {
 
 router.delete('/delete/messages', (req, res) => {
     const selectedMessages = req.body.selectedMessages;
+    console.log(req.body);
     async function main() {
         try {
             const cursor = await personalChatsCollection.findOne( { chatID: req.body.room } );
@@ -310,7 +314,7 @@ router.delete('/delete/messages', (req, res) => {
             let updatedMessagesArray = cursor.chatMsg;
             selectedMessages.forEach((elementToRemove) => {
                 updatedMessagesArray = updatedMessagesArray.map((element) => {
-                    if (element.messageID === elementToRemove) element.deleteMsg.push(req.user.googleID);
+                    if (element.messageID === elementToRemove) element.deleteMsg.push(req.user._id.toString());
                     return element;
                 })
             });
@@ -336,10 +340,10 @@ router.put('/starAndUnstar/messages', (req, res) => {
             selectedMessages.forEach((elementToUpdate) => {
                 updatedMessagesArray.map((element) => {
                     if (element.messageID === elementToUpdate && req.body.starStatus === true) {
-                        if (element.star.indexOf(req.user.googleID) === -1) element.star.push(req.user.googleID);
+                        if (element.star.indexOf(req.user._id) === -1) element.star.push(req.user._id.toString());
                     }
                     else if (element.messageID === elementToUpdate && req.body.starStatus !== true) {
-                        element.star  = element.star.filter((ID) => ID !== req.user.googleID);
+                        element.star  = element.star.filter((ID) => ID !== req.user._id.toString());
                     }
                     return element;
                 })
@@ -361,7 +365,7 @@ router.get('/starred/messages/:id', (req, res) => {
             const cursor = await personalChatsCollection.findOne( { chatID: req.params.id } );
             let chatMsg = cursor.chatMsg;
             const starMessagesArray = chatMsg.filter((element) =>
-                element.deleteMsg.indexOf(req.user.googleID) === -1 && element.star.indexOf(req.user.googleID) !== -1
+                element.deleteMsg.indexOf(req.user._id) === -1 && element.star.indexOf(req.user._id) !== -1
             );
             console.log(starMessagesArray);
             res.json(starMessagesArray);
