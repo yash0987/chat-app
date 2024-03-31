@@ -1,6 +1,7 @@
 import React from 'react';
 import { useSelector, useDispatch} from 'react-redux';
 import { unselectAllMessages } from 'features/select-message-slice/selectMessageSlice';
+import { datetimeFromEpoch } from 'utils/datetimeFromEpoch';
 import copy from 'assets/copy.png';
 
 export default function Copy() {
@@ -25,7 +26,7 @@ export default function Copy() {
       chat.forEach((element) => {
         if (element.messageID === selectedMessageID) {
           copiedText += 
-          `[${element.currentMsgTime}] ${element.senderName}: ${element.collectedText}\n`;
+          `[${datetimeFromEpoch(element.currentMsgTime)}] ${element.senderName}: ${element.collectedText}\n`;
         }
       })
     });
