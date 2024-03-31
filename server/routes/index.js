@@ -277,7 +277,7 @@ router.get('/chat/data/:room', (req, res) => {
             let chatMsg = cursor.chatMsg.filter((element) => element.deleteMsg.indexOf(req.user._id.toString()) === -1);
             
             chatMsg = chatMsg.map((element) => {
-                const star = star.indexOf(req.user._id.toString()) !== -1;
+                const star = element.star.indexOf(req.user._id.toString()) !== -1;
                 return {
                     messageID: element.messageID,
                     collectedText: element.collectedText,
@@ -340,7 +340,7 @@ router.put('/starAndUnstar/messages', (req, res) => {
             selectedMessages.forEach((elementToUpdate) => {
                 updatedMessagesArray.map((element) => {
                     if (element.messageID === elementToUpdate && req.body.starStatus === true) {
-                        if (element.star.indexOf(req.user._id) === -1) element.star.push(req.user._id.toString());
+                        if (element.star.indexOf(req.user._id.toString()) === -1) element.star.push(req.user._id.toString());
                     }
                     else if (element.messageID === elementToUpdate && req.body.starStatus !== true) {
                         element.star  = element.star.filter((ID) => ID !== req.user._id.toString());
@@ -365,7 +365,7 @@ router.get('/starred/messages/:id', (req, res) => {
             const cursor = await personalChatsCollection.findOne( { chatID: req.params.id } );
             let chatMsg = cursor.chatMsg;
             const starMessagesArray = chatMsg.filter((element) =>
-                element.deleteMsg.indexOf(req.user._id) === -1 && element.star.indexOf(req.user._id) !== -1
+                element.deleteMsg.indexOf(req.user._id.toString()) === -1 && element.star.indexOf(req.user._id.toString()) !== -1
             );
             console.log(starMessagesArray);
             res.json(starMessagesArray);
