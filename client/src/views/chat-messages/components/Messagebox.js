@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectMessage, unselectAllMessages, unselectMessage } from 'features/select-message-slice/selectMessageSlice';
 import { featuresToggle } from 'features/toggle-slice/toggleSlice';
+import { datetimeFromEpoch } from 'utils/datetimeFromEpoch';
 import fileIcon1 from 'assets/file1.png';
 import fileIcon2 from 'assets/file2.png';
 import downloadIcon from 'assets/download.png';
@@ -62,17 +63,17 @@ export default function Messagebox(props) {
 
   const replyToMessage = props.element.replyToMessage ?
     <a href={`#${props.element.replyToMessage.repliedMessageID}`}>            
-      <div className={`border-l-4 border-pink-500 w-full p-2 rounded text-sm ${props.element.senderID !== user.googleID ? theme.bg300 : 'bg-gray-100'}`}>
+      <div className={`border-l-4 border-pink-500 w-full p-2 rounded text-sm ${props.element.senderID !== user._id ? theme.bg300 : 'bg-gray-100'}`}>
         <div className='flex justify-between'>
           <p className='text-pink-500'>{ props.element.replyToMessage.replyToPerson }</p>
         </div>
-        <p className={`whitespace-pre-wrap break-words leading-tight ${props.element.senderID !== user.googleID ? 'text-white' : 'text-gray-500' }`}>{ props.element.replyToMessage.replyForMessage }</p>
+        <p className={`whitespace-pre-wrap break-words leading-tight ${props.element.senderID !== user._id ? 'text-white' : 'text-gray-500' }`}>{ props.element.replyToMessage.replyForMessage }</p>
       </div>
     </a> : null
 
   const message = props.element.type !== 'text' ? 
     <div className='grid grid-flow-col'>
-      <img src={props.element.senderID === user.googleID ? fileIcon1: fileIcon2} alt="" className='w-8 m-1' />
+      <img src={props.element.senderID === user._id ? fileIcon1: fileIcon2} alt="" className='w-8 m-1' />
       <div>
         { props.element.name.split(".")[0] }
         <p className='text-[10px] font-semibold'>{ props.fileSize(props.element.size) } &#183; { props.element.type.split("/")[1].toUpperCase() }</p>
@@ -89,7 +90,7 @@ export default function Messagebox(props) {
         { downloadButton }
         { replyToMessage }
         { message }
-        <span className={`flex justify-end text-[10px] ${props.element.senderID !== user.googleID ? 'text-white' : ''}`}> { props.element.star ? <span>&#9733;  </span> : null } { props.currentTime(props.element.currentMsgTime) } </span>
+        <span className={`flex justify-end text-[10px] ${props.element.senderID !== user._id ? 'text-white' : ''}`}> { props.element.star ? <span>&#9733;  </span> : null } { datetimeFromEpoch(props.element.currentMsgTime) } </span>
       </div>
       { props.element.senderID === user.googleID ? <img src={props.element.senderPhotoURL} alt="" className='w-7 my-2 rounded-full' /> : null }
       { toggleFeaturesState && props.element.senderID === user.googleID ? <div className='m-2'>&#9552;</div> : null }

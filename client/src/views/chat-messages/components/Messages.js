@@ -10,23 +10,6 @@ export default function Message(props) {
   const theme = useSelector(state => state.theme.value);
   const dispatch = useDispatch();
 
-  const weekDays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-  const months = [ 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December' ];
-
-  function currentTime(timeEpoch) {
-    const date = new Date(timeEpoch);
-    let day = date.getDay();
-    let dd = date.getDate(), mm = date.getMonth(), yy = date.getFullYear();
-    let hours = date.getHours(), minutes = date.getMinutes();
-    
-    let ampm = hours >= 12 ? 'pm' : 'am';
-    hours = hours % 12;
-    hours = hours ? hours : 12;
-    minutes = minutes < 10 ? '0'+ minutes : minutes;
-    let strTime = `${weekDays[day]}, ${dd} ${months[mm].slice(0, 3)} ${yy} ${hours}:${minutes} ${ampm}`;
-    return strTime;
-  }
-
   function fileSize(dataSize) {
     let count = 0;
     let bytes = Number(dataSize);
@@ -72,7 +55,7 @@ export default function Message(props) {
         props.elementArray.map((element, index) => {
           return <div>
             { dateBar(element.currentMsgTime , index) }
-            { <Messagebox key={element.messageID} star={props.star} setStar={props.setStar} currentTime={currentTime} fileSize={fileSize} element={element} /> }
+            { <Messagebox key={element.messageID} star={props.star} setStar={props.setStar} fileSize={fileSize} element={element} /> }
           </div>
         })
       }
