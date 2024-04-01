@@ -3,7 +3,7 @@ const express = require('express');
 const http = require('http');
 const passport = require('passport');
 const { WebSocketServer } = require('ws');
-const { MongoClient } = require('mongodb');
+const { MongoClient, ObjectId } = require('mongodb');
 const MongoStore = require('connect-mongo');
 const cors = require('cors');
 const session = require('express-session');
@@ -67,7 +67,7 @@ async function main(room, isGroup, messages) {
     try {
         await client.connect();
         isGroup ?
-        await client.db('chat-app').collection('groupChats').updateOne( { groupID: room }, { $push: { chatMsg: { $each: messages } } }, { $set: { groupID: room, chatMsg: [] }, upsert: true } ) :
+        await client.db('chat-app').collection('groupChats').updateOne( { _id: new ObjectId(room) }, { $push: { chatMsg: { $each: messages } } }, { $set: { groupID: room, chatMsg: [] }, upsert: true } ) :
         await client.db('chat-app').collection('personalChats').updateOne( { chatID: room }, { $push: { chatMsg: { $each: messages } } }, { $set: { chatID: room, chatMsg: [] }, upsert: true } );
     } catch (e) {
         console.error(e);

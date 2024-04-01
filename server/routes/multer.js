@@ -3,7 +3,7 @@ const express = require('express');
 const path = require('path');
 const fs = require('fs');
 const multer = require('multer');
-const { MongoClient } = require('mongodb');
+const { MongoClient, ObjectId } = require('mongodb');
 
 const router = express.Router();
 const uri = 'mongodb://root:password@mongo:27017/';
@@ -50,31 +50,27 @@ router.get('/download/file', (req, res) => {
 
 router.post('/group', upload.single('groupPhoto'), (req, res, next) => {
     const group = JSON.parse(req.body.group);
-    const groupMembers = JSON.parse(req.body.friends);
+    let groupMembers = JSON.parse(req.body.friends);
     group.photoURL = `http://localhost:5000/group/photo/${req.file.filename}`;
     group.doj = Date.now();
-    group.descrption = "";
-    groupMembers.push({ id: req.user.googleID, name: req.user.name, photoURL: req.user.photoURL});
+    group.description = "";
+    groupMembers = groupMembers.map((member) => {
+        return { ...member, _id: new ObjectId(member._id) };
+    });
+    groupMembers.push({ _id: req.user._id, name: req.user.name, photoURL: req.user.photoURL});
     console.log(groupMembers);
 
     async function main() {
         try {
             await client.connect();
-            const cursor = await client.db('chat-app').collection('groupChats').findOne( { groupID: group.id } );
-            if (!cursor) {
-                await client.db('chat-app').collection('groupChats').insertOne( { groupID: group.id, chatMsg: [] } );
-                await client.db('chat-app').collection('groupDetails').insertOne( { ...group, members: groupMembers } );
-                for (let i = 0; i < groupMembers.length; i++) {
-                    await client.db('chat-app').collection('userDetails').updateOne( { googleID: groupMembers[i].id }, { $addToSet: { groups: { id: group.id, name: group.name, photoURL: group.photoURL } } } );
-                }
-
-                res.json( { success: "Group has been created" } );
-                next();
-                return ;
+            const { insertedId:_id } = await client.db('chat-app').collection('groupChats').insertOne( { chatMsg: [] } );
+            group._id = _id;
+            await client.db('chat-app').collection('groupDetails').insertOne( { ...group, members: groupMembers } );
+            for (let i = 0; i < groupMembers.length; i++) {
+                await client.db('chat-app').collection('userDetails').updateOne( { _id: groupMembers[i]._id }, { $addToSet: { groups: { _id: group._id, name: group.name, photoURL: group.photoURL } } } );
             }
 
-            res.json( { success: "Choose another ID" } );
-            next();
+            res.json( { _id, success: "Group has been created" } );
         } catch (e) {
             console.error(e);
         }
