@@ -60,7 +60,7 @@ router.put('/theme', (req, res) => {
 })
 
 router.post('/add/friend', (req, res, next) => {
-    const personData = { ...req.body.person, _id: new ObjectId(person._id) };
+    const personData = { ...req.body.person, _id: new ObjectId(req.body.person._id) };
     const userData = {
         _id: req.user._id,
         name: req.user.name,
@@ -81,7 +81,7 @@ router.post('/add/friend', (req, res, next) => {
 })
 
 router.put('/cancelRequest', (req, res) => {
-    const personData = { ...req.body.person, _id: new ObjectId(person._id) };
+    const personData = { ...req.body.person, _id: new ObjectId(req.body.person._id) };
     const userData = {
         _id: req.user._id,
         name: req.user.name,
@@ -104,7 +104,7 @@ router.put('/cancelRequest', (req, res) => {
 });
 
 router.put('/acceptRequest', (req, res) => {
-    const personData = { ...req.body.person, _id: new ObjectId(person._id) };
+    const personData = { ...req.body.person, _id: new ObjectId(req.body.person._id) };
     const userData = {
         _id: req.user._id,
         name: req.user.name,
@@ -131,7 +131,7 @@ router.put('/acceptRequest', (req, res) => {
 })
 
 router.put('/declineRequest', (req, res) => {
-    const personData = { ...req.body.person, _id: new ObjectId(person._id) };
+    const personData = { ...req.body.person, _id: new ObjectId(req.body.person._id) };
     const userData = {
         _id: req.user._id,
         name: req.user.name,
