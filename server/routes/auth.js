@@ -1,5 +1,5 @@
 const express = require('express');
-const { MongoClient } = require('mongodb');
+const { MongoClient, ObjectId } = require('mongodb');
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 
@@ -44,8 +44,8 @@ function (accessToken, refreshToken, profile, cb) {
             await client.connect();
             let user = await client.db('chat-app').collection('userDetails').findOne( { email: defaultUser.email } );
             if (!user) {
-                await client.db('chat-app').collection('userDetails').insertOne( defaultUser );
-                user = defaultUser;
+                const { insertedId: _id } = await client.db('chat-app').collection('userDetails').insertOne( defaultUser );
+                user = { _id, ...defaultUser };
             }
             return cb(null, user);
         } catch (e) {
@@ -68,7 +68,7 @@ passport.deserializeUser((user, cb) => {
     async function main() {
         try {
             await client.connect();
-            const userID = await client.db('chat-app').collection('userDetails').findOne( { googleID: user.googleID } );
+            const userID = await client.db('chat-app').collection('userDetails').findOne( { _id: new ObjectId(user._id) } );
             return cb(null, userID);
         } catch (e) {
             console.error(e);
