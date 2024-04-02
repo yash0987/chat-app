@@ -51,20 +51,24 @@ router.get('/download/file', (req, res) => {
 router.post('/group', upload.single('groupPhoto'), (req, res, next) => {
     const group = JSON.parse(req.body.group);
     let groupMembers = JSON.parse(req.body.friends);
-    group.photoURL = `http://localhost:5000/group/photo/${req.file.filename}`;
-    group.doj = Date.now();
-    group.description = "";
-    groupMembers = groupMembers.map((member) => {
-        return { ...member, _id: new ObjectId(member._id) };
-    });
-    groupMembers.push({ _id: req.user._id, name: req.user.name, photoURL: req.user.photoURL});
     console.log(groupMembers);
 
     async function main() {
         try {
             await client.connect();
             const { insertedId:_id } = await client.db('chat-app').collection('groupChats').insertOne( { chatMsg: [] } );
+            const fileNewName = `P-${_id}.${req.file.filename.split('.').pop()}`;
             group._id = _id;
+            group.photoURL = `http://localhost:5000/group/photo/P-${_id}.${req.file.filename.split('.').pop()}`;
+            group.doj = Date.now();
+            group.description = "";
+            fs.rename(req.file.filename, fileNewName, (err) => {
+                if (err) console.error(err);
+            })
+            groupMembers = groupMembers.map((member) => {
+                return { ...member, _id: new ObjectId(member._id) };
+            });
+            groupMembers.push({ _id: req.user._id, name: req.user.name, photoURL: req.user.photoURL});
             await client.db('chat-app').collection('groupDetails').insertOne( { ...group, members: groupMembers } );
             for (let i = 0; i < groupMembers.length; i++) {
                 await client.db('chat-app').collection('userDetails').updateOne( { _id: groupMembers[i]._id }, { $addToSet: { groups: { _id: group._id, name: group.name, photoURL: group.photoURL } } } );
