@@ -95,16 +95,26 @@ router.put('/update/profile', upload.single('profilePhoto'), (req, res) => {
 
     async function main() {
         try {
-            await client.db('chat-app').collection('userDetails').updateOne( { googleID: req.user.googleID }, { $set: changeDetails } );
-            const userToUpdate = await client.db('chat-app').collection('userDetails').findOne( { googleID: req.user.googleID } );
+            await client.db('chat-app').collection('userDetails').updateOne( { _id: req.user._id }, { $set: changeDetails } );
+            const userToUpdate = await client.db('chat-app').collection('userDetails').findOne( { _id: req.user._id } );
             delete changeDetails.aboutMe;
             userToUpdate.groups.forEach(async (group) => {
-                await client.db('chat-app').collection('groupDetails').updateOne( { id: group.id, "members.id": req.user.googleID }, { $set: { "members.$": { ...changeDetails, id: req.body.id } } } );
+                await client.db('chat-app').collection('groupDetails').updateOne( { _id: group._id, "members._id": req.user._id }, { $set: { "members.$": { ...changeDetails, _id: new ObjectId(req.body._id) } } } );
             })
             
             userToUpdate.friends.forEach(async (friend) => {
-                await client.db('chat-app').collection('userDetails').updateOne( { googleID: friend.id, "friends.id": req.user.googleID }, { $set: { "friends.$": { ...changeDetails, id: req.body.id } } } );
+                await client.db('chat-app').collection('userDetails').updateOne( { _id: friend._id, "friends._id": req.user._id }, { $set: { "friends.$": { ...changeDetails, _id: new ObjectId(req.body._id) } } } );
             })
+
+            userToUpdate.sendRequests.forEach(async (requestPerson) => {
+                await client.db('chat-app').collection('userDetails').updateOne( { _id: requestPerson._id, "sendRequests._id": req.user._id }, { $set: { "sendRequests.$": { ...changeDetails, _id: new ObjectId(req.body._id) } } } );
+            })
+
+            userToUpdate.receiveRequests.forEach(async (requestPerson) => {
+                await client.db('chat-app').collection('userDetails').updateOne( { _id: requestPerson._id, "receiveRequests._id": req.user._id }, { $set: { "receiveRequests.$": { ...changeDetails, _id: new ObjectId(req.body._id) } } } );
+            })
+
+
 
             res.json({ success: true, description: 'Profile has been updated' });
         } catch (e) {
