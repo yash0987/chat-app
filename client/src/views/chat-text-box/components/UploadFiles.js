@@ -18,23 +18,23 @@ export default function UploadFiles(props) {
     const formdata = new FormData();
     let currentMsgTime = Date.now();
     for (let file of files) {
-      const filename = `${user.googleID + currentMsgTime}.${file.name.split('.').pop()}`;
+      const filename = `${user._id + currentMsgTime}.${file.name.split('.').pop()}`;
       formdata.append(name, file, filename);
       messageData.push({
-        messageID: user.googleID + currentMsgTime,
+        messageID: user._id + currentMsgTime,
         name: file.name,
         currentMsgTime,
         lastModified: file.lastModified,
         size: file.size,
         type: file.type,
-        senderID: user.googleID,
+        senderID: user._id,
         senderName: user.name,
         senderPhotoURL: user.photoURL,
         newChat,
         star: false,
         action: 'send'
       });
-      console.log(user.googleID + currentMsgTime);
+      console.log(user._id + currentMsgTime);
       currentMsgTime += 1;
     }
 	

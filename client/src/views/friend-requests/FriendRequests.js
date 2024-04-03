@@ -18,7 +18,7 @@ export default function FriendRequests() {
   }, [requestBlock, user.sendRequests.length, user.receiveRequests.length])
 
   const friendsRequestsList = requestsList.length ? requestsList.map((person) => {
-      return <RequestBox key={person.id} person={person} requestBlock={requestBlock} requestsList={requestsList} setRequestsList={setRequestsList} setRequestCount={setRequestCount} />
+      return <RequestBox key={person._id} person={person} requestBlock={requestBlock} requestsList={requestsList} setRequestsList={setRequestsList} setRequestCount={setRequestCount} />
     }) :
     <div className='grid place-items-center first-line:font-semibold '>
       <img src={emptyInbox} alt="" className='w-52 py-3' />

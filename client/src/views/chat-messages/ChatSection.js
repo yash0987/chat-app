@@ -18,7 +18,7 @@ export default function ChatSection(props) {
   const dispatch = useDispatch();
   const [star, setStar] = useState(0);
   const room = createRoomID({ 
-    idArray: [ chatInfo.newChat.ID, user.googleID ],
+    idArray: [ chatInfo.newChat.ID, user._id ],
     isGroup: chatInfo.newChat.isGroup
   })
   console.log(room);
@@ -40,9 +40,9 @@ export default function ChatSection(props) {
   useEffect(() => {
     setTimeout(() => {
       const detailsForRoom = {
-        senderID: user.googleID,
-        newChat: chatInfo.newChat,
-        latestChat: chatInfo.latestChat,
+        senderID: user._id,
+        newChat: { ID: chatInfo.newChat.ID, isGroup: chatInfo.newChat.isGroup },
+        latestChat: { ID: chatInfo.latestChat.ID, isGroup: chatInfo.latestChat.isGroup },
         action: 'join',
       };
       ws.send(JSON.stringify([detailsForRoom]));
@@ -61,9 +61,9 @@ export default function ChatSection(props) {
   
   return (
     <section style={{backgroundImage: `url('${wallpaper}')`, backgroundSize: "cover", backgroundPosition: "center", backgroundRepeat: "no-repeat"}} className={theme.bg50}>
-      <ChatBar star={star} setStar={setStar} room={room} ws={ws} />
-      <Messages star={star} setStar={setStar} elementArray={chat.value} googleID={user.googleID} />
-      <Textbox ws={ws} />
+      <ChatBar star={star} setStar={setStar} room={room} />
+      <Messages star={star} setStar={setStar} elementArray={chat.value} />
+      <Textbox />
       <DeleteForMeModal room={room} />
     </section>
   )

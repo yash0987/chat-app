@@ -15,7 +15,7 @@ export default function RequestBox(props) {
     dispatch(removeReceiveRequest(props.person));
     dispatch(removeSendRequest(props.person));
     if (action === 'accept') dispatch(setUserFriends(props.person));
-    props.setRequestsList(prevState => prevState.filter((person) => person.id !== props.person.id));
+    props.setRequestsList(prevState => prevState.filter((person) => person._id !== props.person._id));
     props.setRequestCount(prevState => {
       return props.requestBlock === 'receive' ? [prevState[0] - 1, prevState[1]] : [prevState[0], prevState[1] - 1];
     })
@@ -28,7 +28,7 @@ export default function RequestBox(props) {
         <img src={ props.person.photoURL } alt="" className='size-10 rounded-full object-cover' />
         <div className='mx-4'>
           <p>{ props.person.name }</p>
-          <p className='text-[10px] text-gray-400'>{ props.person.id }</p>
+          <p className='text-[10px] text-gray-400'>{ props.person._id }</p>
         </div>
       </div>
 

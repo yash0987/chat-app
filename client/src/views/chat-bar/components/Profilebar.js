@@ -20,7 +20,7 @@ export default function Profilebar(props) {
   const getChats = useFetchChats({ url: getChatRequestURI, callback: updateChat });
 
   function closeChat() {
-    ws.send(JSON.stringify([{ action: 'leave', senderID: user.googleID, newChat: newChat }]));
+    ws.send(JSON.stringify([{ action: 'leave', senderID: user._id, newChat: newChat }]));
     dispatch(setTogglesToDefault());
     dispatch(emptyChat());
   }

@@ -1,29 +1,29 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { v4 as uuid } from 'uuid';
 import { setUserGroups } from 'features/auth-slice/authSlice';
 import cameraIcon from 'assets/camera.png';
-import useFetch from 'hooks/useFetch';
+// import useFetch from 'hooks/useFetch';
 
 export default function CreateGroup(props) {
   const [photo, setPhoto] = useState("");
   const [newGroup, setNewGroup] = useState({});
   const [selectedFriends, setSelectedFriends] = useState([]);
   const [searchFriendList, setSearchFriendList] = useState([]);
-  const [style1, setStyle1] = useState('');
-  const [style2, setStyle2] = useState('');
   const [displayPanel, setDisplayPanel] = useState(true);
   const theme = useSelector(state => state.theme.value);
   const dispatch = useDispatch();
-  const friendList = useFetch({ url: 'http://localhost:5000/friends/list' })[0];
+  const user = useSelector(state => state.auth.value.user);
+  // const friendList = useFetch({ url: 'http://localhost:5000/friends/list' })[0];
 
   useEffect(() => {
-    setSearchFriendList(friendList)
+    setSearchFriendList(user.friends);
     // eslint-disable-next-line
-  }, [friendList]);
+  }, []);
 
   async function sendData() {
     const formdata = new FormData();
-    formdata.append('groupPhoto', photo, `P-${newGroup.id}.${photo.name.split('.').pop()}`);
+    formdata.append('groupPhoto', photo, `P-${uuid()}.${photo.name.split('.').pop()}`);
     formdata.append('group', JSON.stringify({ ...newGroup, photoURL: "" }));
     formdata.append('friends', JSON.stringify(selectedFriends));
     console.log(selectedFriends);
@@ -39,14 +39,8 @@ export default function CreateGroup(props) {
     });
     const data = await response.json();
 
-    if (data.success === 'Choose another ID') {
-      setStyle2('text-red-500');
-      setTimeout(() => setStyle2(''), 800);
-      return ;
-    }
-
     props.setEnableCreateGroupPanel(false);
-    dispatch(setUserGroups(newGroup));
+    dispatch(setUserGroups({...newGroup, _id: data._id}));
   }
 
   async function previewPhoto(e) {
@@ -59,20 +53,10 @@ export default function CreateGroup(props) {
     setPhoto(file);
   }
 
-  function validateGroupID(groupid) {
-    for (let i = 0; i < groupid.length; i++) {
-      if (!((groupid[i] >= 'A' && groupid[i] <= 'Z') || (groupid[i] >= 'a' && groupid[i] <= 'z') || (groupid[i] >= '0' && groupid[i] <= '9'))) {
-        setStyle1('text-red-500');
-        setTimeout(() => setStyle1(''), 800);
-      }
-    }
-    setNewGroup({ ...newGroup, id: groupid });
-  }
-
   function searchFriend(input) {
     const inputName = input.trim().toLowerCase();
     setTimeout(() => {
-      setSearchFriendList(friendList.filter((friend) => friend.name.toLowerCase().includes(inputName)));
+      setSearchFriendList(user.friends.filter((friend) => friend.name.toLowerCase().includes(inputName)));
     }, 100);
   }
 
@@ -111,7 +95,7 @@ export default function CreateGroup(props) {
             {
               searchFriendList.length ?
               searchFriendList.map((friend) => {
-                return <div key={friend.id} className={`grid grid-flow-col justify-between p-2 rounded-lg font-semibold ${theme.hoverBg50}`}>
+                return <div key={friend._id} className={`grid grid-flow-col justify-between p-2 rounded-lg font-semibold ${theme.hoverBg50}`}>
                   <div className='grid grid-flow-col items-center'>
                     <img src={ friend.photoURL } alt="" className='w-8 rounded-full' />
                     <p className='mx-3'>{ friend.name }</p>
@@ -138,12 +122,6 @@ export default function CreateGroup(props) {
           
           <p className='my-1 font-semibold text-xs text-gray-600'>GROUP NAME</p>
           <input onChange={(e) => setNewGroup({...newGroup, name: e.target.value.trim()})} type="text" name="" id="" className={`px-2 py-1 rounded focus:outline-none ${theme.bg200}`} />
-          <p className='my-1 font-semibold text-xs text-gray-600'>GROUP ID</p>
-          <input onChange={(e) => validateGroupID(e.target.value)} type="text" name="" id="" className={`px-2 py-1 rounded focus:outline-none ${theme.bg200}`} />
-          <div className={`my-1 text-xs`}>
-            <p className={`${style2} transition-colors ease-linear duration-700`}>- Choose unique GROUP ID</p>
-            <p className={`${style1} transition-colors ease-linear duration-700`}>- ID should only contain A-Z, a-z and 0-9 characters.</p>
-          </div>
 
           <div className='flex justify-between mt-5 text-sm'>
             <button onClick={() => setDisplayPanel(true)} className={`${theme.text700}`}>Back</button>

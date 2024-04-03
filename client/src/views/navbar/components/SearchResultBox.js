@@ -9,23 +9,23 @@ export default function SearchResultBox(props) {
   const dispatch = useDispatch();
   
   async function AddFriend() {
-    const id = props.person.googleID;
+    const _id = props.person._id;
     const name = props.person.name;
     const photoURL = props.person.photoURL;
   
-    if (user.googleID === id) {
+    if (user._id === _id) {
       console.log(`You cannot send request to yourself`);
       return ;
     }
-    else if (user.friends.findIndex(element => element.id === id) > -1 || user.sendRequests.findIndex(element => element.id === id) > -1) {
+    else if (user.friends.findIndex(element => element._id === _id) > -1 || user.sendRequests.findIndex(element => element._id === _id) > -1) {
       console.log(`${name} is already friend`);
       return ;
     }
     
     const addFriendRequestURI = 'http://localhost:5000/add/friend';
-    const data = await fetchRequest({ url: addFriendRequestURI, method: 'POST', body: { person: { id, name, photoURL } } });
+    const data = await fetchRequest({ url: addFriendRequestURI, method: 'POST', body: { person: { _id, name, photoURL } } });
     console.log(data);
-    dispatch(setUserSendRequest({id, name, photoURL}));
+    dispatch(setUserSendRequest({_id, name, photoURL}));
   }
 
   return (
@@ -34,7 +34,7 @@ export default function SearchResultBox(props) {
         <img src={ props.person.photoURL } alt="" className='w-11 rounded-full' />
         <div className='mx-4'>
           <p>{ props.person.name }</p>
-          <p className='text-[10px] text-gray-400'>{ props.person.googleID }</p>
+          <p className='text-[10px] text-gray-400'>{ props.person._id }</p>
         </div>
       </div>
       <div>

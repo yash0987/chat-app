@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import EmojiPicker from 'emoji-picker-react';
 import { appendChat } from 'features/chat-slice/chatSlice';
+import { ws } from 'utils/websocket';
 import Replybox from 'views/chat-text-box/components/Replybox';
 import UploadFiles from 'views/chat-text-box/components/UploadFiles';
 import AlertBar from 'components/AlertBar';
@@ -29,10 +30,10 @@ export default function Textbox(props) {
     if (collectedText.trim() === "") return ;
 
     let messageData = {
-      messageID: user.googleID + currentMsgTime,
+      messageID: user._id + currentMsgTime,
       collectedText,
       currentMsgTime,
-      senderID: user.googleID,
+      senderID: user._id,
       senderName: user.name,
       senderPhotoURL: user.photoURL,
       newChat,
@@ -54,7 +55,7 @@ export default function Textbox(props) {
 
     setDisplayEmojiPanel(0);
     dispatch(appendChat([messageData]));
-    props.ws.send(JSON.stringify([messageData]));
+    ws.send(JSON.stringify([messageData]));
   }
 
   function selectEmoji(event) {

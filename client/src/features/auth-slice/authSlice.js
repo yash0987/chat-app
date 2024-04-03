@@ -14,7 +14,7 @@ export const authSlice = createSlice({
         },
         updateUserGroups: (state, action) => {
             state.value.user.groups = state.value.user.groups.map((group) => {
-                if (group.id === action.payload.id) {
+                if (group._id === action.payload._id) {
                     return action.payload;
                 }
                 return group;
@@ -30,10 +30,10 @@ export const authSlice = createSlice({
             state.value.user.sendRequests = [...state.value.user.sendRequests, action.payload];
         },
         removeReceiveRequest: (state, action) => {
-            state.value.user.receiveRequests = state.value.user.receiveRequests.filter((request) => request.id !== action.payload.id);
+            state.value.user.receiveRequests = state.value.user.receiveRequests.filter((request) => request._id !== action.payload._id);
         },
         removeSendRequest: (state, action) => {
-            state.value.user.sendRequests = state.value.user.sendRequests.filter((request) => request.id !== action.payload.id);
+            state.value.user.sendRequests = state.value.user.sendRequests.filter((request) => request._id !== action.payload._id);
         }
     }
 })

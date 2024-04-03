@@ -57,12 +57,12 @@ export default function ChatProfile() {
           <div className='my-2 max-h-56 overflow-y-scroll'>
             {
               chatList.map((chat) => {
-                return <div key={chat.id} className={`flex justify-between mx-2 p-2 rounded-lg font-semibold ${theme.hoverBg200}`}>
+                return <div key={chat._id} className={`flex justify-between mx-2 p-2 rounded-lg font-semibold ${theme.hoverBg200}`}>
                 <div className='grid grid-flow-col'>
                   <img src={ chat.photoURL } alt="" className='size-10 rounded-full object-cover' />
                   <div className='mx-4'>
                     <p>{ chat.name }</p>
-                    <p className='text-[10px] text-gray-400'>{ chat.id }</p>
+                    <p className='text-[10px] text-gray-400'>{ chat._id }</p>
                   </div>
                 </div>
               </div>

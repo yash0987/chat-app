@@ -8,27 +8,26 @@ export default function Profile(props) {
   const theme = useSelector(state => state.theme.value);
   const user = useSelector(state => state.auth.value.user);
   const [photo, setPhoto] = useState({});
-  const [profileDetails, setProfileDetails] = useState({ id: user.googleID, name: user.name, aboutMe: user.aboutMe, photoURL: user.photoURL, doj: user.doj });
-  const [oldProfileDetails, setOldProfileDetails] = useState({ id: user.googleID, name: user.name, aboutMe: user.aboutMe, photoURL: user.photoURL, doj: user.doj });
+  const [profileDetails, setProfileDetails] = useState({ _id: user._id, name: user.name, aboutMe: user.aboutMe, photoURL: user.photoURL, doj: user.doj });
+  const [oldProfileDetails, setOldProfileDetails] = useState({ _id: user._id, name: user.name, aboutMe: user.aboutMe, photoURL: user.photoURL, doj: user.doj });
   const [profileSwitch, setProfileSwitch] = useState(false);
   const [editThisProfile, setEditThisProfile] = useState(true);
   const dispatch = useDispatch();
 
   async function saveProfileChanges() {
     const formdata = new FormData();
-    formdata.append('id', profileDetails.id); 
+    formdata.append('_id', profileDetails._id); 
     formdata.append('name', profileDetails.name.trim());
     if (profileDetails.photoURL.slice(0, 4) === 'http') formdata.append('photoURL', profileDetails.photoURL);
-    else {
-      let fileextension = profileDetails.photoURL.slice(11, 16).split(';')[0];
-      if (fileextension === 'jpeg') fileextension = 'jpg';
-      console.log(fileextension);
-      formdata.append('photoURL', `http://localhost:5000/group/photo/P-${profileDetails.id}.${fileextension}`);
-    }
     profileSwitch ?
     formdata.append('description', profileDetails.description.trim()) :
     formdata.append('aboutMe', profileDetails.aboutMe.trim());
-    if (photo.name) formdata.append('profilePhoto', photo, `P-${profileDetails.id}.${photo.name.split('.').pop()}`);
+    if (photo.name) {
+      formdata.append('profilePhoto', photo, `P-${profileDetails._id}.${photo.name.split('.').pop()}`);
+    }
+
+    console.log(formdata)
+    
 
     const uri = profileSwitch ? 'http://localhost:5000/group/update/profile' : 'http://localhost:5000/update/profile';
     const response = await fetch(uri, {
@@ -44,7 +43,7 @@ export default function Profile(props) {
     const data = await response.json();
     props.setProfileEditStatus(false);
     profileSwitch ? 
-    dispatch(updateUserGroups({ id: profileDetails.id, name: profileDetails.name, photoURL: profileDetails.photoURL }))
+    dispatch(updateUserGroups({ _id: profileDetails._id, name: profileDetails.name, photoURL: profileDetails.photoURL }))
     : dispatch(setUser({ ...user, ...profileDetails }));
     console.log(data);
   }
@@ -77,8 +76,8 @@ export default function Profile(props) {
   }
   
   function selectUserProfileForEdit() {
-    setProfileDetails({ id: user.googleID, name: user.name, aboutMe: user.aboutMe, photoURL: user.photoURL, doj: user.doj });
-    setOldProfileDetails({ id: user.googleID, name: user.name, aboutMe: user.aboutMe, photoURL: user.photoURL, doj: user.doj });
+    setProfileDetails({ _id: user._id, name: user.name, aboutMe: user.aboutMe, photoURL: user.photoURL, doj: user.doj });
+    setOldProfileDetails({ _id: user._id, name: user.name, aboutMe: user.aboutMe, photoURL: user.photoURL, doj: user.doj });
     setProfileSwitch(false);
     setEditThisProfile(true);
   }
@@ -114,7 +113,7 @@ export default function Profile(props) {
             </div>
             <div className={`m-4 mt-14 p-2 text-xs rounded-lg ${theme.bg50}`}>
               <p className='text-lg font-bold'>{ profileDetails.name }</p>
-              <p className='font-semibold'>{ profileDetails.id }</p>
+              <p className='font-semibold'>{ profileDetails._id }</p>
               <hr className={`my-4 ${theme.border300}`} />
               <p className='font-semibold'>{ profileSwitch ? 'DESCRIPTION' : 'ABOUT ME'}</p>
               <p>{ profileSwitch ? profileDetails.description : profileDetails.aboutMe }</p>

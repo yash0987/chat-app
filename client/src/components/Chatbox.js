@@ -12,7 +12,7 @@ export default function Chatbox(props) {
   const dispatch = useDispatch();
 
   function openChat() {
-    const ID = props.chat.id;
+    const ID = props.chat._id;
     const fullName = props.chat.name;
     const photoURL = props.chat.photoURL;
     const isGroup = props.chat.isGroup;
@@ -31,7 +31,7 @@ export default function Chatbox(props) {
         <img src={ props.chat.photoURL } alt="" className='size-10 rounded-full object-cover' />
         <div className='mx-4'>
           <p>{ props.chat.name }</p>
-          <p className='text-[10px] text-gray-400'>{ props.chat.id }</p>
+          <p className='text-[10px] text-gray-400'>{ props.chat._id }</p>
         </div>
       </div>
     </Link>
