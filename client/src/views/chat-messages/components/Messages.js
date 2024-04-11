@@ -34,6 +34,26 @@ export default function Message(props) {
     return `${bytes.toFixed(1)} ${unitOfDigits[count]}`;
   }
 
+  function popupList(e, message) {
+    const divWidth = boxMeasurement.current.offsetWidth;
+    const divHeight = boxMeasurement.current.offsetHeight;
+    const screenWidth = window.screen.availWidth;
+    const screenHeight = window.screen.availHeight;
+
+    const divStartXCoordinate = screenWidth - divWidth - 10;
+    const divStartYCoordinate = screenHeight - divHeight - 135;
+    
+    const top = Math.min(e.clientY - divStartYCoordinate, divHeight - 235);
+    const left = Math.min(e.clientX - divStartXCoordinate, divWidth - 165);
+    let coordinates = { top, left };
+    if (screenWidth - e.clientX < 165) {
+      const right = Math.max(screenWidth - e.clientX - 10);
+      coordinates = { top, right };
+    }
+
+    setVisibilityOfPopupList({ coordinates, message, status: true });
+  }
+
   function isNewDate(currentMsgTime, index) {
     if (!index) return true;
     const firstRawEpoch = new Date(currentMsgTime);
@@ -52,36 +72,16 @@ export default function Message(props) {
     </div> : null
   }
 
-  function popupList(e, messageID) {
-    const divWidth = boxMeasurement.current.offsetWidth;
-    const divHeight = boxMeasurement.current.offsetHeight;
-    const screenWidth = window.screen.availWidth;
-    const screenHeight = window.screen.availHeight;
-
-    const divStartXCoordinate = screenWidth - divWidth - 10;
-    const divStartYCoordinate = screenHeight - divHeight - 135;
-    
-    const top = Math.min(e.clientY - divStartYCoordinate, divHeight - 200);
-    const left = Math.min(e.clientX - divStartXCoordinate, divWidth - 165);
-    let coordinates = { top, left };
-    if (screenWidth - e.clientX < 165) {
-      const right = Math.max(screenWidth - e.clientX - 10);
-      coordinates = { top, right };
-    }
-
-    setVisibilityOfPopupList({ coordinates, messageID, status: true });
-  }
-
   return (
     <div ref={ boxMeasurement } className='flex flex-col justify-end relative h-[80vh] overflow-y-scroll'>
       <PopupList visibilityOfPopupList={visibilityOfPopupList} setVisibilityOfPopupList={setVisibilityOfPopupList} />
       <div className='overflow-y-scroll py-3'>{
         props.elementArray.map((element, index) => {
-          let isPreviousMessagesUserSame = isNewDate(element.currentMsgTime, index);
-          if (!isPreviousMessagesUserSame) isPreviousMessagesUserSame &&= props.elementArray[index - 1].senderID === props.elementArray[index].senderID;
+          let isPreviousMessagesUserDifferent = isNewDate(element.currentMsgTime, index) || element.replyToMessage;
+          if (!isPreviousMessagesUserDifferent) isPreviousMessagesUserDifferent ||= props.elementArray[index - 1].senderID !== props.elementArray[index].senderID;
           return <div>
             { dateBar(element.currentMsgTime , index) }
-            { <Messagebox key={element.messageID} isPreviousMessagesUserSame={isPreviousMessagesUserSame} star={props.star} setStar={props.setStar} fileSize={fileSize} element={element} visibilityOfPopupList={visibilityOfPopupList} popupList={popupList} /> }
+            { <Messagebox key={element.messageID} isPreviousMessagesUserDifferent={isPreviousMessagesUserDifferent} star={props.star} setStar={props.setStar} fileSize={fileSize} element={element} visibilityOfPopupList={visibilityOfPopupList} popupList={popupList} /> }
           </div>
         })
       }
