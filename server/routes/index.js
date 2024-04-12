@@ -265,10 +265,10 @@ router.put('/starAndUnstar/messages', (req, res) => {
             let updatedMessagesArray = cursor.chatMsg;
             selectedMessages.forEach((elementToUpdate) => {
                 updatedMessagesArray = updatedMessagesArray.map((element) => {
-                    if (element.messageID === elementToUpdate && req.body.starStatus === true) {
+                    if (element.messageID === elementToUpdate && req.body.starStatus === 1) {
                         if (element.star.indexOf(req.user._id.toString()) === -1) element.star.push(req.user._id.toString());
                     }
-                    else if (element.messageID === elementToUpdate && req.body.starStatus !== true) {
+                    else if (element.messageID === elementToUpdate && req.body.starStatus !== 1) {
                         element.star  = element.star.filter((ID) => ID !== req.user._id.toString());
                     }
                     return element;
@@ -411,10 +411,10 @@ router.put('/group/starAndUnstar/messages', (req, res) => {
             let updatedMessagesArray = cursor.chatMsg;
             selectedMessages.forEach((elementToUpdate) => {
                 updatedMessagesArray = updatedMessagesArray.map((element) => {
-                    if (element.messageID === elementToUpdate && req.body.starStatus === true) {
+                    if (element.messageID === elementToUpdate && req.body.starStatus === 1) {
                         if (element.star.indexOf(req.user._id.toString()) === -1) element.star.push(req.user._id.toString());
                     }
-                    else if (element.messageID === elementToUpdate && req.body.starStatus !== true) {
+                    else if (element.messageID === elementToUpdate && req.body.starStatus !== 1) {
                         element.star  = element.star.filter((ID) => ID !== req.user._id.toString());
                     }
                     return element;

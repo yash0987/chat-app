@@ -62,7 +62,7 @@ export default function ChatSection(props) {
   return (
     <section style={{backgroundImage: `url('${wallpaper}')`, backgroundSize: "cover", backgroundPosition: "center", backgroundRepeat: "no-repeat"}} className={theme.bg50}>
       <ChatBar star={star} setStar={setStar} room={room} />
-      <Messages star={star} setStar={setStar} elementArray={chat.value} />
+      <Messages star={star} setStar={setStar} elementArray={chat.value} room={room} />
       <Textbox />
       <DeleteForMeModal room={room} />
     </section>
