@@ -1,6 +1,7 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { appendChat } from 'features/chat-slice/chatSlice';
+import { ws } from 'utils/websocket';
 import documentIcon from 'assets/document.png';
 import photoIcon from 'assets/photos.png';
 import pollIcon from 'assets/poll.png';
@@ -51,7 +52,7 @@ export default function UploadFiles(props) {
     console.log(data);
 
     dispatch(appendChat(messageData));
-    props.ws.send(JSON.stringify(messageData));
+    ws.send(JSON.stringify(messageData));
   }
 	
   return (
