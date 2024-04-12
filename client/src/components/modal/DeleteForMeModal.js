@@ -20,25 +20,27 @@ export default function DeleteForMeModal(props) {
     selectedMessagesList.forEach((elementToRemove) => {
       remainingMessages = remainingMessages.filter((element) => element.messageID !== elementToRemove);
     })
-    dispatch(updateChat(remainingMessages))
-    dispatch(unselectAllMessages());
-    dispatch(showDeleteModal(false));
-
+    
     const deleteMessageRequestURI = isGroup ? 
     'http://localhost:5000/group/delete/messages' : 'http://localhost:5000/delete/messages';
     
     const data = await fetchRequest({ url: deleteMessageRequestURI, method: 'DELETE', body: { selectedMessages: selectedMessagesList, room: props.room } });
+    dispatch(updateChat(remainingMessages));
+    dispatch(showDeleteModal(false));
+    dispatch(unselectAllMessages());
     console.log(data);
   }
 
   return (
-    deleteModalState && selectedMessagesList.length > 0 ?
-    <section className='flex justify-center py-80 w-screen h-screen fixed top-0 left-0 bg-black bg-opacity-20'>
-      <div className='p-5 w-1/5 h-28 rounded-sm bg-violet-50'>
-        <p>{ selectedMessagesList.length < 2 ? `Delete message?` : `Delete ${selectedMessagesList.length} messages?` }</p>
-        <div className={`${theme.text600}`}>
-          <button onClick={ () => deleteForMe() } className='flex justify-end'>Delete for me</button>
-          <button onClick={ () => dispatch(showDeleteModal(false)) }>Cancel</button>
+    deleteModalState ?
+    <section className='grid place-items-center w-screen h-screen fixed top-0 left-0 bg-black/20 text-slate-700 font-semibold'>
+      <div className='w-[27%] rounded-sm bg-violet-50'>
+        <h3 className='pt-4 px-4 text-lg'>Delete Message</h3> 
+        <p className='pb-4 px-4'>Are you sure you want to delete this message?</p>
+
+        <div className={`p-4 flex justify-end text-sm ${theme.bg100}`}>
+          <button onClick={() => dispatch(showDeleteModal(false))} className='px-6 py-2'>Cancel</button>
+          <button onClick={() => deleteForMe()} className='px-6 py-2 rounded-sm bg-red-500 text-white'>Delete</button>
         </div>
       </div>
     </section> : null
