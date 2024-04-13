@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { startNewChat } from 'features/chatinfo-slice/chatInfoSlice';
 import { emptyChat } from 'features/chat-slice/chatSlice';
 import { unselectAllMessages } from 'features/select-message-slice/selectMessageSlice';
-import { replyMessageToggle, starMessagesToggle } from 'features/toggle-slice/toggleSlice';
+import { replyMessageToggle } from 'features/toggle-slice/toggleSlice';
 
 export default function Chatbox(props) {
   const theme = useSelector(state => state.theme.value);
@@ -20,7 +20,6 @@ export default function Chatbox(props) {
     console.log(ID, fullName, photoURL, isGroup);
     dispatch(startNewChat({ ID, fullName, photoURL, isGroup }));
     dispatch(unselectAllMessages());
-    dispatch(starMessagesToggle(false));
     dispatch(replyMessageToggle(false));
     dispatch(emptyChat());
   }

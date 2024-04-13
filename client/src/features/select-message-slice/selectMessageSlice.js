@@ -9,9 +9,6 @@ export const selectMessageSlice = createSlice({
         selectMessage: (state, action) => {
             state.value.push(action.payload);
         },
-        unselectMessage: (state, action) => {
-            state.value = state.value.filter((element) => element !== action.payload);
-        },
         unselectAllMessages: (state) => {
             state.value = [];
         }

@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { featuresToggle } from 'features/toggle-slice/toggleSlice';
+import { useSelector } from 'react-redux';
 import { dateFromEpoch } from 'utils/dateFromEpoch';
 import Messagebox from 'views/chat-messages/components/Messagebox';
 import PopupList from './PopupList';
@@ -9,18 +8,11 @@ export default function Message(props) {
   const [visibilityOfPopupList, setVisibilityOfPopupList] = useState({ status: false });
   const boxMeasurement = useRef(null);
   const scroll = useRef(null);
-  const selectedMessagesList = useSelector(state => state.selectmessage.value);
   const theme = useSelector(state => state.theme.value);
-  const dispatch = useDispatch();
 
   useEffect(() => {
     scroll.current.scrollIntoView( { behavior: 'smooth' } );
   }, [props.elementArray.length])
-  
-  useEffect(() => {
-    if (!selectedMessagesList.length) dispatch(featuresToggle(false));
-    // eslint-disable-next-line
-  }, [selectedMessagesList.length])
 
   function fileSize(dataSize) {
     let count = 0;

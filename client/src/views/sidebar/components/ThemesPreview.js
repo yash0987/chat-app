@@ -1,7 +1,5 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import backButton from 'assets/backButton.png';
-import menu from 'assets/menu.png';
 import emoji from 'assets/emoji.png';
 import plusIcon from 'assets/plus.png';
 
@@ -14,13 +12,11 @@ export default function ThemesPreview(props) {
       <div style={{backgroundImage: `url('${wallpaper}')`, backgroundSize: "cover", backgroundPosition: "center", backgroundRepeat: "no-repeat"}} className={`place-self-center w-5/6 h-5/6 flex flex-col overflow-hidden rounded border-[1px] ${theme.border500} ${theme.bg50}`}>
         <div className={`px-8 py-1 relative flex justify-between ${theme.bg400} text-white`}>
           <div className='flex'>
-            <button><img src={ backButton } alt="" className='w-5 rounded-full' /></button>
             <div className='grid grid-flow-col place-items-center'>
               <img src="https://i.pinimg.com/custom_covers/222x/274508608476412825_1635270442.jpg" alt="" className='mx-3 w-8 rounded-full' />
               <p className='font-semibold'>Cai lin</p>
             </div>
           </div>
-          <img src={ menu } alt="" className={`w-10 rounded-full ${theme.hoverBg400}`} />
         </div>
 
         <div className='flex flex-col justify-end px-5 h-full overflow-y-scroll'>

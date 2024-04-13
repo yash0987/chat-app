@@ -1,19 +1,18 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import Profilebar from 'views/chat-bar/components/Profilebar';
-import DropBox from 'views/chat-bar/components/DropBox';
-import Features from 'views/chat-bar/components/Features';
 
 export default function ChatBar(props) {
-  const toggleFeaturesState = useSelector(state => state.toggle.value.toggleFeatures);
-  const displayStarredMessages = useSelector(state => state.toggle.value.showStarredMessages);
   const theme = useSelector(state => state.theme.value);
+  const newChat = useSelector(state => state.chatinfo.value.newChat);
   
   return (
-    <section className={`px-8 py-1 relative flex justify-between ${toggleFeaturesState || displayStarredMessages ? `${theme.bg500} saturate-[.80]` : `${theme.bg400}`} text-white`}>
-      <Profilebar />
-      <Features star={props.star} setStar={props.setStar} room={props.room} />
-      <DropBox room={props.room} />
+    <section className={`px-8 py-1 relative flex justify-between text-white ${theme.bg400}`}>
+      <div className='grid grid-flow-col'>
+        <div className='grid grid-flow-col place-items-center'>
+          <img src={ newChat.photoURL } alt="" className='mx-3 size-8 rounded-full object-cover' />
+          <p className='font-semibold'>{ newChat.fullName }</p>
+        </div>
+      </div>
     </section>
   )
 }
