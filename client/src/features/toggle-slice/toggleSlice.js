@@ -4,11 +4,15 @@ export const toggleSlice = createSlice({
     name: 'toggle',
     initialState: {
         value: {
+            editMessage: false,
             replyMessage: false,
             showProfile: false,
         }
     },
     reducers: {
+        editMessageToggle: (state, action) => {
+            state.value.editMessage = action.payload;
+        },
         replyMessageToggle: (state, action) => {
             state.value.replyMessage = action.payload;
         },
@@ -16,10 +20,10 @@ export const toggleSlice = createSlice({
             state.value.showProfile = action.payload;
         },
         setTogglesToDefault: (state) => {
-            state.value = { showStarredMessages: false, replyMessage: false };
+            state.value = { editMessage: false, replyMessage: false };
         }
     }
 })
 
-export const { replyMessageToggle, showProfileToggle, setTogglesToDefault } = toggleSlice.actions;
+export const { editMessageToggle, replyMessageToggle, showProfileToggle, setTogglesToDefault } = toggleSlice.actions;
 export default toggleSlice.reducer;
