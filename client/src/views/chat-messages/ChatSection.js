@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { prependChat, appendChat } from 'features/chat-slice/chatSlice';
+import { prependChat, appendChat, updateChat } from 'features/chat-slice/chatSlice';
 import { ws } from 'utils/websocket';
 import { createRoomID } from 'utils/room';
 import ChatBar from 'views/chat-bar/ChatBar';
@@ -56,6 +56,21 @@ export default function ChatSection(props) {
     const message = JSON.parse(event.data);
     console.log(message);
     console.log("I am receiving")
+    if (message[0].action === 'edit') {
+      const { messageID, editedMessage } = message[0];
+      const updatedMessagesList = chat.value.map((element) => {
+        if (element.messageID === messageID) {
+          return {
+            ...element,
+            collectedText: editedMessage,
+            editedStatus: true
+          }
+        }
+        return element;
+      })
+      dispatch(updateChat(updatedMessagesList));
+      return ;
+    }
     dispatch(appendChat(message));
   }
   

@@ -1,14 +1,21 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { editMessageToggle } from 'features/toggle-slice/toggleSlice';
+import { ws } from 'utils/websocket';
+import { updateChat } from 'features/chat-slice/chatSlice';
+import { unselectAllMessages } from 'features/select-message-slice/selectMessageSlice';
 import { dateFromEpoch } from 'utils/dateFromEpoch';
 import Messagebox from 'views/chat-messages/components/Messagebox';
 import PopupList from './PopupList';
 
-export default function Message(props) {
+export default function Messages(props) {
   const [visibilityOfPopupList, setVisibilityOfPopupList] = useState({ status: false });
   const boxMeasurement = useRef(null);
   const scroll = useRef(null);
   const theme = useSelector(state => state.theme.value);
+  const user = useSelector(state => state.auth.value.user);
+  const newChat = useSelector(state => state.chatinfo.value.newChat);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     scroll.current.scrollIntoView( { behavior: 'smooth' } );
@@ -24,6 +31,37 @@ export default function Message(props) {
 
     const unitOfDigits = ['B', 'kB', 'MB', 'GB'];
     return `${bytes.toFixed(1)} ${unitOfDigits[count]}`;
+  }
+
+  async function editSelectedMessage(editedMessage, messageID) {    
+    let messageData = {
+      editedMessage,
+      messageID,
+      senderID: user._id,
+      newChat,
+      type: 'text',
+      action: 'edit'
+    };
+    ws.send(JSON.stringify([messageData]));
+
+    const updatedMessagesList = props.elementArray.map((element) => {
+      if (element.messageID === messageID) {
+        return {
+          ...element,
+          collectedText: editedMessage,
+          editedStatus: true
+        }
+      }
+      return element;
+    })
+    dispatch(updateChat(updatedMessagesList));
+    dispatch(unselectAllMessages());
+    dispatch(editMessageToggle(false));
+  }
+
+  function cancelEditMessage() {
+    dispatch(unselectAllMessages());
+    dispatch(editMessageToggle(false));
   }
 
   function popupList(e, message) {
@@ -73,7 +111,7 @@ export default function Message(props) {
           if (!isPreviousMessagesUserDifferent) isPreviousMessagesUserDifferent ||= props.elementArray[index - 1].senderID !== props.elementArray[index].senderID;
           return <div>
             { dateBar(element.currentMsgTime , index) }
-            { <Messagebox key={element.messageID} isPreviousMessagesUserDifferent={isPreviousMessagesUserDifferent} star={props.star} setStar={props.setStar} fileSize={fileSize} element={element} visibilityOfPopupList={visibilityOfPopupList} popupList={popupList} /> }
+            { <Messagebox key={element.messageID} isPreviousMessagesUserDifferent={isPreviousMessagesUserDifferent} fileSize={fileSize} element={element} visibilityOfPopupList={visibilityOfPopupList} popupList={popupList} editSelectedMessage={editSelectedMessage} cancelEditMessage={cancelEditMessage} /> }
           </div>
         })
       }

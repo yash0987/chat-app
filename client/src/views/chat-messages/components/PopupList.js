@@ -3,8 +3,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { updateChat } from 'features/chat-slice/chatSlice';
 import { showDeleteModal } from 'features/modal-slice/modalSlice';
 import { reply } from 'features/reply-slice/replySlice';
-import { replyMessageToggle } from 'features/toggle-slice/toggleSlice';
-import { selectMessage } from 'features/select-message-slice/selectMessageSlice';
+import { editMessageToggle, replyMessageToggle } from 'features/toggle-slice/toggleSlice';
+import { selectMessage, unselectAllMessages } from 'features/select-message-slice/selectMessageSlice';
 import { fetchRequest } from 'utils/fetchRequest';
 import editIcon from 'assets/edit_icon.png';
 import pinIcon from 'assets/pin_icon.png';
@@ -18,7 +18,14 @@ export default function PopupList(props) {
   const { coordinates, message, status } = props.visibilityOfPopupList;
   const chat = useSelector(state => state.chat.value);
   const isGroup = useSelector(state => state.chatinfo.value.newChat.isGroup);
+  const user = useSelector(state => state.auth.value.user);
   const dispatch = useDispatch();
+
+  function editMessage() {
+    dispatch(unselectAllMessages());
+    dispatch(selectMessage(message.messageID));
+    dispatch(editMessageToggle(true));
+  }
 
   function replyToMessage () {
     let replyForMessage = message.collectedText.slice(0, Math.min(50, message.collectedText.length));
@@ -73,9 +80,12 @@ export default function PopupList(props) {
     status ?
     <div onClick={() => props.setVisibilityOfPopupList({ status: false })} className={`absolute z-10 bg-gray-50 shadow-sm shadow-gray-200 rounded overflow-hidden`} style={{...coordinates}}>
       <ul className='py-2 whitespace-nowrap text-sm text-gray-800'>
-        <li className='flex justify-between px-4 py-[6px] font-semibold text-gray-700 hover:bg-gray-200'>
-          Edit Message <img src={editIcon} alt="" className='ml-2 w-6 h-6' />
-        </li>
+        {
+          message.senderID === user._id ?
+          <li onClick={() => {editMessage()}} className='flex justify-between px-4 py-[6px] font-semibold text-gray-700 hover:bg-gray-200'>
+            Edit Message <img src={editIcon} alt="" className='ml-2 w-6 h-6' />
+          </li> : null
+        }
         <li className='flex justify-between px-4 py-[6px] font-semibold text-gray-700 hover:bg-gray-200'>
           Pin Message <img src={pinIcon} alt="" className='ml-2 w-6 h-6' />
         </li>

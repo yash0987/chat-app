@@ -21,8 +21,6 @@ export default function Navbar(props) {
   const params = useParams();
   
   useEffect(() => {
-    console.log(Object.keys(params).length);
-    console.log("this is params length")
     if (!Object.keys(params).length) dispatch(showProfileToggle(false));
     // eslint-disable-next-line
   }, [params])
