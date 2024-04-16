@@ -209,6 +209,7 @@ router.get('/chat/data/:room', (req, res) => {
                 return {
                     messageID: element.messageID,
                     collectedText: element.collectedText,
+                    editedStatus: element.editedStatus,
                     name: element.name,
                     lastModified: element.lastModified,
                     size: element.size,
@@ -285,6 +286,7 @@ router.put('/starAndUnstar/messages', (req, res) => {
     main().catch(console.error);
 })
 
+// not in use now
 router.get('/starred/messages/:id', (req, res) => {
     async function main() {
         try {
@@ -355,6 +357,7 @@ router.get('/group/data/:room', (req, res) => {
                 return {
                     messageID: element.messageID,
                     collectedText: element.collectedText,
+                    editedStatus: element.editedStatus,
                     name: element.name,
                     lastModified: element.lastModified,
                     size: element.size,
@@ -433,6 +436,7 @@ router.put('/group/starAndUnstar/messages', (req, res) => {
     main().catch(console.error);
 })
 
+//not in use now
 router.get('/group/starred/messages/:_id', (req, res) => {
     async function main() {
         try {

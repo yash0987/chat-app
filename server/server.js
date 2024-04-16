@@ -120,12 +120,34 @@ function send(data, senderID, isGroup, roomID) {
         }
     })
 
-    // data['deleteMsg'] = [];
-    // data['star'] = [];
     data = data.map((element) => {
         return { ...element, deleteMsg: [], star: [] };
     })
     main(roomID, isGroup, data).catch(console.error);
+}
+
+function editMessage(data, senderID, roomID) {
+    console.log(roomID)
+    rooms[roomID].forEach((client) => {
+        if (client.senderGoogleID !== senderID) {
+            console.log('i am sending edited message')
+            client.send(JSON.stringify(data));
+        }
+    })
+
+    const { editedMessage, messageID, isGroup } = data[0];
+    async function main() {
+        try {
+            await client.connect();
+            isGroup ?
+            await client.db('chat-app').collection('groupChats').updateOne({ _id: new ObjectId(roomID) }, { $set: { "chatMsg.$.collectedText": editedMessage, "chatMsg.$.editedStatus": true } }) :
+            await client.db('chat-app').collection('personalChats').updateOne({ chatID: roomID, "chatMsg.messageID": messageID }, { $set: { "chatMsg.$.collectedText": editedMessage, "chatMsg.$.editedStatus": true } });
+        } catch (e) {
+            console.error(e);
+        }
+    }
+
+    main().catch(console.error);
 }
 
 wss.on('connection', (ws) => {
@@ -156,6 +178,9 @@ wss.on('connection', (ws) => {
                 break;
             case 'send':
                 send(data, senderID, isGroup, roomID);
+                break;
+            case 'edit':
+                editMessage(data, senderID, roomID);
                 break;
             default:
                 break;
