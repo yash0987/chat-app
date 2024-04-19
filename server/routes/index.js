@@ -92,8 +92,8 @@ router.put('/cancelRequest', (req, res) => {
 
     async function main() {
         try {
-            await userDetailsCollection.updateOne( { _id: new ObjectId(userData._id) }, { $pull: { sendRequests: personData } } );
-            await userDetailsCollection.updateOne( { _id: new ObjectId(personData._id) }, { $pull: { receiveRequests: userData } } );
+            await userDetailsCollection.updateOne( { _id: new ObjectId(userData._id) }, { $pull: { sendRequests: { _id: personData._id } } } );
+            await userDetailsCollection.updateOne( { _id: new ObjectId(personData._id) }, { $pull: { receiveRequests: { _id: userData._id } } } );
         } catch (e) {
             console.error(e);
         }
@@ -117,9 +117,11 @@ router.put('/acceptRequest', (req, res) => {
     async function main() {
         try {
             await userDetailsCollection.updateOne( { _id: new ObjectId(userData._id) }, { $addToSet: { friends: personData } } );
-            await userDetailsCollection.updateOne( { _id: new ObjectId(userData._id) }, { $pull: { receiveRequests: personData } } );
+            await userDetailsCollection.updateOne( { _id: new ObjectId(userData._id) }, { $pull: { sendRequests: { _id: personData._id } } } );
+            await userDetailsCollection.updateOne( { _id: new ObjectId(userData._id) }, { $pull: { receiveRequests: { _id: personData._id } } } );
             await userDetailsCollection.updateOne( { _id: new ObjectId(personData._id) }, { $addToSet: { friends: userData } } );
-            await userDetailsCollection.updateOne( { _id: new ObjectId(personData._id) }, { $pull: { sendRequests: userData } } );
+            await userDetailsCollection.updateOne( { _id: new ObjectId(personData._id) }, { $pull: { sendRequests: { _id: userData._id } } } );
+            await userDetailsCollection.updateOne( { _id: new ObjectId(personData._id) }, { $pull: { receiveRequests: { _id: userData._id } } } );
             await personalChatsCollection.insertOne( { chatID: room, chatMsg: [] } );
         } catch (e) {
             console.error(e);
@@ -142,8 +144,8 @@ router.put('/declineRequest', (req, res) => {
 
     async function main() {
         try {
-            await userDetailsCollection.updateOne( { _id: new ObjectId(userData._id) }, { $pull: { receiveRequests: personData } } );
-            await userDetailsCollection.updateOne( { _id: new ObjectId(personData._id) }, { $pull: { sendRequests: userData } } );
+            await userDetailsCollection.updateOne( { _id: new ObjectId(userData._id) }, { $pull: { receiveRequests: { _id: userData._id } } } );
+            await userDetailsCollection.updateOne( { _id: new ObjectId(personData._id) }, { $pull: { sendRequests: { _id: personData._id } } } );
         } catch (e) {
             console.error(e);
         }
