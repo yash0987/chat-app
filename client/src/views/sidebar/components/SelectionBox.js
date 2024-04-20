@@ -9,8 +9,8 @@ export default function SelectionBox(props) {
 
   async function selectGroup(group) {
     const data = await fetchRequest({ url: `http://localhost:5000/groupinfo/${group._id}`, method: 'GET' });
-    props.setProfileDetails({ ...group, description: data.description, doj: data.doj });
-    props.setOldProfileDetails({ ...group, description: data.description, doj: data.doj });
+    props.setProfileDetails({ ...group, profileFileName: data.profileFileName, description: data.description, doj: data.doj });
+    props.setOldProfileDetails({ ...group, profileFileName: data.profileFileName, description: data.description, doj: data.doj });
     props.setEditThisProfile(true);
     setToggleSelect(prevState => prevState ^ 1);
   }

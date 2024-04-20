@@ -57,14 +57,11 @@ router.post('/group', upload.single('groupPhoto'), (req, res, next) => {
         try {
             await client.connect();
             const { insertedId:_id } = await client.db('chat-app').collection('groupChats').insertOne( { chatMsg: [] } );
-            const fileNewName = `P-${_id}.${req.file.filename.split('.').pop()}`;
             group._id = _id;
-            group.photoURL = `http://localhost:5000/group/photo/P-${_id}.${req.file.filename.split('.').pop()}`;
+            group.photoURL = `http://localhost:5000/group/photo/${req.file.filename}`;
+            group.profileFileName = req.file.filename;
             group.doj = Date.now();
             group.description = "";
-            fs.rename(req.file.filename, fileNewName, (err) => {
-                if (err) console.error(err);
-            })
             groupMembers = groupMembers.map((member) => {
                 return { ...member, _id: new ObjectId(member._id) };
             });
@@ -87,11 +84,9 @@ router.put('/update/profile', upload.single('profilePhoto'), (req, res) => {
     const changeDetails = {
         name: req.body.name,
         aboutMe: req.body.aboutMe,
-        photoURL: req.body.photoURL
+        photoURL: `http://localhost:5000/group/photo/${req.body.profileFileName}`
     };
     console.log(req.file)
-
-    if (req.file) changeDetails.photoURL = `http://localhost:5000/group/photo/${req.file.filename}`;
 
     async function main() {
         try {
@@ -125,11 +120,9 @@ router.put('/group/update/profile', upload.single('profilePhoto'), (req, res) =>
         _id: new ObjectId(req.body._id),
         name: req.body.name,
         description: req.body.description,
-        photoURL: req.body.photoURL
+        photoURL: `http://localhost:5000/group/photo/${req.body.profileFileName}`
     };
     console.log(req.file)
-
-    if (req.file) changeDetails.photoURL = `http://localhost:5000/group/photo/${req.file.filename}`;
 
     async function main() {
         try {

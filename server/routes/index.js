@@ -311,7 +311,7 @@ router.get('/groupinfo/:_id', (req, res) => {
     async function main() {
         try {
             const cursor = await client.db('chat-app').collection('groupDetails').findOne( { _id: new ObjectId(req.params._id) } );
-            res.json({ description: cursor.description, doj: cursor.doj });
+            res.json({ profileFileName: cursor.profileFileName, description: cursor.description, doj: cursor.doj });
         } catch (e) {
             console.error(e);
         }

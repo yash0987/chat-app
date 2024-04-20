@@ -53,7 +53,7 @@ function (accessToken, refreshToken, profile, cb) {
                 const data = await response.arrayBuffer();
                 const typedArray = new Uint8Array(data);
                 
-                fs.writeFile(`./uploads/P-${_id}.jpg`, typedArray, (err) => {
+                fs.writeFile(`./uploads/P-${_id}`, typedArray, (err) => {
                     if (err) {
                         console.error(err);
                         return ;
@@ -61,7 +61,7 @@ function (accessToken, refreshToken, profile, cb) {
                     console.log("Google profile photo downloaded");
                 })
 
-                defaultUser.photoURL = `http://localhost:5000/group/photo/P-${_id}.jpg`;
+                defaultUser.photoURL = `http://localhost:5000/group/photo/P-${_id}`;
                 await client.db('chat-app').collection('userDetails').updateOne({ _id }, { $set: defaultUser });
             }
             return cb(null, user);

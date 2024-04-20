@@ -14,7 +14,6 @@ export default function CreateGroup(props) {
   const theme = useSelector(state => state.theme.value);
   const dispatch = useDispatch();
   const user = useSelector(state => state.auth.value.user);
-  // const friendList = useFetch({ url: 'http://localhost:5000/friends/list' })[0];
 
   useEffect(() => {
     setSearchFriendList(user.friends);
@@ -23,7 +22,7 @@ export default function CreateGroup(props) {
 
   async function sendData() {
     const formdata = new FormData();
-    formdata.append('groupPhoto', photo, `P-${uuid()}.${photo.name.split('.').pop()}`);
+    formdata.append('groupPhoto', photo, `P-${uuid()}`);
     formdata.append('group', JSON.stringify({ ...newGroup, photoURL: "" }));
     formdata.append('friends', JSON.stringify(selectedFriends));
     console.log(selectedFriends);

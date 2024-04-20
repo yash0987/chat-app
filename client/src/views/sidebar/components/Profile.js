@@ -18,12 +18,19 @@ export default function Profile(props) {
     const formdata = new FormData();
     formdata.append('_id', profileDetails._id); 
     formdata.append('name', profileDetails.name.trim());
-    if (profileDetails.photoURL.slice(0, 4) === 'http') formdata.append('photoURL', profileDetails.photoURL);
-    profileSwitch ?
-    formdata.append('description', profileDetails.description.trim()) :
-    formdata.append('aboutMe', profileDetails.aboutMe.trim());
+    if (profileSwitch) {
+      formdata.append('profileFileName', profileDetails.profileFileName);
+      formdata.append('description', profileDetails.description.trim());
+    }
+    else {
+      formdata.append('profileFileName', `P-${profileDetails._id}`);
+      formdata.append('aboutMe', profileDetails.aboutMe.trim());
+    }
+
     if (photo.name) {
-      formdata.append('profilePhoto', photo, `P-${profileDetails._id}.${photo.name.split('.').pop()}`);
+      profileSwitch ?
+      formdata.append('profilePhoto', photo, profileDetails.profileFileName) :
+      formdata.append('profilePhoto', photo, `P-${profileDetails._id}`);
     }
 
     console.log(formdata)
