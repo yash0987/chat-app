@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import { NavLink } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import CreateGroup from 'views/groups/CreateGroup';
 import Chatbox from 'components/Chatbox';
+import personIcon from 'assets/personw.png';
+import groupIcon from 'assets/groupw.png';
 
 export default function ChatList(props) {
   const [searchChatList, setSearchChatList] = useState([]);
@@ -37,8 +40,11 @@ export default function ChatList(props) {
   return (
     <section>
       <div className={`font-semibold ${theme.bg100}`}>
-        <div className='min-w-[23rem] h-[93vh] overflow-x-hidden overflow-y-scroll'>
-          <input onChange={(e) => searchChats(e.target.value)} type="search" name="" id="" placeholder={props.isGroup ? 'Search Group' : 'Search Friend'} className={`my-4 mx-4 px-5 py-1 w-[91%] rounded-sm ${theme.bg50} border-[1px] border-b-[3px] ${theme.border500} font-normal focus:outline-none ${theme.placeholderText400}`} />
+        <div className='h-[93vh] overflow-x-hidden overflow-y-scroll'>
+          <input onChange={(e) => searchChats(e.target.value)} type="search" name="" id="" placeholder={props.isGroup ? 'Search Group' : 'Search Friend'} className={`mt-2 mx-2 px-4 py-1 w-[95%] rounded-lg ${theme.bg200} font-normal placeholder:text-sm focus:outline-none ${theme.placeholderText400}`} />
+          <NavLink to={'/chats/@me'} className={({isActive}) => `flex place-items-center px-2 mx-2 mt-2 mb-1 rounded-lg font-semibold ${theme.text500} ${theme.hoverBg200} ${isActive ? theme.bg200 : null}`}><img src={personIcon} alt="" className={`size-8 m-1 rounded-full ${theme.bg500}`} /><span className='mx-2'>Friends</span></NavLink>
+          <NavLink to={'/groups'} className={({isActive}) => `flex place-items-center px-2 mx-2 mb-2 rounded-lg font-semibold ${theme.text500} ${theme.hoverBg200} ${isActive ? theme.bg200 : null}`}><img src={groupIcon} alt="" className={`size-8 m-1 rounded-full ${theme.bg500}`} /><span className='mx-2'>Groups</span></NavLink>
+          <hr className={`m-2 border-t ${theme.border300}`} />
           { createGroupButton }
           { chatList }
         </div>

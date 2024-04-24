@@ -6,7 +6,7 @@ import { selectTheme } from 'features/theme-slice/themeSlice';
 import { themes } from 'data/ThemesColors';
 import Navbar from 'views/navbar/Navbar';
 import SideBar from 'views/sidebar/SideBar';
-import PinBar from 'views/pinbar/PinBar';
+// import PinBar from 'views/pinbar/PinBar';
 
 export default function HomeLayout() {
   const [settingToggle, setSettingToggle] = useState(false);
@@ -55,10 +55,10 @@ export default function HomeLayout() {
     auth.authenticated ?
     (<div className={`flex flex-col h-screen ${theme.bg100}`}>
       <Navbar setSettingToggle={setSettingToggle} />
-      <div className='flex-1 inline-grid grid-flow-col'>
-        <PinBar />
+      {/* <div className='flex-1 inline-grid grid-flow-col'> */}
+        {/* <PinBar /> */}
         <Outlet />
-      </div>
+      {/* </div> */}
       <SideBar settingToggle={settingToggle} setSettingToggle={setSettingToggle} />
     </div>) : null
   )

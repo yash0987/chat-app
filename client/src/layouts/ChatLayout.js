@@ -8,7 +8,7 @@ export default function ChatLayout() {
   const showProfile = useSelector(state => state.toggle.value.showProfile);
 
   return (
-    <div className={`grid grid-flow-col ${showProfile ? 'grid-cols-[1fr_2fr_1fr]' : 'grid-cols-[1fr_3fr]'}`}>
+    <div className={`grid grid-flow-col ${showProfile ? 'grid-cols-[1.1fr_2.8fr_1.1fr]' : 'grid-cols-[1.1fr_3.9fr]'}`}>
       <FriendsSection />
       <Outlet />
       { showProfile ? <Profile /> : null }
