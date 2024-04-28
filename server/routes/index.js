@@ -200,13 +200,33 @@ router.get('/common/groups/:_id', (req, res) => {
     main().catch(console.error);
 })
 
-router.get('/chat/data/:room', (req, res) => {
+router.get('/chat/data/:room', (req, res, next) => {
+    const range = parseInt(req.query.range);
+    console.log(range * -1)
+
     async function main() {
         try {
-            const cursor = await personalChatsCollection.findOne( { chatID: req.params.room } );
-            let chatMsg = cursor.chatMsg.filter((element) => element.deleteMsg.indexOf(req.user._id.toString()) === -1);
+            const countChatMessages = await personalChatsCollection.aggregate([
+                { $match: { chatID: req.params.room } },
+                { $project: { chatMsg: { $filter: { input: "$chatMsg", as: "chat", cond: { $not: { $in: [ req.params.room, "$$chat.deleteMsg" ] } } } } } },
+                { $project: { chatMsg: { $size: "$chatMsg" } } }
+            ]).toArray();
+
+            const countPossibleRetrieval = Math.min(countChatMessages[0].chatMsg, range);
+            const countToRetrieveMessages = countPossibleRetrieval <= range ? 40 - (range - countChatMessages[0].chatMsg) : 40;
             
-            chatMsg = chatMsg.map((element) => {
+            if (range - countChatMessages[0].chatMsg >= 40) {
+                res.json([]);
+                return ;
+            }
+
+            const cursor = await personalChatsCollection.aggregate([
+                { $match: { chatID: req.params.room } },
+                { $project: { chatMsg: { $filter: { input: "$chatMsg", as: "chat", cond: { $not: { $in: [ req.params.room, "$$chat.deleteMsg" ] } } } } } },
+                { $project: { chatMsg: { $slice: [ "$chatMsg", range * -1, countToRetrieveMessages ] } } }
+            ]).toArray();
+            
+            const chatMsg = cursor[0].chatMsg.map((element) => {
                 const star = element.star.indexOf(req.user._id.toString()) !== -1;
                 return {
                     messageID: element.messageID,
@@ -347,13 +367,32 @@ router.get('/groups/list', (req, res) => {
 })
 
 router.get('/group/data/:room', (req, res) => {
+    const range = parseInt(req.query.range);
+    console.log(range * -1);
+
     async function main() {
         try {
-            const cursor = await groupChatsCollection.findOne( { _id: new ObjectId(req.params.room) } );
-            let chatMsg = cursor.chatMsg.filter((element) => element.deleteMsg.indexOf(req.user._id.toString()) === -1);
-            console.log(chatMsg)
+            const countChatMessages = await groupChatsCollection.aggregate([
+                { $match: { _id: new ObjectId(req.params.room) } },
+                { $project: { chatMsg: { $filter: { input: "$chatMsg", as: "chat", cond: { $not: { $in: [ req.params.room, "$$chat.deleteMsg" ] } } } } } },
+                { $project: { chatMsg: { $size: "$chatMsg" } } }
+            ]).toArray();
+
+            const countPossibleRetrieval = Math.min(countChatMessages[0].chatMsg, range);
+            const countToRetrieveMessages = countPossibleRetrieval <= range ? 40 - (range - countChatMessages[0].chatMsg) : 40;
             
-            chatMsg = chatMsg.map((element) => {
+            if (range - countChatMessages[0].chatMsg >= 40) {
+                res.json([]);
+                return ;
+            }
+
+            const cursor = await groupChatsCollection.aggregate([
+                { $match: { _id: new ObjectId(req.params.room) } },
+                { $project: { chatMsg: { $filter: { input: "$chatMsg", as: "chat", cond: { $not: { $in: [ req.params.room, "$$chat.deleteMsg" ] } } } } } },
+                { $project: { chatMsg: { $slice: [ "$chatMsg", range * -1, countToRetrieveMessages ] } } }
+            ]).toArray();
+            
+            const chatMsg = cursor[0].chatMsg.map((element) => {
                 const star = element.star.indexOf(req.user._id.toString()) !== -1;
                 console.log(star);
                 return {
