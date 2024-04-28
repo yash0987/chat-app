@@ -2,20 +2,39 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { editMessageToggle } from 'features/toggle-slice/toggleSlice';
 import { ws } from 'utils/websocket';
-import { updateChat } from 'features/chat-slice/chatSlice';
+import { updateChat, prependChat } from 'features/chat-slice/chatSlice';
 import { unselectAllMessages } from 'features/select-message-slice/selectMessageSlice';
 import { dateFromEpoch } from 'utils/dateFromEpoch';
+import { createRoomID } from 'utils/room';
 import Messagebox from 'views/chat-messages/components/Messagebox';
+import useFetchChats from 'hooks/useFetchChats';
 import PopupList from './PopupList';
 
 export default function Messages(props) {
   const [visibilityOfPopupList, setVisibilityOfPopupList] = useState({ status: false });
+  const [lockToSendRequest, setLockToSendRequest] = useState(false);
   const boxMeasurement = useRef(null);
+  const scrollPixels = useRef(null);
   const scroll = useRef(null);
   const theme = useSelector(state => state.theme.value);
   const user = useSelector(state => state.auth.value.user);
   const newChat = useSelector(state => state.chatinfo.value.newChat);
+  const chatInfo = useSelector(state => state.chatinfo.value);
+  const range = useSelector(state => state.chat.chatLoadedCount);
   const dispatch = useDispatch();
+  const room = createRoomID({
+    idArray: [ chatInfo.newChat.ID, user._id ],
+    isGroup: chatInfo.newChat.isGroup
+  });
+  const getChatRequestURI = chatInfo.newChat.isGroup ?
+  `http://localhost:5000/group/data/${room}?range=${range + 40}` : 
+  `http://localhost:5000/chat/data/${room}?range=${range + 40}`;
+  const getChats = useFetchChats({ url: getChatRequestURI, callback: prependChat });
+
+  useEffect(() => {
+    getChats()
+    // eslint-disable-next-line
+  }, [room]);
 
   useEffect(() => {
     scroll.current.scrollIntoView( { behavior: 'smooth' } );
@@ -92,6 +111,17 @@ export default function Messages(props) {
     const secondDateEpoch = new Date(secondRawEpoch.getFullYear(), secondRawEpoch.getMonth(), secondRawEpoch.getDate()).getTime();
     return Math.abs(firstDateEpoch - secondDateEpoch) >= 86400000;
   }
+
+  if (scrollPixels?.current) {
+    scrollPixels.current.onscroll = () => {
+      if (scrollPixels.current.scrollTop === 0 && lockToSendRequest === false) {
+        console.log(scrollPixels.current.scrollTop);
+        setLockToSendRequest(true);
+        getChats();
+        setLockToSendRequest(false);
+      }
+    }
+  }
   
   const dateBar = (messageTimeEpoch, index) => {
     return isNewDate(messageTimeEpoch, index) ?
@@ -105,7 +135,7 @@ export default function Messages(props) {
   return (
     <div ref={ boxMeasurement } className='flex flex-col justify-end relative h-[80vh] overflow-y-scroll'>
       <PopupList visibilityOfPopupList={visibilityOfPopupList} setVisibilityOfPopupList={setVisibilityOfPopupList} room={props.room} />
-      <div className='overflow-y-scroll py-3'>{
+      <div ref={ scrollPixels } id='messageSection' className='overflow-y-scroll py-3'>{
         props.elementArray.map((element, index) => {
           let isPreviousMessagesUserDifferent = isNewDate(element.currentMsgTime, index) || element.replyToMessage;
           if (!isPreviousMessagesUserDifferent) isPreviousMessagesUserDifferent ||= props.elementArray[index - 1].senderID !== props.elementArray[index].senderID;

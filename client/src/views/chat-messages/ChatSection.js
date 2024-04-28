@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { prependChat, appendChat, updateChat } from 'features/chat-slice/chatSlice';
+import { appendChat, updateChat } from 'features/chat-slice/chatSlice';
+// import { prependChat, appendChat, updateChat } from 'features/chat-slice/chatSlice';
 import { ws } from 'utils/websocket';
 import { createRoomID } from 'utils/room';
 import ChatBar from 'views/chat-bar/ChatBar';
 import Messages from 'views/chat-messages/components/Messages';
 import Textbox from 'views/chat-text-box/Textbox';
 import DeleteForMeModal from 'components/modal/DeleteForMeModal';
-import useFetchChats from 'hooks/useFetchChats';
+// import useFetchChats from 'hooks/useFetchChats';
 
 export default function ChatSection(props) {
   const chat = useSelector(state => state.chat);
@@ -23,14 +24,14 @@ export default function ChatSection(props) {
   })
   console.log(room);
 
-  const getChatRequestURI = chatInfo.newChat.isGroup ?
-  `http://localhost:5000/group/data/${room}` : `http://localhost:5000/chat/data/${room}`;
-  const getChats = useFetchChats({ url: getChatRequestURI, callback: prependChat });
+  // const getChatRequestURI = chatInfo.newChat.isGroup ?
+  // `http://localhost:5000/group/data/${room}` : `http://localhost:5000/chat/data/${room}`;
+  // const getChats = useFetchChats({ url: getChatRequestURI, callback: prependChat });
 
-  useEffect(() => {
-    getChats()
-    // eslint-disable-next-line
-  }, [room]);
+  // useEffect(() => {
+  //   getChats()
+  //   // eslint-disable-next-line
+  // }, [room]);
 
   useEffect(() => {
     ws.onopen = () => console.log("connection has been established");
