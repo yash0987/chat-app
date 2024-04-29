@@ -208,7 +208,7 @@ router.get('/chat/data/:room', (req, res, next) => {
         try {
             const countChatMessages = await personalChatsCollection.aggregate([
                 { $match: { chatID: req.params.room } },
-                { $project: { chatMsg: { $filter: { input: "$chatMsg", as: "chat", cond: { $not: { $in: [ req.params.room, "$$chat.deleteMsg" ] } } } } } },
+                { $project: { chatMsg: { $filter: { input: "$chatMsg", as: "chat", cond: { $not: { $in: [ req.user._id.toString(), "$$chat.deleteMsg" ] } } } } } },
                 { $project: { chatMsg: { $size: "$chatMsg" } } }
             ]).toArray();
 
@@ -222,7 +222,7 @@ router.get('/chat/data/:room', (req, res, next) => {
 
             const cursor = await personalChatsCollection.aggregate([
                 { $match: { chatID: req.params.room } },
-                { $project: { chatMsg: { $filter: { input: "$chatMsg", as: "chat", cond: { $not: { $in: [ req.params.room, "$$chat.deleteMsg" ] } } } } } },
+                { $project: { chatMsg: { $filter: { input: "$chatMsg", as: "chat", cond: { $not: { $in: [ req.user._id.toString(), "$$chat.deleteMsg" ] } } } } } },
                 { $project: { chatMsg: { $slice: [ "$chatMsg", range * -1, countToRetrieveMessages ] } } }
             ]).toArray();
             
@@ -374,7 +374,7 @@ router.get('/group/data/:room', (req, res) => {
         try {
             const countChatMessages = await groupChatsCollection.aggregate([
                 { $match: { _id: new ObjectId(req.params.room) } },
-                { $project: { chatMsg: { $filter: { input: "$chatMsg", as: "chat", cond: { $not: { $in: [ req.params.room, "$$chat.deleteMsg" ] } } } } } },
+                { $project: { chatMsg: { $filter: { input: "$chatMsg", as: "chat", cond: { $not: { $in: [ req.user._id.toString(), "$$chat.deleteMsg" ] } } } } } },
                 { $project: { chatMsg: { $size: "$chatMsg" } } }
             ]).toArray();
 
@@ -388,7 +388,7 @@ router.get('/group/data/:room', (req, res) => {
 
             const cursor = await groupChatsCollection.aggregate([
                 { $match: { _id: new ObjectId(req.params.room) } },
-                { $project: { chatMsg: { $filter: { input: "$chatMsg", as: "chat", cond: { $not: { $in: [ req.params.room, "$$chat.deleteMsg" ] } } } } } },
+                { $project: { chatMsg: { $filter: { input: "$chatMsg", as: "chat", cond: { $not: { $in: [ req.user._id.toString(), "$$chat.deleteMsg" ] } } } } } },
                 { $project: { chatMsg: { $slice: [ "$chatMsg", range * -1, countToRetrieveMessages ] } } }
             ]).toArray();
             
