@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { appendChat, updateChat } from 'features/chat-slice/chatSlice';
 // import { prependChat, appendChat, updateChat } from 'features/chat-slice/chatSlice';
@@ -17,7 +17,6 @@ export default function ChatSection(props) {
   const wallpaper = useSelector(state => state.wallpaper.value);
   const chatInfo = useSelector(state => state.chatinfo.value);
   const dispatch = useDispatch();
-  const [star, setStar] = useState(0);
   const room = createRoomID({ 
     idArray: [ chatInfo.newChat.ID, user._id ],
     isGroup: chatInfo.newChat.isGroup
@@ -77,8 +76,8 @@ export default function ChatSection(props) {
   
   return (
     <section style={{backgroundImage: `url('${wallpaper}')`, backgroundSize: "cover", backgroundPosition: "center", backgroundRepeat: "no-repeat"}} className={theme.bg50}>
-      <ChatBar star={star} setStar={setStar} room={room} />
-      <Messages star={star} setStar={setStar} elementArray={chat.value} room={room} />
+      <ChatBar room={room} />
+      <Messages elementArray={chat.value} room={room} />
       <Textbox />
       <DeleteForMeModal room={room} />
     </section>

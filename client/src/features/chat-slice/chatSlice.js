@@ -4,12 +4,10 @@ export const chatSlice = createSlice({
     name: 'chat',
     initialState: {
         value: [],
-        chatLoadedCount: 0
     },
     reducers: {
         prependChat: (state, action) => {
             state.value = [...action.payload, ...state.value];
-            state.chatLoadedCount += 40;
         },
         appendChat: (state, action) => {
             state.value = [...state.value, ...action.payload];
@@ -19,7 +17,6 @@ export const chatSlice = createSlice({
         },
         emptyChat: (state) => {
             state.value = [];
-            state.chatLoadedCount = 0;
         }
     }
 })

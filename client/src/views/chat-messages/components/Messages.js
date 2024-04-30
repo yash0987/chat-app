@@ -20,7 +20,7 @@ export default function Messages(props) {
   const user = useSelector(state => state.auth.value.user);
   const newChat = useSelector(state => state.chatinfo.value.newChat);
   const chatInfo = useSelector(state => state.chatinfo.value);
-  const range = useSelector(state => state.chat.chatLoadedCount);
+  const range = useSelector(state => state.chat.value.length);
   const dispatch = useDispatch();
   const room = createRoomID({
     idArray: [ chatInfo.newChat.ID, user._id ],

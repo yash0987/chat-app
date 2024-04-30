@@ -202,7 +202,7 @@ router.get('/common/groups/:_id', (req, res) => {
 
 router.get('/chat/data/:room', (req, res, next) => {
     const range = parseInt(req.query.range);
-    console.log(range * -1)
+    console.log(range * -1);
 
     async function main() {
         try {
@@ -212,8 +212,8 @@ router.get('/chat/data/:room', (req, res, next) => {
                 { $project: { chatMsg: { $size: "$chatMsg" } } }
             ]).toArray();
 
-            const countPossibleRetrieval = Math.min(countChatMessages[0].chatMsg, range);
-            const countToRetrieveMessages = countPossibleRetrieval <= range ? 40 - (range - countChatMessages[0].chatMsg) : 40;
+            const countToRetrieveMessages = range <= countChatMessages[0].chatMsg ? 40 : 40 - (range - countChatMessages[0].chatMsg);
+            console.log(countChatMessages[0].chatMsg, countToRetrieveMessages);
             
             if (range - countChatMessages[0].chatMsg >= 40) {
                 res.json([]);
@@ -378,8 +378,7 @@ router.get('/group/data/:room', (req, res) => {
                 { $project: { chatMsg: { $size: "$chatMsg" } } }
             ]).toArray();
 
-            const countPossibleRetrieval = Math.min(countChatMessages[0].chatMsg, range);
-            const countToRetrieveMessages = countPossibleRetrieval <= range ? 40 - (range - countChatMessages[0].chatMsg) : 40;
+            const countToRetrieveMessages = range <= countChatMessages[0].chatMsg ? 40 : 40 - (range - countChatMessages[0].chatMsg);
             
             if (range - countChatMessages[0].chatMsg >= 40) {
                 res.json([]);
@@ -394,7 +393,6 @@ router.get('/group/data/:room', (req, res) => {
             
             const chatMsg = cursor[0].chatMsg.map((element) => {
                 const star = element.star.indexOf(req.user._id.toString()) !== -1;
-                console.log(star);
                 return {
                     messageID: element.messageID,
                     collectedText: element.collectedText,
