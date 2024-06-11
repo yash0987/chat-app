@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import SectionList from './components/SectionList';
 import Profile from './components/Profile';
+import Appearance from './components/Appearance';
 import { useSelector } from 'react-redux';
 
 export default function SideBar(props) {
@@ -12,6 +13,9 @@ export default function SideBar(props) {
   switch (section) {
     case "Profile":
       component = <Profile profileEditStatus={profileEditStatus} setProfileEditStatus={setProfileEditStatus} />
+      break;
+    case "Appearance":
+      component = <Appearance />
       break;
   
     default:
