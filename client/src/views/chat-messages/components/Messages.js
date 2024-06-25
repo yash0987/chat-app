@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useMemo, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { editMessageToggle } from 'features/toggle-slice/toggleSlice';
 import { ws } from 'utils/websocket';
@@ -31,14 +31,12 @@ export default function Messages(props) {
   `http://localhost:5000/chat/data/${room}?range=${range + 40}`;
   const getChats = useFetchChats({ url: getChatRequestURI, callback: prependChat });
 
-  useEffect(() => {
-    getChats()
+  useMemo(() => {
+    getChats().then(() => {
+      scroll.current.scrollIntoView( { behavior: 'smooth' } );
+    });
     // eslint-disable-next-line
   }, [room]);
-
-  useEffect(() => {
-    scroll.current.scrollIntoView( { behavior: 'smooth' } );
-  }, [props.elementArray.length])
 
   function fileSize(dataSize) {
     let count = 0;
