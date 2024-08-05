@@ -60,7 +60,7 @@ app.use('/', authCheck, filesRouter);
 
 async function main(room, isGroup, messages) {
     messages = messages.map((element) => {
-        delete element.newChat;
+        delete element.chat;
         return element;
     });
 
@@ -78,11 +78,11 @@ async function main(room, isGroup, messages) {
 
 const rooms = {};
 
-function join(senderID, newChat, roomID, ws) {
+function join(senderID, chat, roomID, ws) {
     leave(ws);
     console.log("Joining");
     ws.senderGoogleID = senderID;
-    ws.chatInfo = newChat;
+    ws.chatInfo = chat;
     if (!rooms[roomID]) {
         rooms[roomID] = [ws];
         return ;
@@ -126,7 +126,7 @@ function send(data, senderID, isGroup, roomID) {
     main(roomID, isGroup, data).catch(console.error);
 }
 
-function editMessage(data, senderID, roomID) {
+function editMessage(data, senderID, isGroup, roomID) {
     console.log(roomID)
     rooms[roomID].forEach((client) => {
         if (client.senderGoogleID !== senderID) {
@@ -135,12 +135,12 @@ function editMessage(data, senderID, roomID) {
         }
     })
 
-    const { editedMessage, messageID, isGroup } = data[0];
+    const { editedMessage, messageID } = data[0];
     async function main() {
         try {
             await client.connect();
             isGroup ?
-            await client.db('chat-app').collection('groupChats').updateOne({ _id: new ObjectId(roomID) }, { $set: { "chatMsg.$.collectedText": editedMessage, "chatMsg.$.editedStatus": true } }) :
+            await client.db('chat-app').collection('groupChats').updateOne({ _id: new ObjectId(roomID), "chatMsg.messageID": messageID }, { $set: { "chatMsg.$.collectedText": editedMessage, "chatMsg.$.editedStatus": true } }) :
             await client.db('chat-app').collection('personalChats').updateOne({ chatID: roomID, "chatMsg.messageID": messageID }, { $set: { "chatMsg.$.collectedText": editedMessage, "chatMsg.$.editedStatus": true } });
         } catch (e) {
             console.error(e);
@@ -159,8 +159,8 @@ wss.on('connection', (ws) => {
     
     ws.onmessage = (event) => {
         const data = JSON.parse(event.data);
-        const { newChat, senderID, action } = data[0];
-        const { ID: receiverID, isGroup } = newChat;
+        const { senderID, chat, action } = data[0];
+        const { id: receiverID, isGroup } = chat;
         console.log(data);
         let roomID;
         if (isGroup) roomID = receiverID;
@@ -171,7 +171,7 @@ wss.on('connection', (ws) => {
 
         switch (action) {
             case 'join':
-                join(senderID, newChat, roomID, ws);
+                join(senderID, chat, roomID, ws);
                 break;
             case 'leave':
                 leave(ws);
@@ -180,7 +180,7 @@ wss.on('connection', (ws) => {
                 send(data, senderID, isGroup, roomID);
                 break;
             case 'edit':
-                editMessage(data, senderID, roomID);
+                editMessage(data, senderID, isGroup, roomID);
                 break;
             default:
                 break;
