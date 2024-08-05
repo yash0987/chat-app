@@ -6,12 +6,16 @@ import documentIcon from 'assets/document.png';
 import photoIcon from 'assets/photos.png';
 import pollIcon from 'assets/poll.png';
 import audioIcon from 'assets/headphone.png';
+import { useLocation, useParams } from 'react-router-dom';
 
 export default function UploadFiles(props) {
   const user = useSelector(state => state.auth.value.user);
   const theme = useSelector(state => state.theme.value);
-  const newChat = useSelector(state => state.chatinfo.value.newChat);
+  const params = useParams();
+  const location = useLocation();
   const dispatch = useDispatch();
+
+  const isGroup = location.pathname.slice(0, 7) === '/groups';
 
   async function uploadFile(e, name) {
     const messageData = [];
@@ -31,7 +35,7 @@ export default function UploadFiles(props) {
         senderID: user._id,
         senderName: user.name,
         senderPhotoURL: user.photoURL,
-        newChat,
+        chat: { id: params.id, isGroup },
         star: false,
         action: 'send'
       });

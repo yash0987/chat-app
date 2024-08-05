@@ -1,4 +1,5 @@
 import React from 'react';
+import { useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateChat } from 'features/chat-slice/chatSlice';
 import { showDeleteModal } from 'features/modal-slice/modalSlice';
@@ -10,7 +11,7 @@ export default function DeleteForMeModal(props) {
   const deleteModalState = useSelector(state => state.modal.value[0]);
   const selectedMessagesList = useSelector(state => state.selectmessage.value);
   const theme = useSelector(state => state.theme.value);
-  const isGroup = useSelector(state => state.chatinfo.value.newChat.isGroup);
+  const location = useLocation();
   const dispatch = useDispatch();
 
   console.log(selectedMessagesList);
@@ -21,7 +22,7 @@ export default function DeleteForMeModal(props) {
       remainingMessages = remainingMessages.filter((element) => element.messageID !== elementToRemove);
     })
     
-    const deleteMessageRequestURI = isGroup ? 
+    const deleteMessageRequestURI = location.pathname === '/groups' ? 
     'http://localhost:5000/group/delete/messages' : 'http://localhost:5000/delete/messages';
     
     const data = await fetchRequest({ url: deleteMessageRequestURI, method: 'DELETE', body: { selectedMessages: selectedMessagesList, room: props.room } });

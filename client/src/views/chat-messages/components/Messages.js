@@ -1,9 +1,10 @@
 import React, { useMemo, useRef, useState } from 'react';
+import { useParams, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { editMessageToggle } from 'features/toggle-slice/toggleSlice';
-import { ws } from 'utils/websocket';
 import { updateChat, prependChat } from 'features/chat-slice/chatSlice';
 import { unselectAllMessages } from 'features/select-message-slice/selectMessageSlice';
+import { ws } from 'utils/websocket';
 import { dateFromEpoch } from 'utils/dateFromEpoch';
 import { createRoomID } from 'utils/room';
 import Messagebox from 'views/chat-messages/components/Messagebox';
@@ -18,22 +19,23 @@ export default function Messages(props) {
   const scroll = useRef(null);
   const theme = useSelector(state => state.theme.value);
   const user = useSelector(state => state.auth.value.user);
-  const newChat = useSelector(state => state.chatinfo.value.newChat);
-  const chatInfo = useSelector(state => state.chatinfo.value);
   const range = useSelector(state => state.chat.value.length);
   const dispatch = useDispatch();
+  const params = useParams();
+  const location = useLocation();
+  const isGroup = location.pathname.slice(0, 7) === '/groups';
   const room = createRoomID({
-    idArray: [ chatInfo.newChat.ID, user._id ],
-    isGroup: chatInfo.newChat.isGroup
-  });
-  const getChatRequestURI = chatInfo.newChat.isGroup ?
+    idArray: [ params.id, user._id ],
+    isGroup
+  })
+  const getChatRequestURI = location.pathname === `/groups/${params.id}` ?
   `http://localhost:5000/group/data/${room}?range=${range + 40}` : 
   `http://localhost:5000/chat/data/${room}?range=${range + 40}`;
   const getChats = useFetchChats({ url: getChatRequestURI, callback: prependChat });
 
   useMemo(() => {
     getChats().then(() => {
-      scroll.current.scrollIntoView( { behavior: 'smooth' } );
+      scroll.current?.scrollIntoView( { behavior: 'smooth' } );
     });
     // eslint-disable-next-line
   }, [room]);
@@ -55,7 +57,7 @@ export default function Messages(props) {
       editedMessage,
       messageID,
       senderID: user._id,
-      newChat,
+      chat: { id: params.id, isGroup },
       type: 'text',
       action: 'edit'
     };

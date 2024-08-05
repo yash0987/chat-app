@@ -4,16 +4,18 @@ export const newChatSlice = createSlice({
     name: 'chatinfo',
     initialState: {
         value: {
-            newChat: {},
-            latestChat: {}
+            _id: "",
+            name: "",
+            aboutme: "",
+            doj: ""
         }
     },
     reducers: {
-        startNewChat: (state, action) => {
-            state.value = { latestChat: state.value.newChat, newChat: action.payload };
+        setChatProfile: (state, action) => {
+            state.value = action.payload;
         }
     }
 })
 
-export const { startNewChat } = newChatSlice.actions;
+export const { setChatProfile } = newChatSlice.actions;
 export default newChatSlice.reducer;

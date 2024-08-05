@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { RouterProvider, createBrowserRouter, createRoutesFromElements, Route } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import store from './app/store';
 import LoginPage from './views/loginpage/LoginPage';
@@ -9,9 +9,9 @@ import ChatLayout from './layouts/ChatLayout';
 import GroupLayout from './layouts/GroupLayout';
 
 function App() {
-  return (
-    <BrowserRouter>
-      <Routes>
+  const router = createBrowserRouter(
+    createRoutesFromElements(
+      <>
         <Route path='/' element={<LoginPage />} />
         <Route element={<Provider store={store}><HomeLayout /></Provider>}> {/* change position of layout */}
           <Route path='/chats/@me' element={<ChatLayout />}>
@@ -20,11 +20,15 @@ function App() {
           </Route>
           <Route path='/groups' element={<GroupLayout />}>
             <Route path='/groups' element={<DefaultPage />} />
-            <Route path='/groups/:groupid' element={<ChatSection />} />
+            <Route path='/groups/:id' element={<ChatSection />} />
           </Route>
         </Route>
-      </Routes>
-    </BrowserRouter>
+      </>
+    )
+  )
+
+  return (
+    <RouterProvider router={router} />
   );
 }
 

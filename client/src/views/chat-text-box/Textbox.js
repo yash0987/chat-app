@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useLocation, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import EmojiPicker from 'emoji-picker-react';
 import { appendChat } from 'features/chat-slice/chatSlice';
@@ -17,7 +18,8 @@ export default function Textbox(props) {
   const reply = useSelector(state => state.reply.value);
   const showReplyMessage = useSelector(state => state.toggle.value.replyMessage);
   const theme = useSelector(state => state.theme.value);
-  const newChat = useSelector(state => state.chatinfo.value.newChat);
+  const params = useParams();
+  const location = useLocation();
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -36,7 +38,7 @@ export default function Textbox(props) {
       senderID: user._id,
       senderName: user.name,
       senderPhotoURL: user.photoURL,
-      newChat,
+      chat: { id: params.id, isGroup: location.pathname.slice(0, 7) === '/groups' },
       star: false,
       type: 'text',
       action: 'send'

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { updateChat } from 'features/chat-slice/chatSlice';
 import { showDeleteModal } from 'features/modal-slice/modalSlice';
@@ -17,9 +18,11 @@ import binIcon from 'assets/bin_icon.png';
 export default function PopupList(props) {
   const { coordinates, message, status } = props.visibilityOfPopupList;
   const chat = useSelector(state => state.chat.value);
-  const isGroup = useSelector(state => state.chatinfo.value.newChat.isGroup);
   const user = useSelector(state => state.auth.value.user);
+  const location = useLocation();
   const dispatch = useDispatch();
+  
+  const isGroup = location.pathname.slice(0, 7) === '/groups';
 
   function editMessage() {
     dispatch(unselectAllMessages());

@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { useLocation, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { appendChat, updateChat } from 'features/chat-slice/chatSlice';
 // import { prependChat, appendChat, updateChat } from 'features/chat-slice/chatSlice';
@@ -15,11 +16,14 @@ export default function ChatSection(props) {
   const user = useSelector(state => state.auth.value.user);
   const theme = useSelector(state => state.theme.value);
   const wallpaper = useSelector(state => state.wallpaper.value);
-  const chatInfo = useSelector(state => state.chatinfo.value);
+  const params = useParams();
+  const location = useLocation();
   const dispatch = useDispatch();
+
+  const isGroup = location.pathname.slice(0, 7) === '/groups';
   const room = createRoomID({ 
-    idArray: [ chatInfo.newChat.ID, user._id ],
-    isGroup: chatInfo.newChat.isGroup
+    idArray: [ params.id, user._id ],
+    isGroup
   })
   console.log(room);
 
@@ -41,8 +45,7 @@ export default function ChatSection(props) {
     setTimeout(() => {
       const detailsForRoom = {
         senderID: user._id,
-        newChat: { ID: chatInfo.newChat.ID, isGroup: chatInfo.newChat.isGroup },
-        latestChat: { ID: chatInfo.latestChat.ID, isGroup: chatInfo.latestChat.isGroup },
+        chat: { id: params.id, isGroup: location.pathname === `/groups/${params.id}` },
         action: 'join',
       };
       ws.send(JSON.stringify([detailsForRoom]));
@@ -76,7 +79,7 @@ export default function ChatSection(props) {
   
   return (
     <section style={{backgroundImage: `url('${wallpaper}')`, backgroundSize: "cover", backgroundPosition: "center", backgroundRepeat: "no-repeat"}} className={theme.bg50}>
-      <ChatBar room={room} />
+      <ChatBar />
       <Messages elementArray={chat.value} room={room} />
       <Textbox />
       <DeleteForMeModal room={room} />

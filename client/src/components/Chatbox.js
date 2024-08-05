@@ -1,24 +1,18 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { startNewChat } from 'features/chatinfo-slice/chatInfoSlice';
 import { emptyChat } from 'features/chat-slice/chatSlice';
 import { unselectAllMessages } from 'features/select-message-slice/selectMessageSlice';
 import { replyMessageToggle } from 'features/toggle-slice/toggleSlice';
 
 export default function Chatbox(props) {
   const theme = useSelector(state => state.theme.value);
-  const newChat = useSelector(state => state.chatinfo.value.newChat);
+  const params = useParams();
   const dispatch = useDispatch();
 
   function openChat() {
     const ID = props.chat._id;
-    const fullName = props.chat.name;
-    const photoURL = props.chat.photoURL;
-    const isGroup = props.chat.isGroup;
-    if (newChat.ID === ID) return ;
-    console.log(ID, fullName, photoURL, isGroup);
-    dispatch(startNewChat({ ID, fullName, photoURL, isGroup }));
+    if (params.id === ID) return ;
     dispatch(unselectAllMessages());
     dispatch(replyMessageToggle(false));
     dispatch(emptyChat());

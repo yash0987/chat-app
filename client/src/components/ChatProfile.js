@@ -1,21 +1,22 @@
 import React, { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { fetchRequest } from 'utils/fetchRequest';
 import { dateFromEpoch } from 'utils/dateFromEpoch';
-import useFetch from 'hooks/useFetch';
 
 export default function ChatProfile() {
   const [chatList, setChatList] = useState([]);
-  const theme = useSelector(state => state.theme.value);
-  const newChat = useSelector(state => state.chatinfo.value.newChat);
   const [openList, setOpenList] = useState(false);
-  const chatDetailsURI = newChat.isGroup ? `http://localhost:5000/groupinfo/${newChat.ID}` : `http://localhost:5000/aboutme/${newChat.ID}`;
-  const chatDetails = useFetch({ url: chatDetailsURI, params: [newChat.ID] })[0];
-  
+  const theme = useSelector(state => state.theme.value);
+  const chatInfo = useSelector(state => state.chatinfo.value);
+  const location = useLocation();
+
+  const isGroup = location.pathname.slice(0, 7) === '/groups';
+
   useEffect(() => {
     setChatList([]);
     setOpenList(false);
-  }, [newChat.ID]);
+  }, [chatInfo._id]);
 
   async function commonGroupsOrMembers() {
     if (openList) {
@@ -23,9 +24,9 @@ export default function ChatProfile() {
       setOpenList(false);
       return ;
     }
-    const commonGroupsListRequestURI = newChat.isGroup ? 
-    `http://localhost:5000/group/members/${newChat.ID}`:
-    `http://localhost:5000/common/groups/${newChat.ID}`; 
+    const commonGroupsListRequestURI = isGroup ? 
+      `http://localhost:5000/group/members/${chatInfo._id}`:
+      `http://localhost:5000/common/groups/${chatInfo._id}`; 
     const data = await fetchRequest({ url: commonGroupsListRequestURI, method: 'GET' });
     console.log(data);
     setChatList(data);
@@ -35,22 +36,22 @@ export default function ChatProfile() {
   return (
     <section>
       <div className={`h-[9rem] p-4 ${theme.bg300}`}>
-        <img src={newChat.photoURL} alt="" className='relative -bottom-16 size-24 rounded-full object-cover' />
+        <img src={chatInfo.photoURL} alt="" className='relative -bottom-16 size-24 rounded-full object-cover' />
       </div>
       
       <div className={`m-4 mt-14 p-2 text-xs rounded-lg ${theme.bg50}`}>
-        <p className='text-lg font-bold'>{ newChat.fullName }</p>
-        <p className='font-semibold'>{ newChat.ID }</p>
+        <p className='text-lg font-bold'>{ chatInfo.name }</p>
+        <p className='font-semibold'>{ chatInfo._id }</p>
         <hr className={`my-4 ${theme.border300}`} />
-        <p className='font-semibold'>{ newChat.isGroup ? 'DESCRIPTION' : 'ABOUT ME'}</p>
-        <p>{ newChat.isGroup ? chatDetails.description : chatDetails.aboutMe }</p>
+        <p className='font-semibold'>{ isGroup ? 'DESCRIPTION' : 'ABOUT ME'}</p>
+        <p>{ location.pathname.slice(0, 7) === '/groups' ? chatInfo.description : chatInfo.aboutMe }</p>
         <hr className={`my-4 ${theme.border300}`} />
         <p className='font-semibold'>CHATME MEMBER SINCE</p>
-        <p>{ dateFromEpoch(chatDetails.doj) }</p>
+        <p>{ dateFromEpoch(chatInfo.doj) }</p>
       </div>
 
       <div className={`m-4 py-2 text-sm font-semibold rounded-lg ${theme.bg50}`}>
-        <button onClick={() => commonGroupsOrMembers()} className='px-2'>{ newChat.isGroup ? 'Group Members' : 'Common Groups' }</button>
+        <button onClick={() => commonGroupsOrMembers()} className='px-2'>{ isGroup ? 'Group Members' : 'Common Groups' }</button>
 
         {
           openList ?
