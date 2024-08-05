@@ -160,7 +160,7 @@ router.get('/aboutme/:_id', (req, res) => {
     async function main() {
         try {
             const cursor = await userDetailsCollection.findOne({ _id: new ObjectId(_id) });
-            res.json({ aboutMe: cursor.aboutMe, doj: cursor.doj });
+            res.json({ _id: cursor._id, name: cursor.name, photoURL: cursor.photoURL, aboutMe: cursor.aboutMe, doj: cursor.doj });
         } catch (e) {
             console.error(e);
         }
@@ -331,7 +331,7 @@ router.get('/groupinfo/:_id', (req, res) => {
     async function main() {
         try {
             const cursor = await client.db('chat-app').collection('groupDetails').findOne( { _id: new ObjectId(req.params._id) } );
-            res.json({ profileFileName: cursor.profileFileName, description: cursor.description, doj: cursor.doj });
+            res.json({ _id: cursor._id, name: cursor.name, photoURL: cursor.photoURL, description: cursor.description, doj: cursor.doj });
         } catch (e) {
             console.error(e);
         }
