@@ -68,11 +68,9 @@ async function main(room, isGroup, messages) {
         await client.connect();
         isGroup ?
         await client.db('chat-app').collection('groupChats').updateOne( { _id: new ObjectId(room) }, { $push: { chatMsg: { $each: messages } } }, { $set: { groupID: room, chatMsg: [] }, upsert: true } ) :
-        await client.db('chat-app').collection('personalChats').updateOne( { chatID: room }, { $push: { chatMsg: { $each: messages } } }, { $set: { chatID: room, chatMsg: [] }, upsert: true } );
+        await client.db('chat-app').collection('personalChats').updateOne( { _id: new ObjectId(room) }, { $push: { chatMsg: { $each: messages } } }, { $set: { chatID: room, chatMsg: [] }, upsert: true } );
     } catch (e) {
         console.error(e);
-    } finally {
-        await client.close();
     }
 }
 
@@ -99,13 +97,8 @@ function join(senderID, chat, roomID, ws) {
 }
 
 function leave(ws) {
-    let roomID;
     if (!ws.chatInfo) return ;
-    if (ws.chatInfo.isGroup) roomID = ws.chatInfo.ID;
-    else {
-        const IDarray = [ ws.senderGoogleID, ws.chatInfo.ID ].sort();
-        roomID = IDarray[0] + IDarray[1];
-    }
+    const roomID = ws.chatInfo.id;
     console.log("i am leaving")
     if (!rooms[roomID]) return ;
 
@@ -141,7 +134,7 @@ function editMessage(data, senderID, isGroup, roomID) {
             await client.connect();
             isGroup ?
             await client.db('chat-app').collection('groupChats').updateOne({ _id: new ObjectId(roomID), "chatMsg.messageID": messageID }, { $set: { "chatMsg.$.collectedText": editedMessage, "chatMsg.$.editedStatus": true } }) :
-            await client.db('chat-app').collection('personalChats').updateOne({ chatID: roomID, "chatMsg.messageID": messageID }, { $set: { "chatMsg.$.collectedText": editedMessage, "chatMsg.$.editedStatus": true } });
+            await client.db('chat-app').collection('personalChats').updateOne({ _id: new ObjectId(roomID), "chatMsg.messageID": messageID }, { $set: { "chatMsg.$.collectedText": editedMessage, "chatMsg.$.editedStatus": true } });
         } catch (e) {
             console.error(e);
         }
@@ -161,13 +154,8 @@ wss.on('connection', (ws) => {
         const data = JSON.parse(event.data);
         const { senderID, chat, action } = data[0];
         const { id: receiverID, isGroup } = chat;
-        console.log(data);
-        let roomID;
-        if (isGroup) roomID = receiverID;
-        else {
-            const IDarray = [ senderID, receiverID ].sort();
-            roomID = IDarray[0] + IDarray[1];
-        }
+        console.log(chat, data[0].collectedText);
+        const roomID = receiverID;
 
         switch (action) {
             case 'join':

@@ -65,7 +65,7 @@ export default function PopupList(props) {
       url: starMessageRequestURI,
       method: 'PUT',
       body: {
-        selectedMessages: [message.messageID],
+        selectedMessages: [message],
         room: props.room,
         starStatus: message.star ^ 1
       }

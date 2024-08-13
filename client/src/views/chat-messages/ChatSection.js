@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { appendChat, updateChat } from 'features/chat-slice/chatSlice';
 // import { prependChat, appendChat, updateChat } from 'features/chat-slice/chatSlice';
 import { ws } from 'utils/websocket';
-import { createRoomID } from 'utils/room';
 import ChatBar from 'views/chat-bar/ChatBar';
 import Messages from 'views/chat-messages/components/Messages';
 import Textbox from 'views/chat-text-box/Textbox';
@@ -20,11 +19,7 @@ export default function ChatSection(props) {
   const location = useLocation();
   const dispatch = useDispatch();
 
-  const isGroup = location.pathname.slice(0, 7) === '/groups';
-  const room = createRoomID({ 
-    idArray: [ params.id, user._id ],
-    isGroup
-  })
+  const room = params.id
   console.log(room);
 
   // const getChatRequestURI = chatInfo.newChat.isGroup ?

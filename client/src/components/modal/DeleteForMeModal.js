@@ -22,7 +22,7 @@ export default function DeleteForMeModal(props) {
       remainingMessages = remainingMessages.filter((element) => element.messageID !== elementToRemove);
     })
     
-    const deleteMessageRequestURI = location.pathname === '/groups' ? 
+    const deleteMessageRequestURI = location.pathname.slice(0, 7) === '/groups' ? 
     'http://localhost:5000/group/delete/messages' : 'http://localhost:5000/delete/messages';
     
     const data = await fetchRequest({ url: deleteMessageRequestURI, method: 'DELETE', body: { selectedMessages: selectedMessagesList, room: props.room } });

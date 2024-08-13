@@ -6,7 +6,6 @@ import { updateChat, prependChat } from 'features/chat-slice/chatSlice';
 import { unselectAllMessages } from 'features/select-message-slice/selectMessageSlice';
 import { ws } from 'utils/websocket';
 import { dateFromEpoch } from 'utils/dateFromEpoch';
-import { createRoomID } from 'utils/room';
 import Messagebox from 'views/chat-messages/components/Messagebox';
 import useFetchChats from 'hooks/useFetchChats';
 import PopupList from './PopupList';
@@ -24,10 +23,7 @@ export default function Messages(props) {
   const params = useParams();
   const location = useLocation();
   const isGroup = location.pathname.slice(0, 7) === '/groups';
-  const room = createRoomID({
-    idArray: [ params.id, user._id ],
-    isGroup
-  })
+  const room = params.id;
   const getChatRequestURI = location.pathname === `/groups/${params.id}` ?
   `http://localhost:5000/group/data/${room}?range=${range + 40}` : 
   `http://localhost:5000/chat/data/${room}?range=${range + 40}`;

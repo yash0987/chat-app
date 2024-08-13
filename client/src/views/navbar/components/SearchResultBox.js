@@ -9,23 +9,23 @@ export default function SearchResultBox(props) {
   const dispatch = useDispatch();
   
   async function AddFriend() {
-    const _id = props.person._id;
+    const personalId = props.person._id;
     const name = props.person.name;
     const photoURL = props.person.photoURL;
   
-    if (user._id === _id) {
+    if (user._id === personalId) {
       console.log(`You cannot send request to yourself`);
       return ;
     }
-    else if (user.friends.findIndex(element => element._id === _id) > -1 || user.sendRequests.findIndex(element => element._id === _id) > -1) {
+    else if (user.friends.findIndex(element => element._id === personalId) > -1 || user.sendRequests.findIndex(element => element._id === personalId) > -1) {
       console.log(`${name} is already friend`);
       return ;
     }
     
     const addFriendRequestURI = 'http://localhost:5000/add/friend';
-    const data = await fetchRequest({ url: addFriendRequestURI, method: 'POST', body: { person: { _id, name, photoURL } } });
+    const data = await fetchRequest({ url: addFriendRequestURI, method: 'POST', body: { person: { personalId, name, photoURL } } });
     console.log(data);
-    dispatch(setUserSendRequest({_id, name, photoURL}));
+    dispatch(setUserSendRequest({personalId, name, photoURL}));
   }
 
   return (

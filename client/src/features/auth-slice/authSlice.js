@@ -30,10 +30,10 @@ export const authSlice = createSlice({
             state.value.user.sendRequests = [...state.value.user.sendRequests, action.payload];
         },
         removeReceiveRequest: (state, action) => {
-            state.value.user.receiveRequests = state.value.user.receiveRequests.filter((request) => request._id !== action.payload._id);
+            state.value.user.receiveRequests = state.value.user.receiveRequests.filter((request) => request.personalId !== action.payload.personalId);
         },
         removeSendRequest: (state, action) => {
-            state.value.user.sendRequests = state.value.user.sendRequests.filter((request) => request._id !== action.payload._id);
+            state.value.user.sendRequests = state.value.user.sendRequests.filter((request) => request.personalId !== action.payload.personalId);
         }
     }
 })

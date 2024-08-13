@@ -34,7 +34,7 @@ export default function ChatList(props) {
     searchChatList.map((element) => {
       const route = props.isGroup ? `/groups/${element._id}` : `/chats/@me/${element._id}`;
       const chatinfo = { ...element, isGroup: props.isGroup };
-      return <Chatbox key={element._id} chat={chatinfo} route={route} />
+      return <Chatbox key={props.isGroup ? element.personalId : element._id} chat={chatinfo} route={route} />
     }) : null;
 
   return (

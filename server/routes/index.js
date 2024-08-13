@@ -60,17 +60,17 @@ router.put('/theme', (req, res) => {
 })
 
 router.post('/add/friend', (req, res, next) => {
-    const personData = { ...req.body.person, _id: new ObjectId(req.body.person._id) };
+    const personData = { ...req.body.person, personalId: new ObjectId(req.body.person.personalId) };
     const userData = {
-        _id: req.user._id,
+        personalId: req.user._id,
         name: req.user.name,
         photoURL: req.user.photoURL
     };
 
     async function main() {
         try {
-            await userDetailsCollection.updateOne( { _id: new ObjectId(userData._id) }, { $addToSet: { sendRequests: personData } } );
-            await userDetailsCollection.updateOne( { _id: new ObjectId(personData._id) }, { $addToSet: { receiveRequests: userData } } );
+            await userDetailsCollection.updateOne( { _id: new ObjectId(userData.personalId) }, { $addToSet: { sendRequests: personData } } );
+            await userDetailsCollection.updateOne( { _id: new ObjectId(personData.personalId) }, { $addToSet: { receiveRequests: userData } } );
         } catch (e) {
             console.error(e);
         }
@@ -81,9 +81,9 @@ router.post('/add/friend', (req, res, next) => {
 })
 
 router.put('/cancelRequest', (req, res) => {
-    const personData = { ...req.body.person, _id: new ObjectId(req.body.person._id) };
+    const personData = { ...req.body.person, personalId: new ObjectId(req.body.person.personalId) };
     const userData = {
-        _id: req.user._id,
+        personalId: req.user._id,
         name: req.user.name,
         photoURL: req.user.photoURL
     };
@@ -92,8 +92,8 @@ router.put('/cancelRequest', (req, res) => {
 
     async function main() {
         try {
-            await userDetailsCollection.updateOne( { _id: new ObjectId(userData._id) }, { $pull: { sendRequests: { _id: personData._id } } } );
-            await userDetailsCollection.updateOne( { _id: new ObjectId(personData._id) }, { $pull: { receiveRequests: { _id: userData._id } } } );
+            await userDetailsCollection.updateOne( { _id: new ObjectId(userData.personalId) }, { $pull: { sendRequests: { personalId: personData.personalId } } } );
+            await userDetailsCollection.updateOne( { _id: new ObjectId(personData.personalId) }, { $pull: { receiveRequests: { personalId: userData.personalId } } } );
         } catch (e) {
             console.error(e);
         }
@@ -103,39 +103,51 @@ router.put('/cancelRequest', (req, res) => {
     res.json( { success: 'Friend request is cancel' } );
 });
 
-router.put('/acceptRequest', (req, res) => {
-    const personData = { ...req.body.person, _id: new ObjectId(req.body.person._id) };
-    const userData = {
-        _id: req.user._id,
-        name: req.user.name,
-        photoURL: req.user.photoURL
-    };
-
-    const IDarray = [userData._id, personData._id].sort();
-    const room = IDarray[0] + IDarray[1];
-
+router.get('/timepass', (req, res) => {
+    const coll = parseInt(req.query.isGroup) ? 'personalChats' : 'groupChats';
     async function main() {
         try {
-            await userDetailsCollection.updateOne( { _id: new ObjectId(userData._id) }, { $addToSet: { friends: personData } } );
-            await userDetailsCollection.updateOne( { _id: new ObjectId(userData._id) }, { $pull: { sendRequests: { _id: personData._id } } } );
-            await userDetailsCollection.updateOne( { _id: new ObjectId(userData._id) }, { $pull: { receiveRequests: { _id: personData._id } } } );
-            await userDetailsCollection.updateOne( { _id: new ObjectId(personData._id) }, { $addToSet: { friends: userData } } );
-            await userDetailsCollection.updateOne( { _id: new ObjectId(personData._id) }, { $pull: { sendRequests: { _id: userData._id } } } );
-            await userDetailsCollection.updateOne( { _id: new ObjectId(personData._id) }, { $pull: { receiveRequests: { _id: userData._id } } } );
-            await personalChatsCollection.insertOne( { chatID: room, chatMsg: [] } );
+            const cursor = await client.db('chat-app').collection(coll).findOne({});
+            console.log(cursor);
+            res.json(cursor);
         } catch (e) {
             console.error(e);
         }
     }
 
     main().catch(console.error);
-    res.json( { success: 'Friend request is accepted' } );
+})
+
+router.put('/acceptRequest', (req, res) => {
+    const personData = { ...req.body.person, personalId: new ObjectId(req.body.person.personalId) };
+    const userData = {
+        personalId: req.user._id,
+        name: req.user.name,
+        photoURL: req.user.photoURL
+    };
+
+    async function main() {
+        try {
+            const { insertedId } = await personalChatsCollection.insertOne( { chatMsg: [] } );
+            await userDetailsCollection.updateOne( { _id: new ObjectId(userData.personalId) }, { $addToSet: { friends: { _id: insertedId, ...personData } } } );
+            await userDetailsCollection.updateOne( { _id: new ObjectId(userData.personalId) }, { $pull: { sendRequests: { personalId: personData.personalId } } } );
+            await userDetailsCollection.updateOne( { _id: new ObjectId(userData.personalId) }, { $pull: { receiveRequests: { personalId: personData.personalId } } } );
+            await userDetailsCollection.updateOne( { _id: new ObjectId(personData.personalId) }, { $addToSet: { friends: { _id: insertedId, ...userData } } } );
+            await userDetailsCollection.updateOne( { _id: new ObjectId(personData.personalId) }, { $pull: { sendRequests: { personalId: userData.personalId } } } );
+            await userDetailsCollection.updateOne( { _id: new ObjectId(personData.personalId) }, { $pull: { receiveRequests: { personalId: userData.personalId } } } );
+            res.json( { _id: insertedId, success: 'Friend request is accepted' } );
+        } catch (e) {
+            console.error(e);
+        }
+    }
+
+    main().catch(console.error);
 })
 
 router.put('/declineRequest', (req, res) => {
-    const personData = { ...req.body.person, _id: new ObjectId(req.body.person._id) };
+    const personData = { ...req.body.person, personalId: new ObjectId(req.body.person.personalId) };
     const userData = {
-        _id: req.user._id,
+        personalId: req.user._id,
         name: req.user.name,
         photoURL: req.user.photoURL
     };
@@ -144,8 +156,8 @@ router.put('/declineRequest', (req, res) => {
 
     async function main() {
         try {
-            await userDetailsCollection.updateOne( { _id: new ObjectId(userData._id) }, { $pull: { receiveRequests: { _id: userData._id } } } );
-            await userDetailsCollection.updateOne( { _id: new ObjectId(personData._id) }, { $pull: { sendRequests: { _id: personData._id } } } );
+            await userDetailsCollection.updateOne( { _id: new ObjectId(userData.personalId) }, { $pull: { receiveRequests: { personalId: personData.personalId } } } );
+            await userDetailsCollection.updateOne( { _id: new ObjectId(personData.personalId) }, { $pull: { sendRequests: { personalId: userData.personalId } } } );
         } catch (e) {
             console.error(e);
         }
@@ -207,7 +219,7 @@ router.get('/chat/data/:room', (req, res, next) => {
     async function main() {
         try {
             const countChatMessages = await personalChatsCollection.aggregate([
-                { $match: { chatID: req.params.room } },
+                { $match: { _id: new ObjectId(req.params.room) } },
                 { $project: { chatMsg: { $filter: { input: "$chatMsg", as: "chat", cond: { $not: { $in: [ req.user._id.toString(), "$$chat.deleteMsg" ] } } } } } },
                 { $project: { chatMsg: { $size: "$chatMsg" } } }
             ]).toArray();
@@ -221,7 +233,7 @@ router.get('/chat/data/:room', (req, res, next) => {
             }
 
             const cursor = await personalChatsCollection.aggregate([
-                { $match: { chatID: req.params.room } },
+                { $match: { _id: new ObjectId(req.params.room) } },
                 { $project: { chatMsg: { $filter: { input: "$chatMsg", as: "chat", cond: { $not: { $in: [ req.user._id.toString(), "$$chat.deleteMsg" ] } } } } } },
                 { $project: { chatMsg: { $slice: [ "$chatMsg", range * -1, countToRetrieveMessages ] } } }
             ]).toArray();
@@ -258,7 +270,7 @@ router.delete('/delete/messages', (req, res) => {
     console.log(req.body);
     async function main() {
         try {
-            const cursor = await personalChatsCollection.findOne( { chatID: req.body.room } );
+            const cursor = await personalChatsCollection.findOne( { _id: new ObjectId(req.body.room) } );
 
             let updatedMessagesArray = cursor.chatMsg;
             selectedMessages.forEach((elementToRemove) => {
@@ -268,7 +280,7 @@ router.delete('/delete/messages', (req, res) => {
                 })
             });
 
-            await personalChatsCollection.updateOne( { chatID: req.body.room }, { $set: { chatMsg: updatedMessagesArray } } );
+            await personalChatsCollection.updateOne( { _id: new ObjectId(req.body.room) }, { $set: { chatMsg: updatedMessagesArray } } );
             res.json({ success: 'messages has been deleted' });
         } catch (e) {
             console.error(e);
@@ -280,13 +292,14 @@ router.delete('/delete/messages', (req, res) => {
 
 router.put('/starAndUnstar/messages', (req, res) => {
     const selectedMessages = req.body.selectedMessages;
+    const selectedMessagesIDs = selectedMessages.map(message => { return message.messageID; });
     console.log(req.body)
     async function main() {
         try {
-            const cursor = await personalChatsCollection.findOne( { chatID: req.body.room } );
+            const cursor = await personalChatsCollection.findOne( { _id: new ObjectId(req.body.room) } );
 
             let updatedMessagesArray = cursor.chatMsg;
-            selectedMessages.forEach((elementToUpdate) => {
+            selectedMessagesIDs.forEach((elementToUpdate) => {
                 updatedMessagesArray = updatedMessagesArray.map((element) => {
                     if (element.messageID === elementToUpdate && req.body.starStatus === 1) {
                         if (element.star.indexOf(req.user._id.toString()) === -1) element.star.push(req.user._id.toString());

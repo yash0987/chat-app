@@ -14,8 +14,8 @@ export default function ChatBar(props) {
   async function chatProfileDetails() {
     const isGroup = location.pathname.slice(0, 7) === '/groups';
     const chatDetailsURI = isGroup ?
-      `http://localhost:5000/groupinfo/${params.id}` :
-      `http://localhost:5000/aboutme/${params.id}`;
+      `http://localhost:5000/groupinfo/${location.state._id}` :
+      `http://localhost:5000/aboutme/${location.state._id}`;
 
     const data = await fetchRequest({ url: chatDetailsURI,  method: 'GET' });
     dispatch(setChatProfile(data));
