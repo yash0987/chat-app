@@ -9,9 +9,15 @@ export default function SelectionBox(props) {
 
   async function selectGroup(group) {
     const data = await fetchRequest({ url: `http://localhost:5000/groupinfo/${group._id}`, method: 'GET' });
-    props.setProfileDetails({ ...group, profileFileName: data.profileFileName, description: data.description, doj: data.doj });
-    props.setOldProfileDetails({ ...group, profileFileName: data.profileFileName, description: data.description, doj: data.doj });
+    console.log("fffffffffffffffffffffffffffffffffff")
+    console.log(data);
+    console.log({ ...group, profileFileName: data.profileFileName, description: data.description, doj: data.doj })
+    props.setProfileDetails(data);
+    props.setOldProfileDetails(data);
+    // props.setProfileDetails({ ...group, profileFileName: data.profileFileName, description: data.description, doj: data.doj });
+    // props.setOldProfileDetails({ ...group, profileFileName: data.profileFileName, description: data.description, doj: data.doj });
     props.setEditThisProfile(true);
+    props.setPhoto({});
     setToggleSelect(prevState => prevState ^ 1);
   }
 

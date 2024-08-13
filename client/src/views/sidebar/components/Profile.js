@@ -74,12 +74,14 @@ export default function Profile(props) {
   
   function resetChanges() {
     setProfileDetails(oldProfileDetails);
+    setPhoto({});
     props.setProfileEditStatus(false);
   }
   
   function selectGroupProfileForEdit() {
     setProfileSwitch(true);
     setEditThisProfile(false);
+    setPhoto({});
   }
   
   function selectUserProfileForEdit() {
@@ -87,6 +89,7 @@ export default function Profile(props) {
     setOldProfileDetails({ _id: user._id, name: user.name, aboutMe: user.aboutMe, photoURL: user.photoURL, doj: user.doj });
     setProfileSwitch(false);
     setEditThisProfile(true);
+    setPhoto({});
   }
 
   return (
@@ -98,7 +101,7 @@ export default function Profile(props) {
       </div>
       <hr className={`mb-3 ${theme.border300}`} />
 
-      { profileSwitch ? <SelectionBox profileEditStatus={props.profileEditStatus} profileDetails={profileDetails} setProfileDetails={setProfileDetails} setEditThisProfile={setEditThisProfile} setOldProfileDetails={setOldProfileDetails} /> : null }
+      { profileSwitch ? <SelectionBox profileEditStatus={props.profileEditStatus} profileDetails={profileDetails} setProfileDetails={setProfileDetails} setEditThisProfile={setEditThisProfile} setOldProfileDetails={setOldProfileDetails} setPhoto={setPhoto} /> : null }
 
       <div className={`w-full flex ${ editThisProfile ? 'visible' : 'invisible' }`}>
         <div className='w-1/2'>
