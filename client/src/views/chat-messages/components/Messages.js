@@ -22,11 +22,10 @@ export default function Messages(props) {
   const dispatch = useDispatch();
   const params = useParams();
   const location = useLocation();
+  
   const isGroup = location.pathname.slice(0, 7) === '/groups';
   const room = params.id;
-  const getChatRequestURI = location.pathname === `/groups/${params.id}` ?
-  `http://localhost:5000/group/data/${room}?range=${range + 40}` : 
-  `http://localhost:5000/chat/data/${room}?range=${range + 40}`;
+  const getChatRequestURI = `http://localhost:5000/chat/data/${room}?range=${range + 40}&isGroup=${isGroup}`;
   const getChats = useFetchChats({ url: getChatRequestURI, callback: prependChat });
 
   useMemo(() => {

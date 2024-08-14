@@ -57,9 +57,9 @@ export default function PopupList(props) {
       }
       return element;
     })
-    
-    const starMessageRequestURI = isGroup ? 
-    'http://localhost:5000/group/starAndUnstar/messages' : 'http://localhost:5000/starAndUnstar/messages';
+
+    console.log(message)
+    const starMessageRequestURI = `http://localhost:5000/starAndUnstar/messages?isGroup=${isGroup}`;
 
     const data = await fetchRequest({
       url: starMessageRequestURI,
