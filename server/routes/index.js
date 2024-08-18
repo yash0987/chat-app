@@ -6,10 +6,9 @@ const router = express.Router();
 const uri = 'mongodb://root:password@mongo:27017/';
 const client = new MongoClient(uri);
 const db = client.db('chat-app');
-const userDetailsCollection = client.db('chat-app').collection('userDetails');
-const personalChatsCollection =  client.db('chat-app').collection('personalChats');
-const groupChatsCollection =  client.db('chat-app').collection('groupChats');
-const starredMessageCollection = client.db('chat-app').collection('starredMessage');
+const userDetailsCollection = db.collection('userDetails');
+const personalChatsCollection =  db.collection('personalChats');
+const starredMessageCollection = db.collection('starredMessage');
 
 (async () => await client.connect())();
 
