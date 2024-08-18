@@ -14,8 +14,8 @@ export default function DeleteForMeModal(props) {
   const location = useLocation();
   const dispatch = useDispatch();
   
-  const isGroup = location.pathname.slice(0, 7) === '/groups';
-  const deleteMessageRequestURI = `http://localhost:5000/delete/messages?isGroup=${isGroup}`;
+  const chatType = location.pathname.slice(0, 7) === '/groups' ? 'group' : 'private';
+  const deleteMessageRequestURI = `http://localhost:5000/delete/messages?chatType=${chatType}`;
   console.log(selectedMessagesList);
 
   async function deleteForMe() {

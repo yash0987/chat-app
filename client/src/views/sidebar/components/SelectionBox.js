@@ -34,7 +34,7 @@ export default function SelectionBox(props) {
       {
           toggleSelect ? <div className={`absolute z-10 w-full max-h-[20rem] shadow shadow-gray-400 rounded overflow-y-scroll ${theme.bg50}`}> { 
           user.groups.map((group) => {
-            return <div onClick={() => selectGroup(group)} className={`flex px-3 py-2 select-none ${theme.hoverBg100}`}>
+            return <div onClick={() => selectGroup(group)} key={group._id} className={`flex px-3 py-2 select-none ${theme.hoverBg100}`}>
               <img src={group.photoURL} alt="" className='size-9 object-cover rounded-full select-none' />
               <p className='px-4 py-2'>{group.name}</p>
             </div>

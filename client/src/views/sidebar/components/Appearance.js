@@ -37,7 +37,7 @@ export default function Appearance() {
       <p className='mb-1 font-bold text-xs'>THEME</p>
       <div className='my-2 flex flex-wrap border border-gray-700 rounded-lg'>{
         colors.map((color, index) => {
-          return <div onClick={ () => selectTheColor(index)} className={`grid grid-flow-col grid-rows-2 relative m-[6px] mx-4 size-14 rounded-full overflow-hidden`}>
+          return <div onClick={ () => selectTheColor(index)} key={index} className={`grid grid-flow-col grid-rows-2 relative m-[6px] mx-4 size-14 rounded-full overflow-hidden`}>
             { selectColor[index] ? <img src={tick} alt="" className='absolute right-4 top-4 size-6 rounded-full bg-gray-800' /> : null }
             <div className={`col-span-2 bg-${color}-500`}></div>
             <div className={`bg-${color}-100`}></div>

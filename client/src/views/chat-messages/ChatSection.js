@@ -22,7 +22,7 @@ export default function ChatSection(props) {
   const room = params.id
   console.log(room);
 
-  // const getChatRequestURI = chatInfo.newChat.isGroup ?
+  // const getChatRequestURI = chatInfo.newChat.chatType ?
   // `http://localhost:5000/group/data/${room}` : `http://localhost:5000/chat/data/${room}`;
   // const getChats = useFetchChats({ url: getChatRequestURI, callback: prependChat });
 
@@ -40,7 +40,7 @@ export default function ChatSection(props) {
     setTimeout(() => {
       const detailsForRoom = {
         senderID: user._id,
-        chat: { id: params.id, isGroup: location.pathname === `/groups/${params.id}` },
+        chat: { id: params.id, chatType: location.pathname === `/groups/${params.id}` ? 'group' : 'private' },
         action: 'join',
       };
       ws.send(JSON.stringify([detailsForRoom]));

@@ -11,7 +11,7 @@ export default function ChatProfile() {
   const chatInfo = useSelector(state => state.chatinfo.value);
   const location = useLocation();
 
-  const isGroup = location.pathname.slice(0, 7) === '/groups';
+  const chatType = location.pathname.slice(0, 7) === '/groups';
 
   useEffect(() => {
     setChatList([]);
@@ -24,7 +24,7 @@ export default function ChatProfile() {
       setOpenList(false);
       return ;
     }
-    const commonGroupsListRequestURI = isGroup ? 
+    const commonGroupsListRequestURI = chatType === 'group' ? 
       `http://localhost:5000/group/members/${chatInfo._id}`:
       `http://localhost:5000/common/groups/${chatInfo._id}`; 
     const data = await fetchRequest({ url: commonGroupsListRequestURI, method: 'GET' });
@@ -43,7 +43,7 @@ export default function ChatProfile() {
         <p className='text-lg font-bold'>{ chatInfo.name }</p>
         <p className='font-semibold'>{ chatInfo._id }</p>
         <hr className={`my-4 ${theme.border300}`} />
-        <p className='font-semibold'>{ isGroup ? 'DESCRIPTION' : 'ABOUT ME'}</p>
+        <p className='font-semibold'>{ chatType === 'group' ? 'DESCRIPTION' : 'ABOUT ME'}</p>
         <p>{ location.pathname.slice(0, 7) === '/groups' ? chatInfo.description : chatInfo.aboutMe }</p>
         <hr className={`my-4 ${theme.border300}`} />
         <p className='font-semibold'>CHATME MEMBER SINCE</p>
@@ -51,7 +51,7 @@ export default function ChatProfile() {
       </div>
 
       <div className={`m-4 py-2 text-sm font-semibold rounded-lg ${theme.bg50}`}>
-        <button onClick={() => commonGroupsOrMembers()} className='px-2'>{ isGroup ? 'Group Members' : 'Common Groups' }</button>
+        <button onClick={() => commonGroupsOrMembers()} className='px-2'>{ chatType === 'group' ? 'Group Members' : 'Common Groups' }</button>
 
         {
           openList ?

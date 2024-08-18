@@ -22,7 +22,7 @@ export default function PopupList(props) {
   const location = useLocation();
   const dispatch = useDispatch();
   
-  const isGroup = location.pathname.slice(0, 7) === '/groups';
+  const chatType = location.pathname.slice(0, 7) === '/groups' ? 'group' : 'private';
 
   function editMessage() {
     dispatch(unselectAllMessages());
@@ -59,7 +59,7 @@ export default function PopupList(props) {
     })
 
     console.log(message)
-    const starMessageRequestURI = `http://localhost:5000/starAndUnstar/messages?isGroup=${isGroup}`;
+    const starMessageRequestURI = `http://localhost:5000/starAndUnstar/messages?chatType=${chatType}`;
 
     const data = await fetchRequest({
       url: starMessageRequestURI,

@@ -58,7 +58,7 @@ app.use('/', authCheck, filesRouter);
 
 // (async () => await client.connect())();
 
-async function main(room, isGroup, messages) {
+async function main(room, chatType, messages) {
     messages = messages.map((element) => {
         delete element.chat;
         return element;
@@ -66,7 +66,7 @@ async function main(room, isGroup, messages) {
 
     try {
         await client.connect();
-        isGroup ?
+        chatType === 'group' ?
         await client.db('chat-app').collection('groupChats').updateOne( { _id: new ObjectId(room) }, { $push: { chatMsg: { $each: messages } } }, { $set: { groupID: room, chatMsg: [] }, upsert: true } ) :
         await client.db('chat-app').collection('personalChats').updateOne( { _id: new ObjectId(room) }, { $push: { chatMsg: { $each: messages } } }, { $set: { chatID: room, chatMsg: [] }, upsert: true } );
     } catch (e) {
@@ -105,7 +105,7 @@ function leave(ws) {
     rooms[roomID] = rooms[roomID].filter((client) => client.senderGoogleID !== ws.senderGoogleID);
 }
 
-function send(data, senderID, isGroup, roomID) {
+function send(data, senderID, chatType, roomID) {
     console.log("Sending " + roomID);
     rooms[roomID].forEach((client) => {
         if (client.senderGoogleID !== senderID) {
@@ -116,10 +116,10 @@ function send(data, senderID, isGroup, roomID) {
     data = data.map((element) => {
         return { ...element, deleteMsg: [], star: [] };
     })
-    main(roomID, isGroup, data).catch(console.error);
+    main(roomID, chatType, data).catch(console.error);
 }
 
-function editMessage(data, senderID, isGroup, roomID) {
+function editMessage(data, senderID, chatType, roomID) {
     console.log(roomID)
     rooms[roomID].forEach((client) => {
         if (client.senderGoogleID !== senderID) {
@@ -132,7 +132,7 @@ function editMessage(data, senderID, isGroup, roomID) {
     async function main() {
         try {
             await client.connect();
-            isGroup ?
+            chatType === 'group' ?
             await client.db('chat-app').collection('groupChats').updateOne({ _id: new ObjectId(roomID), "chatMsg.messageID": messageID }, { $set: { "chatMsg.$.collectedText": editedMessage, "chatMsg.$.editedStatus": true } }) :
             await client.db('chat-app').collection('personalChats').updateOne({ _id: new ObjectId(roomID), "chatMsg.messageID": messageID }, { $set: { "chatMsg.$.collectedText": editedMessage, "chatMsg.$.editedStatus": true } });
         } catch (e) {
@@ -153,7 +153,7 @@ wss.on('connection', (ws) => {
     ws.onmessage = (event) => {
         const data = JSON.parse(event.data);
         const { senderID, chat, action } = data[0];
-        const { id: receiverID, isGroup } = chat;
+        const { id: receiverID, chatType } = chat;
         console.log(chat, data[0].collectedText);
         const roomID = receiverID;
 
@@ -165,10 +165,10 @@ wss.on('connection', (ws) => {
                 leave(ws);
                 break;
             case 'send':
-                send(data, senderID, isGroup, roomID);
+                send(data, senderID, chatType, roomID);
                 break;
             case 'edit':
-                editMessage(data, senderID, isGroup, roomID);
+                editMessage(data, senderID, chatType, roomID);
                 break;
             default:
                 break;

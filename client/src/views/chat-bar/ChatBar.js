@@ -12,8 +12,8 @@ export default function ChatBar(props) {
   const dispatch = useDispatch();
   
   async function chatProfileDetails() {
-    const isGroup = location.pathname.slice(0, 7) === '/groups';
-    const chatDetailsURI = isGroup ?
+    const chatType = location.pathname.slice(0, 7) === '/groups' ? 'group' : 'private';
+    const chatDetailsURI = chatType === 'group' ?
       `http://localhost:5000/groupinfo/${location.state._id}` :
       `http://localhost:5000/aboutme/${location.state._id}`;
 

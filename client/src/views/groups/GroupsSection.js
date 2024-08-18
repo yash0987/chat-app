@@ -6,6 +6,6 @@ export default function GroupsSection() {
   const groups = useSelector(state => state.auth.value.user.groups);
 
   return (
-    <ChatList chats={groups} isGroup={true} />
+    <ChatList chats={groups} chatType={'group'} />
   )
 }

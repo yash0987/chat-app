@@ -11,7 +11,7 @@ export default function Chatbox(props) {
   const location = useLocation();
   const dispatch = useDispatch();
 
-  const isGroup = location.pathname.slice(0, 7) === '/groups';
+  const chatType = location.pathname.slice(0, 7) === '/groups' ? 'group' : 'private';
   
   function openChat() {
     if (params.id === props.chat._id) return ;
@@ -21,12 +21,12 @@ export default function Chatbox(props) {
   }
 
   return (
-    <Link to={props.route} state={{ _id: isGroup ? props.chat._id : props.chat.personalId }} onClick={() => openChat()} className={`flex justify-between mx-2 p-2 rounded-lg font-semibold ${theme.hoverBg200}`}>
+    <Link to={props.route} state={{ _id: chatType === 'group' ? props.chat._id : props.chat.personalId }} onClick={() => openChat()} className={`flex justify-between mx-2 p-2 rounded-lg font-semibold ${theme.hoverBg200}`}>
       <div className='grid grid-flow-col'>
         <img src={ props.chat.photoURL } alt="" className='size-10 rounded-full object-cover' />
         <div className='mx-4'>
           <p>{ props.chat.name }</p>
-          <p className='text-[10px] text-gray-400'>{ isGroup ? props.chat._id : props.chat.personalId }</p>
+          <p className='text-[10px] text-gray-400'>{ chatType === 'group' ? props.chat._id : props.chat.personalId }</p>
         </div>
       </div>
     </Link>

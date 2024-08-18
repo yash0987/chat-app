@@ -23,9 +23,9 @@ export default function Messages(props) {
   const params = useParams();
   const location = useLocation();
   
-  const isGroup = location.pathname.slice(0, 7) === '/groups';
+  const chatType = location.pathname.slice(0, 7) === '/groups' ? 'group' : 'private';
   const room = params.id;
-  const getChatRequestURI = `http://localhost:5000/chat/data/${room}?range=${range + 40}&isGroup=${isGroup}`;
+  const getChatRequestURI = `http://localhost:5000/chat/data/${room}?range=${range + 40}&chatType=${chatType}`;
   const getChats = useFetchChats({ url: getChatRequestURI, callback: prependChat });
 
   useMemo(() => {
@@ -52,7 +52,7 @@ export default function Messages(props) {
       editedMessage,
       messageID,
       senderID: user._id,
-      chat: { id: params.id, isGroup },
+      chat: { id: params.id, chatType },
       type: 'text',
       action: 'edit'
     };
@@ -134,9 +134,9 @@ export default function Messages(props) {
         props.elementArray.map((element, index) => {
           let isPreviousMessagesUserDifferent = isNewDate(element.currentMsgTime, index) || element.replyToMessage;
           if (!isPreviousMessagesUserDifferent) isPreviousMessagesUserDifferent ||= props.elementArray[index - 1].senderID !== props.elementArray[index].senderID;
-          return <div>
+          return <div key={element.messageID}>
             { dateBar(element.currentMsgTime , index) }
-            { <Messagebox key={element.messageID} isPreviousMessagesUserDifferent={isPreviousMessagesUserDifferent} fileSize={fileSize} element={element} visibilityOfPopupList={visibilityOfPopupList} popupList={popupList} editSelectedMessage={editSelectedMessage} cancelEditMessage={cancelEditMessage} /> }
+            { <Messagebox isPreviousMessagesUserDifferent={isPreviousMessagesUserDifferent} fileSize={fileSize} element={element} visibilityOfPopupList={visibilityOfPopupList} popupList={popupList} editSelectedMessage={editSelectedMessage} cancelEditMessage={cancelEditMessage} /> }
           </div>
         })
       }

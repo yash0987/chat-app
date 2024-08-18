@@ -216,7 +216,7 @@ router.get('/starred/messages/:_id', (req, res) => {
 
 router.get('/chat/data/:room', (req, res, next) => {
     const range = parseInt(req.query.range);
-    const collectionName = req.query.isGroup === 'true' ? 'groupChats' : 'personalChats';
+    const collectionName = req.query.chatType === 'group' ? 'groupChats' : 'personalChats';
     console.log(range * -1);
 
     async function main() {
@@ -270,7 +270,7 @@ router.get('/chat/data/:room', (req, res, next) => {
 
 router.delete('/delete/messages', (req, res) => {
     const selectedMessages = req.body.selectedMessages;
-    const collectionName = req.query.isGroup === 'true' ? 'groupChats' : 'personalChats';
+    const collectionName = req.query.chatType === 'group' ? 'groupChats' : 'personalChats';
     console.log(req.body);
     async function main() {
         try {
@@ -297,7 +297,7 @@ router.delete('/delete/messages', (req, res) => {
 router.put('/starAndUnstar/messages', (req, res) => {
     const selectedMessages = req.body.selectedMessages;
     const selectedMessagesIDs = selectedMessages.map(message => { return message.messageID; });
-    const collectionName = req.query.isGroup === 'true' ? 'groupChats' : 'personalChats';
+    const collectionName = req.query.chatType === 'group' ? 'groupChats' : 'personalChats';
     console.log(req.body)
     async function main() {
         try {
@@ -348,7 +348,7 @@ router.put('/starAndUnstar/messages', (req, res) => {
 router.get('/groupinfo/:_id', (req, res) => {
     async function main() {
         try {
-            const cursor = await client.db('chat-app').collection('groupDetails').findOne( { _id: new ObjectId(req.params._id) } );
+            const cursor = await db.collection('groupDetails').findOne( { _id: new ObjectId(req.params._id) } );
             res.json({ _id: cursor._id, name: cursor.name, profileFileName: cursor.profileFileName, photoURL: cursor.photoURL, description: cursor.description, doj: cursor.doj });
         } catch (e) {
             console.error(e);

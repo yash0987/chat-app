@@ -6,6 +6,6 @@ export default function FriendsSection() {
   const friends = useSelector(state => state.auth.value.user.friends);
 
   return (
-    <ChatList chats={friends} isGroup={false} />
+    <ChatList chats={friends} chatType={'private'} />
   )
 }

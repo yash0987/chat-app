@@ -38,7 +38,7 @@ export default function Textbox(props) {
       senderID: user._id,
       senderName: user.name,
       senderPhotoURL: user.photoURL,
-      chat: { id: params.id, isGroup: location.pathname.slice(0, 7) === '/groups' },
+      chat: { id: params.id, chatType: location.pathname.slice(0, 7) === '/groups' ? 'group' : 'private' },
       star: false,
       type: 'text',
       action: 'send'

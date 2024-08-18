@@ -15,7 +15,7 @@ export default function UploadFiles(props) {
   const location = useLocation();
   const dispatch = useDispatch();
 
-  const isGroup = location.pathname.slice(0, 7) === '/groups';
+  const chatType = location.pathname.slice(0, 7) === '/groups' ? 'group' : 'private';
 
   async function uploadFile(e, name) {
     const messageData = [];
@@ -35,7 +35,7 @@ export default function UploadFiles(props) {
         senderID: user._id,
         senderName: user.name,
         senderPhotoURL: user.photoURL,
-        chat: { id: params.id, isGroup },
+        chat: { id: params.id, chatType },
         star: false,
         action: 'send'
       });
