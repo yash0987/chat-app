@@ -198,13 +198,30 @@ router.get('/common/groups/:_id', (req, res) => {
     main().catch(console.error);
 })
 
-router.get('/starred/messages/:_id', (req, res) => {
+router.get('/starred/messages', (req, res) => {
+    const range = parseInt(req.query.range);
+
     async function main() {
         try {
-            const starredMessage = await starredMessageCollection.aggregate([
-                { $match: { _id: req.params._id } },
-                { $project: { starredMessage: {  } } }
-            ]);
+            const countStarredMessage = await starredMessageCollection.aggregate([
+                { $match: { _id: new ObjectId(req.user._id) } },
+                { $project: { starredMessages: { $size: "$starredMessages" } } }
+            ]).toArray();
+
+            const countToRetrieveMessages = range <= countStarredMessage[0].starredMessages ? 40 : 40 - (range - countStarredMessage[0].starredMessages);
+            console.log(countStarredMessage[0].starredMessages, countToRetrieveMessages);
+            
+            if (range - countStarredMessage[0].starredMessages >= 40) {
+                res.json([]);
+                return ;
+            }
+
+            const cursor = await starredMessageCollection.aggregate([
+                { $match: { _id: new ObjectId(req.user._id) } },
+                { $project: { starredMessages: { $slice: [ "$starredMessages", range * -1, countToRetrieveMessages ] } } }
+            ]).toArray();
+
+            res.json(cursor[0].starredMessages);
         } catch (e) {
             console.error(e);
         }
@@ -315,6 +332,13 @@ router.put('/starAndUnstar/messages', (req, res) => {
                 })
             })
             
+            if (req.body.starStatus) {
+                await db.collection('starredMessage').updateOne( { _id: new ObjectId(req.user._id) }, { $push: { starredMessages: { $each: selectedMessages } } } );
+            }
+            else {
+                await db.collection('starredMessage').updateOne( { _id: new ObjectId(req.user._id) }, { $pull: { starredMessages: { messageID: selectedMessages[0].messageID } } } );
+            }
+            
             await db.collection(collectionName).updateOne( { _id: new ObjectId(req.body.room) }, { $set: { chatMsg: updatedMessagesArray } } );
             res.json({ success: 'messages has been starred' });
         } catch (e) {
@@ -324,25 +348,6 @@ router.put('/starAndUnstar/messages', (req, res) => {
 
     main().catch(console.error);
 })
-
-// not in use now
-// router.get('/starred/messages/:id', (req, res) => {
-//     async function main() {
-//         try {
-//             const cursor = await personalChatsCollection.findOne( { _id: req.params.id } );
-//             let chatMsg = cursor.chatMsg;
-//             const starMessagesArray = chatMsg.filter((element) =>
-//                 element.deleteMsg.indexOf(req.user._id.toString()) === -1 && element.star.indexOf(req.user._id.toString()) !== -1
-//             );
-//             console.log(starMessagesArray);
-//             res.json(starMessagesArray);
-//         } catch (e) {
-//             console.error(e);
-//         }
-//     }
-
-//     main().catch(console.error);
-// })
 
 router.get('/groupinfo/:_id', (req, res) => {
     async function main() {

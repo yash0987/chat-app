@@ -47,6 +47,7 @@ function (accessToken, refreshToken, profile, cb) {
             
             if (!user) {
                 const { insertedId: _id } = await client.db('chat-app').collection('userDetails').insertOne( defaultUser );
+                await client.db('chat-app').collection('starredMessage').insertOne({ _id, starredMessages: [] });
                 user = { _id, ...defaultUser };
                 
                 const response = await fetch(defaultUser.photoURL, { method: 'GET' });
