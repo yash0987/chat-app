@@ -72,13 +72,13 @@ router.post('/add/friend', (req, res, next) => {
         try {
             await userDetailsCollection.updateOne( { _id: new ObjectId(userData.personalId) }, { $addToSet: { sendRequests: personData } } );
             await userDetailsCollection.updateOne( { _id: new ObjectId(personData.personalId) }, { $addToSet: { receiveRequests: userData } } );
+            res.json( { success: `Friend request has send to ${personData.name}` } );
         } catch (e) {
             console.error(e);
         }
     }
 
     main().catch(console.error);
-    res.json( { success: `Friend request has send to ${personData.name}` } );
 })
 
 router.put('/cancelRequest', (req, res) => {
@@ -95,13 +95,13 @@ router.put('/cancelRequest', (req, res) => {
         try {
             await userDetailsCollection.updateOne( { _id: new ObjectId(userData.personalId) }, { $pull: { sendRequests: { personalId: personData.personalId } } } );
             await userDetailsCollection.updateOne( { _id: new ObjectId(personData.personalId) }, { $pull: { receiveRequests: { personalId: userData.personalId } } } );
+            res.json( { success: 'Friend request is cancel' } );
         } catch (e) {
             console.error(e);
         }
     }
 
     main().catch(console.error);
-    res.json( { success: 'Friend request is cancel' } );
 });
 
 router.put('/acceptRequest', (req, res) => {
@@ -144,13 +144,13 @@ router.put('/declineRequest', (req, res) => {
         try {
             await userDetailsCollection.updateOne( { _id: new ObjectId(userData.personalId) }, { $pull: { receiveRequests: { personalId: personData.personalId } } } );
             await userDetailsCollection.updateOne( { _id: new ObjectId(personData.personalId) }, { $pull: { sendRequests: { personalId: userData.personalId } } } );
+            res.json( { success: 'Friend request is cancel' } );
         } catch (e) {
             console.error(e);
         }
     }
 
     main().catch(console.error);
-    res.json( { success: 'Friend request is cancel' } );
 });
 
 router.get('/aboutme/:_id', (req, res) => {
@@ -173,13 +173,13 @@ router.put('/unfriend', (req, res) => {
         try {
             await userDetailsCollection.updateOne( { googleID: req.user.googleID }, { $pull: { friends: { googleID: req.body.id } } } );
             await userDetailsCollection.updateOne( { googleID: req.body.id }, { $pull: { friends: { googleID: req.user.googleID } } } );
+            res.json( { success: "Unfriend has been done" } );
         } catch (e) {
             console.error(e);
         }
     }
 
     main().catch(console.error);
-    res.json( { success: "Unfriend has been done" } );
 })
 
 router.get('/common/groups/:_id', (req, res) => {
