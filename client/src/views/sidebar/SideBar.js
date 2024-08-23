@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 import SectionList from './components/SectionList';
 import Profile from './components/Profile';
 import Appearance from './components/Appearance';
-import { useSelector } from 'react-redux';
+import StarredMessages from './components/StarredMessages';
 
 export default function SideBar(props) {
   const [section, setSection] = useState('Profile');
@@ -13,6 +14,9 @@ export default function SideBar(props) {
   switch (section) {
     case "Profile":
       component = <Profile profileEditStatus={profileEditStatus} setProfileEditStatus={setProfileEditStatus} />
+      break;
+    case "Starred-messages":
+      component = <StarredMessages />
       break;
     case "Appearance":
       component = <Appearance />
