@@ -35,18 +35,6 @@ export default function Messages(props) {
     // eslint-disable-next-line
   }, [room]);
 
-  function fileSize(dataSize) {
-    let count = 0;
-    let bytes = Number(dataSize);
-    while (bytes > 1024) {
-      bytes /= 1024;
-      count++;
-    }
-
-    const unitOfDigits = ['B', 'kB', 'MB', 'GB'];
-    return `${bytes.toFixed(1)} ${unitOfDigits[count]}`;
-  }
-
   async function editSelectedMessage(editedMessage, messageID) {    
     let messageData = {
       editedMessage,
@@ -136,7 +124,7 @@ export default function Messages(props) {
           if (!isPreviousMessagesUserDifferent) isPreviousMessagesUserDifferent ||= props.elementArray[index - 1].senderID !== props.elementArray[index].senderID;
           return <div key={element.messageID}>
             { dateBar(element.currentMsgTime , index) }
-            { <Messagebox isPreviousMessagesUserDifferent={isPreviousMessagesUserDifferent} fileSize={fileSize} element={element} visibilityOfPopupList={visibilityOfPopupList} popupList={popupList} editSelectedMessage={editSelectedMessage} cancelEditMessage={cancelEditMessage} /> }
+            { <Messagebox isPreviousMessagesUserDifferent={isPreviousMessagesUserDifferent} element={element} visibilityOfPopupList={visibilityOfPopupList} popupList={popupList} editSelectedMessage={editSelectedMessage} cancelEditMessage={cancelEditMessage} /> }
           </div>
         })
       }

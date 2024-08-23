@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { datetimeFromEpoch } from 'utils/datetimeFromEpoch';
 import { timeFromEpoch } from 'utils/timeFromEpoch';
+import { fileSize } from 'utils/fileSize';
 import fileIcon1 from 'assets/file1.png';
 import downloadIcon from 'assets/download.png';
 
@@ -26,7 +27,7 @@ export default function Messagebox(props) {
       <img src={fileIcon1} alt="" className='w-8 m-1' />
       <div>
         { props.element.name.split(".")[0] }
-        <p className='text-[10px] font-semibold'>{ props.fileSize(props.element.size) } &#183; { props.element.type.split("/")[1].toUpperCase() }</p>
+        <p className='text-[10px] font-semibold'>{ fileSize(props.element.size) } &#183; { props.element.type.split("/")[1].toUpperCase() }</p>
       </div>
       <a href={`http://localhost:5000/download/file?filename=${props.element.name}&type=${props.element.type}&id=${props.element.messageID}`} className='group-hover:visible invisible absolute -right-2 -top-2 w-8 shadow-md rounded-sm bg-gray-400 hover:bg-[#9299a4]'>
         <img src={downloadIcon} alt="" />
